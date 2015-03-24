@@ -1,0 +1,10 @@
+/* Layout Styles */
+body .main-container {
+  margin-top: 60px;
+}
+.header {
+  color: #ff0000;
+}
+.header a {
+  color: #ff0000;
+}

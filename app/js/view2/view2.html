@@ -1,0 +1,18 @@
+<p>This is the partial for view 2.</p>
+<p>
+  Showing of 'interpolate' filter:
+  {{ 'Current version is v%VERSION%.' | interpolate }}
+</p>
+
+<table>
+    <thead>
+        <th ng-repeat="hcol in columns" ng-style="{width: hcol.width}" >{{hcol.title}}</th>
+    </thead>
+    <tbody>
+        <tr ng-repeat="row in data">
+            <td ng-repeat="cell in columns">{{row[cell.field]}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<button ng-click="changeCols()" >Change Columns</button>

@@ -1,0 +1,20 @@
+{
+  "name": "tangello",
+  "description": "A training AngularJS project with trello like functionality",
+  "version": "0.0.1",
+  "homepage": "https://github.com/kvindasAB/tangello",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "1.2.x",
+    "angular-loader": "1.2.x",
+    "angular-mocks": "~1.2.x",
+    "html5-boilerplate": "~4.3.0",
+    "bootstrap": "~3.2.0",
+    "angular-bootstrap": "~0.11.0",
+    "angular-ui-router": "~0.2.11",
+    "font-awesome": "~4.2.0",
+    "jquery": "~2.1.1",
+    "lodash": "~2.4.1"
+  }
+}

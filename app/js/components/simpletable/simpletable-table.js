@@ -86,37 +86,13 @@ angular.module('simpletable.table', [])
   .directive('stTable', ['SimpleTableDirectiveFacetory', function(SimpleTableDirectiveFacetory) {
 
     return {
-      restrict: 'AE',
-      scope: {
-        tableConfig: "=",
-        tableData: "="
-      },
-      controller: function($scope, $element, $attrs) {
-        return SimpleTableDirectiveFacetory.newInstance($scope, $element, $attrs);
-      },
-      template:
-      "<table ng-class='tableConfig.classes'>" +
-      "<thead>" +
-      " <tr>" +
-      "   <th ng-repeat='hcol in tableConfig.columns' ng-style='hcol.style' ng-class='hcol.headerClass'>{{hcol.title}}</th>" +
-      " </tr>" +
-      "</thead>" +
-      "<tbody>" +
-      " <tr ng-click='simpleTable.onRowClicked($event, row)' ng-class='{selected: isRowSelected(row)}' ng-repeat='row in tableData | filter:tableConfig.filter'>" +
-      "   <td ng-repeat='col in tableConfig.columns' ng-class='col.cellClass'>" +
-      "     <span ng-if='!col.template'>{{row[col.field]}}</span>     " +
-      "     <span ng-if='!!col.template' ng-include='col.template'></span>     " +
-      "   </td>" +
-      " </tr>" +
-      "</tbody>" +
-      "</table>"
           restrict: 'AE',
           scope: {
                 tableConfig: '=',
                 tableData: '='
           },
           controller: function($scope, $element, $attrs) {
-                return new SimpleTableDirective($scope, $element, $attrs, $log, $timeout);
+                return SimpleTableDirectiveFacetory.newInstance($scope, $element, $attrs);
           },
           template:
               "<table ng-class='tableConfig.classes'>" +
@@ -133,7 +109,7 @@ angular.module('simpletable.table', [])
               "    </tr>" +
               "  </thead>" +
               "  <tbody>" +
-              "    <tr ng-repeat='row in tableData | filter:tableConfig.filter'>" +
+              "    <tr ng-click='simpleTable.onRowClicked($event, row)' ng-repeat='row in tableData | filter:tableConfig.filter'>" +
               "      <td ng-repeat='col in tableConfig.columns' ng-class='col.cellClass'>" +
               "        <span ng-if='!col.template'>{{row[col.field]}}</span>     " +
               "        <span ng-if='!!col.template' ng-include='col.template'></span>     " +

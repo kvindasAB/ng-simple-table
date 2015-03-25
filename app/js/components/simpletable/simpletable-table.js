@@ -1,10 +1,11 @@
 'use strict';
 
-var SimpleTableDirective = function(scope, element, attrs, $log){
+var SimpleTableDirective = function(scope, element, attrs, $log, $timeout){
   this.scope = scope;
   this.element = element;
   this.attrs = attrs;
   this.$log = $log;
+  this.$timeout = $timeout;
   this.plugins = [];
 
   this.init();
@@ -39,11 +40,11 @@ SimpleTableDirective.prototype.removeListeners = function(){
 SimpleTableDirective.prototype.registerPlugin = function(plugin){
   this.$log.log("initializing plugins...");
   this.plugins.push(plugin);
-  _.defer(angular.bind(this, this.initPlugins) );
+  this.$timeout(angular.bind(this, this.initPlugins), 0);
 };
 
 SimpleTableDirective.prototype.initPlugins = function(){
-  _.forEach(this.plugins, function(plugin){
+  angular.forEach(this.plugins, function(plugin){
     if(plugin.isInitialized() ){ return; }
     plugin.onRegistered();
   });
@@ -51,7 +52,7 @@ SimpleTableDirective.prototype.initPlugins = function(){
 
 
 angular.module('simpletable.table', [])
-  .directive('stTable', ['$log', function($log) {
+  .directive('stTable', ['$log', '$timeout', function($log, $timeout) {
 
     return {
       restrict: 'AE',
@@ -60,7 +61,7 @@ angular.module('simpletable.table', [])
         tableData: "="
       },
       controller: function($scope, $element, $attrs) {
-        return new SimpleTableDirective($scope, $element, $attrs, $log);
+        return new SimpleTableDirective($scope, $element, $attrs, $log, $timeout);
       },
       template:
       "<table ng-class='tableConfig.classes'>" +

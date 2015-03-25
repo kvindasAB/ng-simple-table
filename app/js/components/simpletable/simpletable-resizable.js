@@ -19,12 +19,13 @@ SimpleTableResizable.prototype.onRegistered = function(){
   this.$log.log("onRegistered:", this);
   this.init();
 };
+// Called by parent to understand if plugin is initialized
+SimpleTableResizable.prototype.isInitialized = function(){
+  return this.initComplete;
+};
 SimpleTableResizable.prototype.init = function(){
   this.$log.log("resizable init....");
   this.initComplete = true;
-};
-SimpleTableResizable.prototype.isInitialized = function(){
-  return this.initComplete;
 };
 
 

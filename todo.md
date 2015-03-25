@@ -12,4 +12,4 @@ TODO List
 - Resize functionality type Static
 - Drag and drop functionality
 - Save state feature
-- Plugin architecture
+- Plugin architecture -- DONE

@@ -36,8 +36,6 @@ SimpleTableResizable.prototype.isInitialized = function(){
 SimpleTableResizable.prototype.onMouseDownHandler = function(event, scope, element){
     this.isMouseDown = true;
     this.startX = event.clientX;
-    //element.on('mousemove', function(event){this.onMouseMoveHandler(event, scope, element);});
-    //element.on('mouseup', function(event){this.onMouseUpHandler(event, scope, element);});
 };
 
 SimpleTableResizable.prototype.onMouseMoveHandler = function(event, scope, element){
@@ -55,8 +53,6 @@ SimpleTableResizable.prototype.onMouseMoveHandler = function(event, scope, eleme
 
 SimpleTableResizable.prototype.onMouseUpHandler = function(event, scope, element){
     this.isMouseDown = false;
-    //element.off('mousemove', function(event){this.onMouseMoveHandler(event, scope, element);});
-    //element.off('mouseup', function(event){this.onMouseUpHandler(event, scope, element);});
 };
 
 angular.module('simpletable.resizable', [])

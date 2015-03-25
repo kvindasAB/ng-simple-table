@@ -8,3 +8,9 @@ body .main-container {
 .header a {
   color: #ff0000;
 }
+.table-padding {
+  padding: 0px !important;
+}
+.table-padding thead tr th {
+  padding: 0px !important;
+}

@@ -4,15 +4,7 @@
   {{ 'Current version is v%VERSION%.' | interpolate }}
 </p>
 
-<table>
-    <thead>
-        <th ng-repeat="hcol in columns" ng-style="{width: hcol.width}" >{{hcol.title}}</th>
-    </thead>
-    <tbody>
-        <tr ng-repeat="row in data">
-            <td ng-repeat="cell in columns">{{row[cell.field]}}</td>
-        </tr>
-    </tbody>
-</table>
+<div st-table table-config="tableConfig" table-data="data" style="width: 500px">
+</div>
 
 <button ng-click="changeCols()" >Change Columns</button>

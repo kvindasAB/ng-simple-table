@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.view2', ['ui.router'])
+angular.module('myApp.view2', ['ui.router', 'simpletable'])
 
   .config(['$stateProvider', function($stateProvider) {
     $stateProvider.state( 'view2', {
@@ -30,11 +30,16 @@ angular.module('myApp.view2', ['ui.router'])
     ];
 
     $scope.columns = [
-      {title: "Id", field: 'id', width: "25%"},
+      {title: "Id", field: 'id', width: "25%", template: "js/view2/col1tpl.html"},
       {title: "Name", field: 'name', width: "25%"},
       {title: "Last Name", field: 'lastname', width: "25%"},
       {title: "Age", field: 'age', width: "25%"}
     ];
+
+    $scope.tableConfig = {
+      classes: ["table", "table-bordered"],
+      columns: $scope.columns
+    };
 
     $scope.changeCols = function(){
       var elem = $scope.columns.shift();

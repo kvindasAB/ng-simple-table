@@ -1,58 +1,75 @@
 'use strict';
 
-var SimpleTableDirective = function(scope, element, attrs, $log, $timeout){
-  this.scope = scope;
-  this.element = element;
-  this.attrs = attrs;
-  this.$log = $log;
-  this.$timeout = $timeout;
-  this.plugins = [];
-
-  this.init();
-  $log.log("SimpleTable created: ", this.scope);
-};
-SimpleTableDirective.prototype.init = function(){
-  this.addListeners();
-  this.validateConfig();
-};
-SimpleTableDirective.prototype.validateConfig = function() {
-  //this.validateFilter();
-};
-SimpleTableDirective.prototype.validateFilter = function() {
-  // Currently not required
-  this.$log.log("validateFilter...", this.scope.tableConfig);
-  this.scope.$watch("tableConfig.filter", angular.bind(this, this.onFilterUpdated) );
-};
-SimpleTableDirective.prototype.onFilterUpdated = function(newValue, oldValue) {
-  // Currently not required
-  if((!newValue && !oldValue) || newValue === oldValue){
-    return;
-  }
-  this.$log.log("onFilterUpdated:", this.scope.tableConfig.filter);
-};
-SimpleTableDirective.prototype.addListeners = function(){
-  //this.scope.$on("$destroy", this.removeListeners());
-};
-SimpleTableDirective.prototype.removeListeners = function(){
-  this.$log.log("removing listeners...", this);
-};
-
-SimpleTableDirective.prototype.registerPlugin = function(plugin){
-  this.$log.log("initializing plugins...");
-  this.plugins.push(plugin);
-  this.$timeout(angular.bind(this, this.initPlugins), 0);
-};
-
-SimpleTableDirective.prototype.initPlugins = function(){
-  angular.forEach(this.plugins, function(plugin){
-    if(plugin.isInitialized() ){ return; }
-    plugin.onRegistered();
-  });
-};
 
 
 angular.module('simpletable.table', [])
-  .directive('stTable', ['$log', '$timeout', function($log, $timeout) {
+  .service('SimpleTableDirectiveFacetory', ['$log', '$timeout', function ($log, $timeout) {
+    var SimpleTableDirective = function(scope, element, attrs){
+      this.scope = scope;
+      this.element = element;
+      this.attrs = attrs;
+      this.plugins = [];
+      this.initPluginTimeout = null;
+
+      this.init();
+      $log.log("SimpleTable created: ", this.scope);
+    };
+    SimpleTableDirective.prototype.init = function(){
+      this.addListeners();
+      this.validateConfig();
+    };
+    SimpleTableDirective.prototype.validateConfig = function() {
+      //this.validateFilter();
+    };
+    SimpleTableDirective.prototype.validateFilter = function() {
+      // Currently not required
+      $log.log("validateFilter...", this.scope.tableConfig);
+      this.scope.$watch("tableConfig.filter", angular.bind(this, this.onFilterUpdated) );
+    };
+    SimpleTableDirective.prototype.onFilterUpdated = function(newValue, oldValue) {
+      // Currently not required
+      if((!newValue && !oldValue) || newValue === oldValue){
+        return;
+      }
+      $log.log("onFilterUpdated:", this.scope.tableConfig.filter);
+    };
+    SimpleTableDirective.prototype.addListeners = function(){
+      this.scope.$on("$destroy", this.removeListeners);
+    };
+    SimpleTableDirective.prototype.removeListeners = function(){
+      $log.log("removing listeners...", this);
+    };
+
+    SimpleTableDirective.prototype.registerPlugin = function(plugin){
+      $log.log("initializing plugins...");
+      this.plugins.push(plugin);
+      this.initPlugins();
+    };
+
+    SimpleTableDirective.prototype.initPlugins = function(){
+      if(this.initPluginTimeout){
+        $timeout.cancel(this.initPluginTimeout);
+        this.initPluginTimeout = null;
+      }
+      this.initPluginTimeout = $timeout(angular.bind(this, this.doInitPlugins), 0);
+    };
+
+    SimpleTableDirective.prototype.doInitPlugins = function(){
+      angular.forEach(this.plugins, function(plugin){
+        if(plugin.isInitialized() ){ return; }
+        plugin.onRegistered();
+      });
+    };
+
+    // Factory
+    var Factory = function(){
+    };
+    Factory.prototype.newInstance = function($scope, $element, $attrs){
+      return new SimpleTableDirective($scope, $element, $attrs);
+    };
+    return new Factory();
+  }])
+  .directive('stTable', ['SimpleTableDirectiveFacetory', function(SimpleTableDirectiveFacetory) {
 
     return {
       restrict: 'AE',
@@ -61,7 +78,7 @@ angular.module('simpletable.table', [])
         tableData: "="
       },
       controller: function($scope, $element, $attrs) {
-        return new SimpleTableDirective($scope, $element, $attrs, $log, $timeout);
+        return SimpleTableDirectiveFacetory.newInstance($scope, $element, $attrs);
       },
       template:
       "<table ng-class='tableConfig.classes'>" +

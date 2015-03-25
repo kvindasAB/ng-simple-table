@@ -1,14 +1,13 @@
 'use strict';
 
-var SimpleTableResizable = function(scope, element, attrs, parentCtrl, $log){
+var SimpleTableResizable = function(scope, element, attrs, $log){
       this.scope = scope;
       this.element = element;
       this.attrs = attrs;
       this.$log = $log;
-      this.parentCtrl = parentCtrl;
+      this.parentCtrl = null;
       this.initComplete = false;
 
-      this.registerPlugin();
       $log.log("SimpleTableResize created: ", arguments);
 };
 
@@ -30,6 +29,10 @@ SimpleTableResizable.prototype.isInitialized = function(){
     return this.initComplete;
 };
 
+SimpleTableResizable.prototype.onMoveHandler = function(){
+    return this.initComplete;
+};
+
 
 angular.module('simpletable.resizable', [])
     .directive('stTableResizable', ['$log', function($log){
@@ -37,7 +40,18 @@ angular.module('simpletable.resizable', [])
             require: '^stTable',
             restrict: 'A',
             controller: function($scope, $element, $attrs) {
-                return new SimpleTableResizable($scope, $element, $attrs, $log);
+                if(!$scope.simpleTableResizable){
+                    $scope.simpleTableResizable = new SimpleTableResizable($scope, $element, $attrs, $log);
+                }
+                return $scope.simpleTableResizable;
+            },
+            link: function($scope, $element, $attrs, parentCtrl) {
+                if(!$scope.simpleTableResizable){
+                    $scope.simpleTableResizable = new SimpleTableResizable($scope, $element, $attrs, $log);
+                }
+                $scope.simpleTableResizable.parentCtrl = parentCtrl;
+                $scope.simpleTableResizable.registerPlugin();
+                return $scope.simpleTableResizable;
             }
         };
     }])
@@ -46,8 +60,8 @@ angular.module('simpletable.resizable', [])
             require: '^stTableResizable',
             restrict: 'A',
             link: function (scope, element, attrs, parentCtrl) {
-                element.on('click', function(){stTableResizableHandlerObj.onMoveHandler(scope, element);});
-                return new SimpleTableResizable(scope, element, attrs, parentCtrl, $log);
+                element.on('click', function(){parentCtrl.onMoveHandler(scope, element);});
+                //return new SimpleTableResizable(scope, element, attrs, parentCtrl, $log);
             },
             onMoveHandler: function(scope, element){
                 $log.log("resize handler works");

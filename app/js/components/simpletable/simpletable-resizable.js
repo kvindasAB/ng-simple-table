@@ -31,27 +31,27 @@ SimpleTableResizable.prototype.isInitialized = function(){
 };
 
 
-angular.module('simpletable.resizable', []).directive('stTableResizable', ['$log', function($log){
-    return {
-        require: '^stTable',
-        restrict: 'A',
-        controller: function (scope, element, attrs, parentCtrl) {
-            return new SimpleTableResizable(scope, element, attrs, parentCtrl, $log);
-        }
-    };
-}]);
-
-angular.module('simpletable.resizable', []).directive('stTableResizableHandler', ['$log', function($log){
-    var stTableResizableHandlerObj = {
-        require: '^stTableResizable',
-        restrict: 'A',
-        link: function (scope, element, attrs, parentCtrl) {
-            element.on('click', function(){stTableResizableHandlerObj.onMoveHandler(scope, element);});
-            return new SimpleTableResizable(scope, element, attrs, parentCtrl, $log);
-        },
-        onMoveHandler: function(scope, element){
-            $log.log("resize handler works");
-        }
-    };
-    return stTableResizableHandlerObj;
-}]);
+angular.module('simpletable.resizable', [])
+    .directive('stTableResizable', ['$log', function($log){
+        return {
+            require: '^stTable',
+            restrict: 'A',
+            controller: function($scope, $element, $attrs) {
+                return new SimpleTableResizable($scope, $element, $attrs, $log);
+            }
+        };
+    }])
+    .directive('stTableResizableHandler', ['$log', function($log){
+        var stTableResizableHandlerObj = {
+            require: '^stTableResizable',
+            restrict: 'A',
+            link: function (scope, element, attrs, parentCtrl) {
+                element.on('click', function(){stTableResizableHandlerObj.onMoveHandler(scope, element);});
+                return new SimpleTableResizable(scope, element, attrs, parentCtrl, $log);
+            },
+            onMoveHandler: function(scope, element){
+                $log.log("resize handler works");
+            }
+        };
+        return stTableResizableHandlerObj;
+    }]);

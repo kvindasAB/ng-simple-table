@@ -98,13 +98,9 @@ angular.module('simpletable.table', [])
               "<table ng-class='tableConfig.classes'>" +
               "  <thead>" +
               "    <tr>" +
-              "      <th ng-repeat='hcol in tableConfig.columns' ng-style='hcol.style' ng-class='hcol.headerClass' height='{{tableConfig.headerHeight}}'>" +
-              "        <div style='height: 100%; width: 100%;'>" +
-              "          <div style='float: left; width: 98%'>" +
-              "            {{hcol.title}}" +
-              "          </div>" +
-              "          <div st-table-resizable-handler style='background-color: #000011; height: 100%; float: left; cursor: e-resize; width: 2px;'></div>" +
-              "        </div>" +
+              "      <th class='table-header' ng-repeat='hcol in tableConfig.columns' ng-style='hcol.style' ng-class='hcol.headerClass' height='{{tableConfig.headerHeight}}'>" +
+              "        {{hcol.title}}" +
+              "        <div st-table-resizable-handler class='table-header-cursor-container'></div>" +
               "      </th>" +
               "    </tr>" +
               "  </thead>" +

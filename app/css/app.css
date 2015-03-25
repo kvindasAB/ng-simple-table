@@ -14,3 +14,16 @@ body .main-container {
 .table-padding thead tr th {
   padding: 0px !important;
 }
+.table-header {
+  position: relative;
+}
+.table-header-cursor-container {
+  background-color: #000011;
+  cursor: e-resize;
+  height: 100%;
+  float: left;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  width: 2px;
+}

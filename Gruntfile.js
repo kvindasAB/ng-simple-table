@@ -75,7 +75,8 @@ module.exports = function ( grunt ) {
           'browser': false,
           'element': false,
           'by': false,
-          'console': false
+          'console': false,
+          '_': false
         }
       }
     },

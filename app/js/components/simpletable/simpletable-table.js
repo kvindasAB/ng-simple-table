@@ -5,6 +5,7 @@ var SimpleTableDirective = function(scope, element, attrs, $log){
   this.element = element;
   this.attrs = attrs;
   this.$log = $log;
+  this.plugins = [];
 
   this.init();
   $log.log("SimpleTable created: ", this.scope);
@@ -29,11 +30,25 @@ SimpleTableDirective.prototype.onFilterUpdated = function(newValue, oldValue) {
   this.$log.log("onFilterUpdated:", this.scope.tableConfig.filter);
 };
 SimpleTableDirective.prototype.addListeners = function(){
-  this.scope.$on("$destroy", this.removeListeners());
+  //this.scope.$on("$destroy", this.removeListeners());
 };
 SimpleTableDirective.prototype.removeListeners = function(){
-  this.$log.log("removing listeners...");
+  this.$log.log("removing listeners...", this);
 };
+
+SimpleTableDirective.prototype.registerPlugin = function(plugin){
+  this.$log.log("initializing plugins...");
+  this.plugins.push(plugin);
+  _.defer(angular.bind(this, this.initPlugins) );
+};
+
+SimpleTableDirective.prototype.initPlugins = function(){
+  _.forEach(this.plugins, function(plugin){
+    if(plugin.isInitialized() ){ return; }
+    plugin.onRegistered();
+  });
+};
+
 
 angular.module('simpletable.table', [])
   .directive('stTable', ['$log', function($log) {
@@ -44,8 +59,8 @@ angular.module('simpletable.table', [])
         tableConfig: "=",
         tableData: "="
       },
-      link: function(scope, element, attrs) {
-        return new SimpleTableDirective(scope, element, attrs, $log);
+      controller: function($scope, $element, $attrs) {
+        return new SimpleTableDirective($scope, $element, $attrs, $log);
       },
       template:
       "<table ng-class='tableConfig.classes'>" +

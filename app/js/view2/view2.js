@@ -48,7 +48,6 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
 
     $scope.validateFilter = function(){
       $log.log($scope.tableConfig);
-      $scope.columns[0].title += "1";
     };
 
 

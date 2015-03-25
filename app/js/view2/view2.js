@@ -10,7 +10,7 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
     });
   }])
 
-.controller('View2Ctrl', ['$scope', function($scope) {
+.controller('View2Ctrl', ['$scope', "$log", function($scope, $log) {
 
     $scope.data = [
       {id: 1, name: "Roy", lastname: "Bonilla", age: 25},
@@ -30,10 +30,10 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
     ];
 
     $scope.columns = [
-      {title: "Id", field: 'id', width: "25%", template: "js/view2/col1tpl.html"},
-      {title: "Name", field: 'name', width: "25%"},
-      {title: "Last Name", field: 'lastname', width: "25%"},
-      {title: "Age", field: 'age', width: "25%"}
+      {title: "Id", field: 'id', style: {width: "25%"}, headerClass:["myclass1", "myclass2"], cellClass:["cellclass1", "cellclass2"], template: "js/view2/col1tpl.html"},
+      {title: "Name", field: 'name', style: {width: "50px"} },
+      {title: "Last Name", field: 'lastname', style: {width: "25%"} },
+      {title: "Age", field: 'age', style: {width: "25%"}}
     ];
 
     $scope.tableConfig = {
@@ -44,6 +44,11 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
     $scope.changeCols = function(){
       var elem = $scope.columns.shift();
       $scope.columns.push(elem);
+    };
+
+    $scope.validateFilter = function(){
+      $log.log($scope.tableConfig);
+      $scope.columns[0].title += "1";
     };
 
 

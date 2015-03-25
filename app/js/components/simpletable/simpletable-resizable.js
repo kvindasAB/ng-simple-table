@@ -1,16 +1,16 @@
 'use strict';
 
-var SimpleTableResizable = function(scope, element, attrs, parentCtrl, $log){
+var SimpleTableResizable = function(scope, element, attrs, $log){
       this.scope = scope;
       this.element = element;
       this.attrs = attrs;
       this.$log = $log;
-      this.parentCtrl = parentCtrl;
+      this.parentCtrl = null;
       this.initComplete = false;
       this.startX = 0;
 
       this.registerPlugin();
-      //$log.log("SimpleTableResize created: ", arguments);
+      $log.log("SimpleTableResize created: ", arguments);
 };
 
 SimpleTableResizable.prototype.registerPlugin = function(){
@@ -53,7 +53,18 @@ angular.module('simpletable.resizable', [])
             require: '^stTable',
             restrict: 'A',
             controller: function($scope, $element, $attrs) {
-                return new SimpleTableResizable($scope, $element, $attrs, $log);
+                if(!$scope.simpleTableResizable){
+                    $scope.simpleTableResizable = new SimpleTableResizable($scope, $element, $attrs, $log);
+                }
+                return $scope.simpleTableResizable;
+            },
+            link: function($scope, $element, $attrs, parentCtrl) {
+                if(!$scope.simpleTableResizable){
+                    $scope.simpleTableResizable = new SimpleTableResizable($scope, $element, $attrs, $log);
+                }
+                $scope.simpleTableResizable.parentCtrl = parentCtrl;
+                $scope.simpleTableResizable.registerPlugin();
+                return $scope.simpleTableResizable;
             }
         };
     }])

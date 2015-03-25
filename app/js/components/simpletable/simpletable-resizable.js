@@ -7,6 +7,7 @@ var SimpleTableResizable = function(scope, element, attrs, $log){
       this.$log = $log;
       this.parentCtrl = null;
       this.initComplete = false;
+      this.isMouseDown = false;
       this.startX = 0;
 
       this.registerPlugin();
@@ -33,18 +34,29 @@ SimpleTableResizable.prototype.isInitialized = function(){
 };
 
 SimpleTableResizable.prototype.onMouseDownHandler = function(event, scope, element){
+    this.isMouseDown = true;
     this.startX = event.clientX;
-    element.on('mousemove', function(event){this.onMouseMoveHandler(event, scope, element);});
-    element.on('mouseup', function(event){this.onMouseUpHandler(event, scope, element);});
+    //element.on('mousemove', function(event){this.onMouseMoveHandler(event, scope, element);});
+    //element.on('mouseup', function(event){this.onMouseUpHandler(event, scope, element);});
 };
 
 SimpleTableResizable.prototype.onMouseMoveHandler = function(event, scope, element){
-
+    if(!this.isMouseDown){
+        return;
+    }
+    var width = 0;
+    if(this.startX >= event.clientX){
+        width = this.startX - event.clientX;
+    }else{
+        width = event.clientX - this.startX;
+    }
+    this.$log.log('width: ' + width);
 };
 
 SimpleTableResizable.prototype.onMouseUpHandler = function(event, scope, element){
-    element.off('mousemove', function(event){this.onMouseMoveHandler(event, scope, element);});
-    element.off('mouseup', function(event){this.onMouseUpHandler(event, scope, element);});
+    this.isMouseDown = false;
+    //element.off('mousemove', function(event){this.onMouseMoveHandler(event, scope, element);});
+    //element.off('mouseup', function(event){this.onMouseUpHandler(event, scope, element);});
 };
 
 angular.module('simpletable.resizable', [])
@@ -59,6 +71,8 @@ angular.module('simpletable.resizable', [])
                 return $scope.simpleTableResizable;
             },
             link: function($scope, $element, $attrs, parentCtrl) {
+                $element.on('mousemove', function(event){$scope.simpleTableResizable.onMouseMoveHandler(event, $scope, $element);});
+                $element.on('mouseup', function(event){$scope.simpleTableResizable.onMouseUpHandler(event, $scope, $element);});
                 if(!$scope.simpleTableResizable){
                     $scope.simpleTableResizable = new SimpleTableResizable($scope, $element, $attrs, $log);
                 }

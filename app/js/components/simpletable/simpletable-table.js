@@ -105,7 +105,7 @@ angular.module('simpletable.table', [])
               "    </tr>" +
               "  </thead>" +
               "  <tbody>" +
-              "    <tr ng-click='simpleTable.onRowClicked($event, row)' ng-repeat='row in tableData | filter:tableConfig.filter'>" +
+              "    <tr ng-click='simpleTable.onRowClicked($event, row)' ng-class='{selected: isRowSelected(row)}' ng-repeat='row in tableData | filter:tableConfig.filter' >" +
               "      <td ng-repeat='col in tableConfig.columns' ng-class='col.cellClass'>" +
               "        <span ng-if='!col.template'>{{row[col.field]}}</span>     " +
               "        <span ng-if='!!col.template' ng-include='col.template'></span>     " +

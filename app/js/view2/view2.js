@@ -38,6 +38,7 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
 
     $scope.tableConfig = {
         classes: ["table", "table-bordered", 'table-padding'],
+        selectionMultiple: true,
         columns: $scope.columns,
         headerHeight: '30px'
     };

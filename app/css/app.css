@@ -27,3 +27,6 @@ body .main-container {
   top: 0px;
   width: 2px;
 }
+.stTable tr.selected {
+  background-color: #3278b3;
+}

@@ -16,9 +16,9 @@ angular.module('simpletable.table', [])
       $log.log("SimpleTable created: ", this.scope);
     };
     SimpleTableDirective.prototype.init = function(){
-      this.addListeners();
-      this.validateConfig();
-      this.initDefaultPlugins();
+        this.addListeners();
+        this.validateConfig();
+        this.initDefaultPlugins();
     };
     SimpleTableDirective.prototype.validateConfig = function() {
       //this.validateFilter();
@@ -95,10 +95,12 @@ angular.module('simpletable.table', [])
                 return SimpleTableDirectiveFacetory.newInstance($scope, $element, $attrs);
           },
           template:
-              "<table ng-class='tableConfig.classes'>" +
+              "<table style='overflow: auto;' ng-class='tableConfig.classes'>" +
               "  <thead>" +
               "    <tr>" +
-              "      <th class='table-header' ng-repeat='hcol in tableConfig.columns' ng-style='hcol.style' ng-class='hcol.headerClass' height='{{tableConfig.headerHeight}}'>" +
+              "      <th class='table-header' ng-repeat='hcol in tableConfig.columns' ng-class='hcol.headerClass' " +
+              "      height='{{tableConfig.headerHeight}}' width='{{hcol.style.width}}' st-table-drop-target='true' " +
+              "      st-table-draggable='true'>" +
               "        {{hcol.title}}" +
               "        <div st-table-resizable-handler class='table-header-cursor-container'></div>" +
               "      </th>" +

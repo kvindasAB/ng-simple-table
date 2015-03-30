@@ -1,17 +1,20 @@
 'use strict';
 
 var SimpleTableResizable = function(scope, element, attrs, $log){
-      this.scope = scope;
-      this.element = element;
-      this.attrs = attrs;
-      this.$log = $log;
-      this.parentCtrl = null;
-      this.initComplete = false;
-      this.isMouseDown = false;
-      this.startX = 0;
+    this.minColumnWidth = 25;
+    this.scope = scope;
+    this.element = element;
+    this.attrs = attrs;
+    this.$log = $log;
+    this.parentCtrl = null;
+    this.initComplete = false;
+    this.isMouseDown = false;
+    this.startX = 0;
+    this.indexColumnResize = 0;
+    this.orginalColumnWidth = 0;
 
-      this.registerPlugin();
-      $log.log("SimpleTableResize created: ", arguments);
+    this.registerPlugin();
+    $log.log("SimpleTableResize created: ", arguments);
 };
 
 SimpleTableResizable.prototype.registerPlugin = function(){
@@ -36,6 +39,10 @@ SimpleTableResizable.prototype.isInitialized = function(){
 SimpleTableResizable.prototype.onMouseDownHandler = function(event, scope, element){
     this.isMouseDown = true;
     this.startX = event.clientX;
+    this.indexColumnResize = scope.this.$index;
+    this.orginalColumnWidth = scope.hcol.style.width;
+    //window.on('mousemove', function(event){scope.simpleTableResizable.onMouseMoveHandler(event, scope, element);});
+    //window.on('mouseup', function(event){scope.simpleTableResizable.onMouseUpHandler(event, scope, element);});
 };
 
 SimpleTableResizable.prototype.onMouseMoveHandler = function(event, scope, element){
@@ -43,16 +50,28 @@ SimpleTableResizable.prototype.onMouseMoveHandler = function(event, scope, eleme
         return;
     }
     var width = 0;
-    if(this.startX >= event.clientX){
-        width = this.startX - event.clientX;
-    }else{
-        width = event.clientX - this.startX;
-    }
+    width = event.clientX - this.startX;
+    scope.columns[this.indexColumnResize].style.width = this.calculateNewColumnWidth(this.orginalColumnWidth, width);
+    scope.$apply();
     this.$log.log('width: ' + width);
+};
+
+SimpleTableResizable.prototype.calculateNewColumnWidth = function(actualWidth, moveWidth){
+    var stringWidth = actualWidth.substring(0 , actualWidth.length - 2);
+    var columnWidth = parseInt(stringWidth);
+    columnWidth = columnWidth + moveWidth;
+
+    if(this.minColumnWidth > columnWidth){
+        columnWidth = this.minColumnWidth;
+    }
+    this.$log.log('stringWidth: ' + stringWidth);
+    return columnWidth + 'px';
 };
 
 SimpleTableResizable.prototype.onMouseUpHandler = function(event, scope, element){
     this.isMouseDown = false;
+    //window.off('mousemove', function(event){scope.simpleTableResizable.onMouseMoveHandler(event, scope, element);});
+    //window.off('mouseup', function(event){scope.simpleTableResizable.onMouseUpHandler(event, scope, element);});
 };
 
 angular.module('simpletable.resizable', [])

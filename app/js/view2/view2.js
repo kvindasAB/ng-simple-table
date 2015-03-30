@@ -52,7 +52,9 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
         $log.log($scope.tableConfig);
     };
 
-
+    $scope.buttonTest = function(){
+        $log.log('Test');
+    };
 
 
 }]);

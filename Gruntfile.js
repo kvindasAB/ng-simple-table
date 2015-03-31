@@ -10,6 +10,7 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-protractor-runner');
+  grunt.loadNpmTasks('grunt-typescript');
 
 
   /**
@@ -54,6 +55,7 @@ module.exports = function ( grunt ) {
       ],
       options: {
         globalstrict: true,
+        strict: false,
         curly: true,
         immed: true,
         newcap: true,
@@ -78,6 +80,20 @@ module.exports = function ( grunt ) {
           'console': false,
           '_': false
         }
+      }
+    },
+
+    typescript: {
+      base: {
+          src: ['app/typescript/**/*.ts'],
+          dest: 'app/js/',
+          options: {
+              module: 'amd', //or commonjs
+              target: 'es5', //or es3
+              basePath: 'app/typescript/',
+              sourceMap: true,
+              declaration: true
+          }
       }
     },
 
@@ -175,6 +191,10 @@ module.exports = function ( grunt ) {
         files: 'app/**/*.js',
         tasks: ['jshint', 'karma:continuous']
       },
+      src: {
+        files: 'app/**/*.ts',
+        tasks: ['typescript', 'jshint', 'karma:continuous']
+      },
       less: {
         files: 'app/less/**/*.less',
         tasks: ['less']
@@ -194,7 +214,7 @@ module.exports = function ( grunt ) {
    * The `build` task gets your app ready to run for development and testing.
    */
   grunt.registerTask( 'build', [
-    'jshint', 'less', 'karma:continuous'
+    'typescript', 'jshint', 'less', 'karma:continuous'
   ]);
 
   grunt.registerTask( 'dev', [ 'connect:server', 'watch' ] );

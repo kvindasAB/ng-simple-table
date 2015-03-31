@@ -1,7 +1,6 @@
 TODO List
 ========
 
-- Filter - String or Function
 - Communicate API to controller via event
 - Sort
    - Create directive per header
@@ -12,4 +11,10 @@ TODO List
 - Resize functionality type Static
 - Drag and drop functionality
 - Save state feature
+
+
+- Filter - String or Function - DONE
+- Selection
+    - Single - DONE
+    - Multiple - DONE
 - Plugin architecture -- DONE

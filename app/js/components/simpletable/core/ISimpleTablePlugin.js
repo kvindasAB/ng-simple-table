@@ -1,0 +1,1 @@
+//# sourceMappingURL=ISimpleTablePlugin.js.map

@@ -189,11 +189,12 @@ module.exports = function ( grunt ) {
       },
       src: {
         files: 'app/**/*.js',
-        tasks: ['jshint', 'karma:continuous']
+        tasks: ['karma:continuous']
+        //tasks: ['jshint', 'karma:continuous']
       },
       src: {
         files: 'app/**/*.ts',
-        tasks: ['typescript', 'jshint', 'karma:continuous']
+        tasks: ['typescript', 'karma:continuous']
       },
       less: {
         files: 'app/less/**/*.less',
@@ -214,7 +215,8 @@ module.exports = function ( grunt ) {
    * The `build` task gets your app ready to run for development and testing.
    */
   grunt.registerTask( 'build', [
-    'typescript', 'jshint', 'less', 'karma:continuous'
+    'typescript', 'less', 'karma:continuous'
+    //'typescript', 'jshint', 'less', 'karma:continuous'
   ]);
 
   grunt.registerTask( 'dev', [ 'connect:server', 'watch' ] );
@@ -224,7 +226,8 @@ module.exports = function ( grunt ) {
   ]);
 
   grunt.registerTask( 'test:unitdebug', [
-    'jshint', 'less', 'karma:debug'
+    'less', 'karma:debug'
+    //'jshint', 'less', 'karma:debug'
   ]);
 
   grunt.registerTask( 'test:e2e', [

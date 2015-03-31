@@ -10,8 +10,9 @@ var SimpleTablePlugin;
         BaseSimpleTablePlugin.prototype.init = function () {
             this.addEventListeners();
         };
-        BaseSimpleTablePlugin.prototype.doRegister = function () {
-            this.simpleTable.registerPlugin(this);
+        BaseSimpleTablePlugin.prototype.doRegister = function (parent) {
+            this.parent = parent ? parent : this.parent;
+            this.parent.registerPlugin(this);
         };
         BaseSimpleTablePlugin.prototype.onRegistered = function (simpleTable) {
             this.simpleTable = simpleTable;

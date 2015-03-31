@@ -3,11 +3,12 @@ module SimpleTablePlugin {
         // Attributes
         isInitializationComplete:boolean;
         simpleTable:any;
+        parent:any;
 
         // Methods
         init():void;
         isInitialized():boolean;
-        doRegister():void;
+        doRegister(parent?:any):void;
         onRegistered(simpleTable:any):void;
     }
 }

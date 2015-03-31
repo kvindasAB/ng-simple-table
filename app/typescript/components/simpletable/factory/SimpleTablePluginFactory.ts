@@ -9,8 +9,10 @@ class SimpleTablePluginFactory {
     }
 }
 
+console.log("Creating angular module...: " +  "simpletable.core.selection");
 angular.module('simpletable.core.selection', [])
-    .service('SimpleTableSelectionFactory', [function() {
+    .service('SimpleTablePluginFactory', [function() {
+        console.log("instantiating service...");
         return new SimpleTablePluginFactory();
     }]);
 

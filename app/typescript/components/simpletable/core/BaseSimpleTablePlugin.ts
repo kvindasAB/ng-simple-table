@@ -4,14 +4,16 @@ module SimpleTablePlugin {
         // Attributes
         isInitializationComplete:boolean = false;
         simpleTable:any;
+        parent:any;
 
         // Methods
         init():void {
             this.addEventListeners();
         }
 
-        doRegister():void{
-            this.simpleTable.registerPlugin(this);
+        doRegister(parent?:any):void{
+            this.parent = parent ? parent : this.parent;
+            this.parent.registerPlugin(this);
         }
         onRegistered(simpleTable:any):void{
             this.simpleTable = simpleTable;

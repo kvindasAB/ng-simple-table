@@ -10,8 +10,8 @@ module SimpleTableSelection {
 
         // Overrides
         init():void {
-            super.init();
             this.initScope();
+            super.init();
         }
 
         addEventListeners():void {

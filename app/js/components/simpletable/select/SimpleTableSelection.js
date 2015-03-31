@@ -41,8 +41,8 @@ var SimpleTableSelection;
         }
         // Overrides
         SimpleTablePluginSelection.prototype.init = function () {
-            _super.prototype.init.call(this);
             this.initScope();
+            _super.prototype.init.call(this);
         };
         SimpleTablePluginSelection.prototype.addEventListeners = function () {
             _super.prototype.addEventListeners.call(this);

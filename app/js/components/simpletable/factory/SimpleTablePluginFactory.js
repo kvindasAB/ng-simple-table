@@ -9,7 +9,9 @@ var SimpleTablePluginFactory = (function () {
     };
     return SimpleTablePluginFactory;
 })();
-angular.module('simpletable.core.selection', []).service('SimpleTableSelectionFactory', [function () {
+console.log("Creating angular module...: " + "simpletable.core.selection");
+angular.module('simpletable.core.selection', []).service('SimpleTablePluginFactory', [function () {
+    console.log("instantiating service...");
     return new SimpleTablePluginFactory();
 }]);
 //# sourceMappingURL=SimpleTablePluginFactory.js.map

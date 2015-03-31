@@ -3,7 +3,7 @@
 
 
 angular.module('simpletable.table', [])
-  .service('SimpleTableDirectiveFacetory', ['$log', '$timeout', 'SimpleTableSelectionFactory', function ($log, $timeout, SimpleTableSelectionFactory) {
+  .service('SimpleTableDirectiveFactory', ['$log', '$timeout', 'SimpleTablePluginFactory', function ($log, $timeout, SimpleTablePluginFactory) {
     var SimpleTableDirective = function(scope, element, attrs){
       this.scope = scope;
       this.element = element;
@@ -37,7 +37,8 @@ angular.module('simpletable.table', [])
     };
 
     SimpleTableDirective.prototype.initDefaultPlugins = function(){
-      this.registerPlugin(SimpleTableSelectionFactory.newInstance());
+      //this.registerPlugin(SimpleTableSelectionFactory.newInstance());
+      SimpleTablePluginFactory.newPluginSelection().doRegister(this);
     };
 
     SimpleTableDirective.prototype.addListeners = function(){
@@ -83,7 +84,7 @@ angular.module('simpletable.table', [])
     };
     return new Factory();
   }])
-  .directive('stTable', ['SimpleTableDirectiveFacetory', function(SimpleTableDirectiveFacetory) {
+  .directive('stTable', ['SimpleTableDirectiveFactory', function(SimpleTableDirectiveFactory) {
 
     return {
           restrict: 'AE',
@@ -92,7 +93,7 @@ angular.module('simpletable.table', [])
                 tableData: '='
           },
           controller: function($scope, $element, $attrs) {
-                return SimpleTableDirectiveFacetory.newInstance($scope, $element, $attrs);
+                return SimpleTableDirectiveFactory.newInstance($scope, $element, $attrs);
           },
           template:
               "<table style='overflow: auto;' ng-class='tableConfig.classes'>" +
@@ -107,7 +108,7 @@ angular.module('simpletable.table', [])
               "    </tr>" +
               "  </thead>" +
               "  <tbody>" +
-              "    <tr ng-click='simpleTable.onRowClicked($event, row)' ng-class='{selected: isRowSelected(row)}' ng-repeat='row in tableData | filter:tableConfig.filter' >" +
+              "    <tr ng-click='simpleTable.onRowClicked($event, row)' ng-class='{selected: pluginSelection.isRowSelected(row)}' ng-repeat='row in tableData | filter:tableConfig.filter' >" +
               "      <td ng-repeat='col in tableConfig.columns' ng-class='col.cellClass'>" +
               "        <span ng-if='!col.template'>{{row[col.field]}}</span>     " +
               "        <span ng-if='!!col.template' ng-include='col.template'></span>     " +

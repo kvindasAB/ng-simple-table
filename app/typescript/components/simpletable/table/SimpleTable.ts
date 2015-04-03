@@ -92,6 +92,10 @@ module SimpleTable {
         }
 
         notifyInitializationComplete():void {
+            if(this.initializationComplete){
+                return;
+            }
+            this.initializationComplete = true;
             this.notifyListener("onInitializationComplete", this);
         }
 

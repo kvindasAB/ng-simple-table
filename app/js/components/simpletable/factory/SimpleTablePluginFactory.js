@@ -8,6 +8,7 @@ var SimpleTablePluginFactory;
         }
         SimpleTablePluginFactory.prototype.newPluginSelection = function () {
             this.log.debug("creating new SimpleTablePluginSelection");
+            this.log.debug("console creating new SimpleTablePluginSelection");
             return new SimpleTableSelection.SimpleTablePluginSelection();
         };
         return SimpleTablePluginFactory;

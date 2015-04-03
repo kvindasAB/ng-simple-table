@@ -19,12 +19,17 @@ module SimpleTable {
 
         // Methods
         constructor(scope:any, element:any, attrs:any, $timeout, pluginFactory:SimpleTablePluginFactory.SimpleTablePluginFactory){
+            // base
             this.scope = scope;
             this.element = element;
             this.attrs = attrs;
-            this.scope.simpleTable = this;
+
+            // services
             this.$timeout = $timeout;
             this.pluginFactory = pluginFactory;
+
+            // variables
+            this.scope.simpleTable = this;
 
             this.init();
             this.log.debug("SimpleTable created: ", this.scope);

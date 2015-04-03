@@ -5,8 +5,10 @@ module SimpleTablePluginFactory {
     export class SimpleTablePluginFactory {
         log = log4javascript.getLogger("SimpleTablePluginFactory");
 
+
         newPluginSelection():SimpleTableSelection.SimpleTablePluginSelection {
             this.log.debug("creating new SimpleTablePluginSelection");
+            this.log.debug("console creating new SimpleTablePluginSelection");
             return new SimpleTableSelection.SimpleTablePluginSelection();
         }
     }

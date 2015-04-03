@@ -40,6 +40,7 @@ module SimpleTable {
             this.addEventListeners();
             this.validateConfig();
             this.initDefaultPlugins();
+            this.notifyTableComplete();
         }
 
         initPlugins():void{
@@ -82,6 +83,11 @@ module SimpleTable {
         onRowClicked($event, row):void{
             this.log.debug("Row clicked: ", arguments);
             this.scope.$broadcast("onRowClicked", $event, row);
+        }
+
+        notifyTableComplete():void {
+            if(!this.scope.onTableComplete){ return; }
+            this.scope.onTableComplete({tableApi:this});
         }
 
 

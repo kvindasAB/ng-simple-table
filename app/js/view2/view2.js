@@ -61,5 +61,9 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
         $log.log('Test');
     };
 
+    $scope.onTableComplete = function(tableApi){
+        $log.log("Table API: ", tableApi);
+    }
+
 
 }]);

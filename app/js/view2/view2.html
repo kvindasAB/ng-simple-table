@@ -5,7 +5,8 @@
 </p>
 
 Filter <input type="text" ng-model="tableConfig.filter"> <button ng-click="validateFilter()" >Validate Filter</button>
-<div st-table table-config="tableConfig" table-data="data" st-table-resizable style="width: 500px" class="stTable">
+<div st-table table-config="tableConfig" table-data="data" on-table-complete="onTableComplete(tableApi)"
+     st-table-resizable style="width: 500px" class="stTable">
 </div>
 
 <button ng-click="changeCols()" >Change Columns</button>

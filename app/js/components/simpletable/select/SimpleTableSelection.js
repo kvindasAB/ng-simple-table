@@ -15,34 +15,13 @@ var SimpleTableSelection;
             _super.apply(this, arguments);
             // Attributes
             this.log = log4javascript.getLogger("SimpleTablePluginSelection");
-            this.onRowClicked = function (scopeEvent, $event, row) {
-                this.log.debug("SimpleTableSelection.onRowClicked:", arguments);
-                if (this.scope.tableConfig.selectionMultiple) {
-                    return this.doMultipleSelection($event, row);
-                }
-                return this.doSingleSelection($event, row);
-            };
-            this.doSingleSelection = function ($event, row) {
-                var index = this.scope.selectedRows.indexOf(row);
-                this.scope.selectedRows.length = 0;
-                if (index > -1) {
-                    return;
-                }
-                this.scope.selectedRows.push(row);
-                this.log.debug("selectedRows: ", this.scope.selectedRows);
-            };
-            this.doMultipleSelection = function ($event, row) {
-                var index = this.scope.selectedRows.indexOf(row);
-                if (index > -1) {
-                    return this.scope.selectedRows.splice(index, 1);
-                }
-                this.scope.selectedRows.push(row);
-            };
+            this.selectedRows = [];
         }
         // Overrides
         SimpleTablePluginSelection.prototype.init = function () {
-            this.initScope();
+            this.scope = this.simpleTable.scope;
             _super.prototype.init.call(this);
+            this.simpleTable.selection = this;
         };
         SimpleTablePluginSelection.prototype.addEventListeners = function () {
             _super.prototype.addEventListeners.call(this);
@@ -54,14 +33,41 @@ var SimpleTableSelection;
             this.scope.$off("$destroy");
         };
         // Methods
-        SimpleTablePluginSelection.prototype.initScope = function () {
-            this.scope = this.simpleTable.scope;
-            this.scope.selectedRows = [];
-            this.scope.pluginSelection = this;
-        };
         SimpleTablePluginSelection.prototype.isRowSelected = function (row) {
-            this.log.debug("isSelected: ", this.scope.selectedRows.indexOf(row));
-            return (this.scope.selectedRows.indexOf(row) > -1);
+            return (this.selectedRows.indexOf(row) > -1);
+        };
+        SimpleTablePluginSelection.prototype.setSelectedRows = function (rows) {
+            console.log("setSelectedRows: ", rows);
+            this.selectedRows.length = 0;
+            for (var i = 0; i < rows.length; i++) {
+                this.addSelectedRow(rows[i]);
+            }
+        };
+        SimpleTablePluginSelection.prototype.onRowClicked = function (scopeEvent, $event, row) {
+            this.addSelectedRow(row);
+        };
+        SimpleTablePluginSelection.prototype.addSelectedRow = function (row) {
+            this.log.debug("SimpleTableSelection.onRowClicked:", arguments);
+            if (this.scope.tableConfig.selectionMultiple) {
+                return this.doMultipleSelection(row);
+            }
+            return this.doSingleSelection(row);
+        };
+        SimpleTablePluginSelection.prototype.doSingleSelection = function (row) {
+            var index = this.selectedRows.indexOf(row);
+            this.selectedRows.length = 0;
+            if (index > -1) {
+                return;
+            }
+            this.selectedRows.push(row);
+            this.log.debug("selectedRows: ", this.selectedRows);
+        };
+        SimpleTablePluginSelection.prototype.doMultipleSelection = function (row) {
+            var index = this.selectedRows.indexOf(row);
+            if (index > -1) {
+                return this.selectedRows.splice(index, 1);
+            }
+            this.selectedRows.push(row);
         };
         return SimpleTablePluginSelection;
     })(SimpleTablePlugin.BaseSimpleTablePlugin);

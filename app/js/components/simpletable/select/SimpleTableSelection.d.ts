@@ -5,13 +5,15 @@ declare module SimpleTableSelection {
     class SimpleTablePluginSelection extends SimpleTablePlugin.BaseSimpleTablePlugin {
         log: log4javascript.Logger;
         scope: any;
+        selectedRows: any[];
         init(): void;
         addEventListeners(): void;
         removeEventListeners(): void;
-        initScope(): void;
         isRowSelected(row: any): boolean;
-        onRowClicked: (scopeEvent: any, $event: any, row: any) => any;
-        doSingleSelection: ($event: any, row: any) => void;
-        doMultipleSelection: ($event: any, row: any) => any;
+        setSelectedRows(rows: Array<any>): void;
+        onRowClicked(scopeEvent: any, $event: any, row: any): any;
+        addSelectedRow(row: any): any;
+        doSingleSelection(row: any): void;
+        doMultipleSelection(row: any): any[];
     }
 }

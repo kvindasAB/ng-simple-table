@@ -46,7 +46,7 @@ module SimpleTable {
         }
 
         registerPlugin(plugin:SimpleTablePlugin.ISimpleTablePlugin):void{
-            this.log.debug("initializing plugins...");
+            this.log.debug("initializing plugins...", plugin);
             this.plugins.push(plugin);
             this.initPlugins();
         }
@@ -83,7 +83,7 @@ module SimpleTable {
         }
 
         onRowClicked($event, row):void{
-            this.log.debug("Row clicked: ", arguments);
+            console.log("Row clicked: ", arguments);
             this.scope.$broadcast("onRowClicked", $event, row);
         }
 

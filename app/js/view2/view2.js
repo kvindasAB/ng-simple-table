@@ -47,13 +47,19 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
         columns: $scope.columns,
         headerHeight: '30px',
         listeners: {
-            onPreInitialization: function(gridApi){
-                $log.log("onPreInitialization: ", gridApi);
+            onPreInitialization: function(tableApi){
+                $log.log("onPreInitialization: ", tableApi);
+                $scope.tableApi = tableApi;
             },
-            onInitializationComplete: function(gridApi){
-                $log.log("onInitializationComplete: ", gridApi);
+            onInitializationComplete: function(tableApi){
+                $log.log("onInitializationComplete: ", tableApi);
+                $scope.selection = $scope.tableApi.selection.selectedRows;
             }
         }
+    };
+
+    $scope.selectedSpecificRows = function(){
+        $scope.tableApi.selection.setSelectedRows([$scope.data[0], $scope.data[1]]);
     };
 
     $scope.changeCols = function(){

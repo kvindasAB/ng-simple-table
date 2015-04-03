@@ -7,11 +7,13 @@ module SimpleTableSelection {
         // Attributes
         log = log4javascript.getLogger("SimpleTablePluginSelection");
         scope:any;
+        selectedRows:any[] = [];
 
         // Overrides
         init():void {
-            this.initScope();
+            this.scope = this.simpleTable.scope;
             super.init();
+            this.simpleTable.selection = this;
         }
 
         addEventListeners():void {
@@ -26,41 +28,46 @@ module SimpleTableSelection {
         }
 
         // Methods
-        initScope():void{
-            this.scope = this.simpleTable.scope;
-            this.scope.selectedRows = [];
-            this.scope.pluginSelection = this;
-        }
-
         isRowSelected(row):boolean {
-            this.log.debug("isSelected: ", this.scope.selectedRows.indexOf(row));
-            return (this.scope.selectedRows.indexOf(row) > -1);
+            return (this.selectedRows.indexOf(row) > -1);
         }
 
-        onRowClicked = function(scopeEvent, $event, row){
+        setSelectedRows(rows:Array<any>):void{
+            console.log("setSelectedRows: ", rows);
+            this.selectedRows.length = 0;
+            for(var i:number = 0; i < rows.length; i++){
+                this.addSelectedRow(rows[i]);
+            }
+        }
+
+        onRowClicked(scopeEvent:any, $event:any, row:any):any{
+            this.addSelectedRow(row);
+        }
+
+        addSelectedRow(row:any):any {
             this.log.debug("SimpleTableSelection.onRowClicked:", arguments);
             if(this.scope.tableConfig.selectionMultiple){
-                return this.doMultipleSelection($event, row);
+                return this.doMultipleSelection(row);
             }
-            return this.doSingleSelection($event, row);
-        };
+            return this.doSingleSelection(row);
+        }
 
-        doSingleSelection = function($event, row){
-            var index = this.scope.selectedRows.indexOf(row);
-            this.scope.selectedRows.length = 0;
+        doSingleSelection(row:any):void{
+            var index = this.selectedRows.indexOf(row);
+            this.selectedRows.length = 0;
             if(index > -1){
                 return;
             }
-            this.scope.selectedRows.push(row);
-            this.log.debug("selectedRows: ", this.scope.selectedRows);
-        };
+            this.selectedRows.push(row);
+            this.log.debug("selectedRows: ", this.selectedRows);
+        }
 
-        doMultipleSelection = function($event, row){
-            var index = this.scope.selectedRows.indexOf(row);
+        doMultipleSelection(row:any){
+            var index = this.selectedRows.indexOf(row);
             if(index > -1){
-                return this.scope.selectedRows.splice(index,1);
+                return this.selectedRows.splice(index,1);
             }
-            this.scope.selectedRows.push(row);
-        };
+            this.selectedRows.push(row);
+        }
     }
 }

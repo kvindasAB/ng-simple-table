@@ -25,7 +25,6 @@ module SimpleTableSelection {
             this.scope.$off("$destroy");
         }
 
-
         // Methods
         initScope():void{
             this.scope = this.simpleTable.scope;

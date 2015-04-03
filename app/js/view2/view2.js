@@ -45,7 +45,15 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
         classes: ["table", "table-bordered", 'table-padding'],
         selectionMultiple: true,
         columns: $scope.columns,
-        headerHeight: '30px'
+        headerHeight: '30px',
+        listeners: {
+            onPreInitialization: function(gridApi){
+                $log.log("onPreInitialization: ", gridApi);
+            },
+            onInitializationComplete: function(gridApi){
+                $log.log("onInitializationComplete: ", gridApi);
+            }
+        }
     };
 
     $scope.changeCols = function(){

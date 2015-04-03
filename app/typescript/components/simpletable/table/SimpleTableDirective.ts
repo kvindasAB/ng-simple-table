@@ -7,8 +7,7 @@ angular.module('simpletable.table', [])
             restrict: 'AE',
             scope: {
                 tableConfig: '=',
-                tableData: '=',
-                onTableComplete: '&'
+                tableData: '='
             },
             controller: function($scope, $element, $attrs) {
                 return new SimpleTable.SimpleTable($scope, $element, $attrs, $timeout, SimpleTablePluginFactory);

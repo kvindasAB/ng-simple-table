@@ -39,10 +39,10 @@ module SimpleTable {
         }
 
         init():void{
+            this.notifyPreInitialization();
             this.addEventListeners();
             this.validateConfig();
             this.initDefaultPlugins();
-            this.notifyTableComplete();
         }
 
         registerPlugin(plugin:SimpleTablePlugin.ISimpleTablePlugin):void{
@@ -79,6 +79,7 @@ module SimpleTable {
                 if(plugin.isInitialized() ){ return; }
                 plugin.onRegistered(self);
             });
+            this.notifyInitializationComplete();
         }
 
         onRowClicked($event, row):void{
@@ -86,13 +87,20 @@ module SimpleTable {
             this.scope.$broadcast("onRowClicked", $event, row);
         }
 
-        notifyTableComplete():void {
-            if(this.initializationComplete || !this.scope.onTableComplete){ return; }
-            this.initializationComplete = true;
-            this.scope.onTableComplete({tableApi:this});
+        notifyPreInitialization():void {
+            this.notifyListener("onPreInitialization", this);
         }
 
+        notifyInitializationComplete():void {
+            this.notifyListener("onInitializationComplete", this);
+        }
 
+        notifyListener(eventName:string, params:any):void {
+            if(!this.scope.tableConfig.listeners || !this.scope.tableConfig.listeners[eventName]){
+                return;
+            }
+            this.scope.tableConfig.listeners[eventName](params);
+        }
 
     }
 }

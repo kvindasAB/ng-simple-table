@@ -1,7 +1,6 @@
 TODO List
 ========
 
-- Communicate API to controller via event
 - Selection Feature
     - Single - DONE
     - Multiple - DONE
@@ -23,3 +22,4 @@ TODO List
 - Filter - String or Function - DONE
 - Selection
 - Plugin architecture -- DONE
+- Communicate API to controller via event -- DONE

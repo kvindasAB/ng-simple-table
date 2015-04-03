@@ -1,4 +1,5 @@
 /// <reference path="ISimpleTable.ts" />
+/// <reference path="../core/ISimpleTablePlugin.ts" />
 /// <reference path="../factory/SimpleTablePluginFactory.ts" />
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 module SimpleTable {
@@ -10,7 +11,7 @@ module SimpleTable {
         scope:any;
         element:any;
         attrs:any;
-        plugins:any = [];
+        plugins:Array<SimpleTablePlugin.ISimpleTablePlugin> = [];
         initPluginTimeout:Number;
 
         // Services
@@ -41,7 +42,7 @@ module SimpleTable {
             this.initDefaultPlugins();
         }
 
-        initPlugins = function(){
+        initPlugins():void{
             if(this.initPluginTimeout){
                 this.$timeout.cancel(this.initPluginTimeout);
                 this.initPluginTimeout = null;
@@ -49,28 +50,28 @@ module SimpleTable {
             this.initPluginTimeout = this.$timeout(angular.bind(this, this.doInitPlugins), 0);
         }
 
-        registerPlugin = function(plugin){
+        registerPlugin(plugin:SimpleTablePlugin.ISimpleTablePlugin):void{
             this.log.debug("initializing plugins...");
             this.plugins.push(plugin);
             this.initPlugins();
         }
 
-        addEventListeners(){
+        addEventListeners():void{
             this.scope.$on("$destroy", this.removeEventListeners);
         }
 
-        removeEventListeners(){
+        removeEventListeners():void{
             this.log.debug("removing listeners...", this);
         }
 
-        validateConfig = function() {
+        validateConfig():void {
         }
 
-        initDefaultPlugins = function(){
+        initDefaultPlugins():void{
             this.pluginFactory.newPluginSelection().doRegister(this);
         }
 
-        doInitPlugins = function(){
+        doInitPlugins():void{
             var self = this;
             angular.forEach(this.plugins, function(plugin){
                 if(plugin.isInitialized() ){ return; }
@@ -78,10 +79,12 @@ module SimpleTable {
             });
         }
 
-        onRowClicked = function($event, row){
+        onRowClicked($event, row):void{
             this.log.debug("Row clicked: ", arguments);
             this.scope.$broadcast("onRowClicked", $event, row);
-        };
+        }
+
+
 
     }
 }

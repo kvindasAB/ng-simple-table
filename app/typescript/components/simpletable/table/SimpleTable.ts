@@ -13,6 +13,8 @@ module SimpleTable {
         attrs:any;
         plugins:Array<SimpleTablePlugin.ISimpleTablePlugin> = [];
         initPluginTimeout:Number;
+        initializationComplete:boolean = false;
+
 
         // Services
         $timeout:any;
@@ -43,6 +45,12 @@ module SimpleTable {
             this.notifyTableComplete();
         }
 
+        registerPlugin(plugin:SimpleTablePlugin.ISimpleTablePlugin):void{
+            this.log.debug("initializing plugins...");
+            this.plugins.push(plugin);
+            this.initPlugins();
+        }
+
         initPlugins():void{
             if(this.initPluginTimeout){
                 this.$timeout.cancel(this.initPluginTimeout);
@@ -50,13 +58,6 @@ module SimpleTable {
             }
             this.initPluginTimeout = this.$timeout(angular.bind(this, this.doInitPlugins), 0);
         }
-
-        registerPlugin(plugin:SimpleTablePlugin.ISimpleTablePlugin):void{
-            this.log.debug("initializing plugins...");
-            this.plugins.push(plugin);
-            this.initPlugins();
-        }
-
         addEventListeners():void{
             this.scope.$on("$destroy", this.removeEventListeners);
         }
@@ -86,7 +87,8 @@ module SimpleTable {
         }
 
         notifyTableComplete():void {
-            if(!this.scope.onTableComplete){ return; }
+            if(this.initializationComplete || !this.scope.onTableComplete){ return; }
+            this.initializationComplete = true;
             this.scope.onTableComplete({tableApi:this});
         }
 

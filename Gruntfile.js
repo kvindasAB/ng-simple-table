@@ -189,12 +189,12 @@ module.exports = function ( grunt ) {
       },
       src: {
         files: 'app/**/*.js',
-        tasks: ['karma:continuous']
+        tasks: []//'karma:continuous'
         //tasks: ['jshint', 'karma:continuous']
       },
       src: {
         files: 'app/**/*.ts',
-        tasks: ['typescript', 'karma:continuous']
+        tasks: ['typescript']//, 'karma:continuous'
       },
       less: {
         files: 'app/less/**/*.less',

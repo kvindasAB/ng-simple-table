@@ -1,0 +1,1 @@
+//# sourceMappingURL=ISimpleTablePluginDataAware.js.map

@@ -75,6 +75,25 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
         $log.log('Test');
     };
 
+    $scope.changeData = function(){
+        var old = $scope.data;
+        $scope.data = [
+            {id: 1, name: "New", lastname: "User", age: 25},
+            old[1],
+            {id: 3, name: "New", lastname: "User", age: 25},
+            old[3],
+            old[4],
+            old[5],
+            {id: 6, name: "New", lastname: "User", age: 25},
+            {id: 7, name: "Another", lastname: "User", age: 25},
+            old[8],
+            {id: 8, name: "New", lastname: "User", age: 25},
+            {id: 9, name: "Another", lastname: "User", age: 25},
+            {id: 10, name: "New", lastname: "User", age: 25},
+            {id: 11, name: "Another", lastname: "User", age: 25}
+        ];
+    };
+
     $scope.onTableComplete = function(tableApi){
         $log.log("Table API: ", tableApi);
     }

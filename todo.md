@@ -4,9 +4,9 @@ TODO List
 - Selection Feature
     - Single - DONE
     - Multiple - DONE
-    - Keep selection on data changed
-    - Allow to externally set the selection
-    - Allow to externally retrieve the selection
+    - Allow to externally set the selection - DONE
+    - Allow to externally retrieve the selection - DONE
+    - Keep selection on data changed- 
 - Sort
    - Create directive per header
    - Communicate child directives with parent directive.

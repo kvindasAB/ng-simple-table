@@ -1,8 +1,9 @@
 /// <reference path="../core/BaseSimpleTablePlugin.ts" />
+/// <reference path="../core/ISimpleTablePluginDataAware.ts" />
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 module SimpleTableSelection {
-    export class SimpleTablePluginSelection extends SimpleTablePlugin.BaseSimpleTablePlugin {
+    export class SimpleTablePluginSelection extends SimpleTablePlugin.BaseSimpleTablePlugin implements SimpleTablePlugin.ISimpleTablePluginDataAware {
 
         // Attributes
         log = log4javascript.getLogger("SimpleTablePluginSelection");
@@ -45,7 +46,10 @@ module SimpleTableSelection {
         }
 
         addSelectedRow(row:any):any {
-            this.log.debug("SimpleTableSelection.onRowClicked:", arguments);
+            this.log.debug("SimpleTableSelection.addSelectedRow:", arguments);
+            if(!this.isRowValid(row)){
+                return;
+            }
             if(this.scope.tableConfig.selectionMultiple){
                 return this.doMultipleSelection(row);
             }
@@ -69,5 +73,18 @@ module SimpleTableSelection {
             }
             this.selectedRows.push(row);
         }
+
+        isRowValid(row:any):boolean {
+            return (this.simpleTable.scope.tableData.indexOf(row) > -1);
+        }
+
+        revalidateSelection():void {
+            this.setSelectedRows(this.selectedRows.slice());
+        }
+
+        onDataChanged(newValue, oldValue):void {
+            this.revalidateSelection();
+        }
+
     }
 }

@@ -60,6 +60,7 @@ module SimpleTable {
         }
         addEventListeners():void{
             this.scope.$on("$destroy", this.removeEventListeners);
+            this.scope.$watch("tableData", angular.bind(this, this.onDataChanged));
         }
 
         removeEventListeners():void{
@@ -80,6 +81,12 @@ module SimpleTable {
                 plugin.onRegistered(self);
             });
             this.notifyInitializationComplete();
+        }
+
+        onDataChanged(newValue, oldValue):void {
+            console.log("SimpleTable.onDataChanged...: ", this.initializationComplete);
+            if(this.initializationComplete)
+            this.notifyPluginsDataChanged(newValue, oldValue);
         }
 
         onRowClicked($event, row):void{
@@ -104,6 +111,16 @@ module SimpleTable {
                 return;
             }
             this.scope.tableConfig.listeners[eventName](params);
+        }
+
+        notifyPluginsDataChanged(newValue:any, oldValue:any):void {
+            for(var i:number = 0; i < this.plugins.length; i++){
+                var plugin:any = this.plugins[i];
+                if(!plugin.onDataChanged){
+                    continue;
+                }
+                plugin.onDataChanged(newValue, oldValue);
+            }
         }
 
     }

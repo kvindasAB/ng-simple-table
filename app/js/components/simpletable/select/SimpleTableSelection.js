@@ -5,6 +5,7 @@ var __extends = this.__extends || function (d, b) {
     d.prototype = new __();
 };
 /// <reference path="../core/BaseSimpleTablePlugin.ts" />
+/// <reference path="../core/ISimpleTablePluginDataAware.ts" />
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 var SimpleTableSelection;
@@ -47,7 +48,10 @@ var SimpleTableSelection;
             this.addSelectedRow(row);
         };
         SimpleTablePluginSelection.prototype.addSelectedRow = function (row) {
-            this.log.debug("SimpleTableSelection.onRowClicked:", arguments);
+            this.log.debug("SimpleTableSelection.addSelectedRow:", arguments);
+            if (!this.isRowValid(row)) {
+                return;
+            }
             if (this.scope.tableConfig.selectionMultiple) {
                 return this.doMultipleSelection(row);
             }
@@ -68,6 +72,15 @@ var SimpleTableSelection;
                 return this.selectedRows.splice(index, 1);
             }
             this.selectedRows.push(row);
+        };
+        SimpleTablePluginSelection.prototype.isRowValid = function (row) {
+            return (this.simpleTable.scope.tableData.indexOf(row) > -1);
+        };
+        SimpleTablePluginSelection.prototype.revalidateSelection = function () {
+            this.setSelectedRows(this.selectedRows.slice());
+        };
+        SimpleTablePluginSelection.prototype.onDataChanged = function (newValue, oldValue) {
+            this.revalidateSelection();
         };
         return SimpleTablePluginSelection;
     })(SimpleTablePlugin.BaseSimpleTablePlugin);

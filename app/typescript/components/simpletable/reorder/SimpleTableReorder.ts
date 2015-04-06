@@ -1,106 +1,83 @@
+/// <reference path="../core/BaseSimpleTablePlugin.ts" />
+/// <reference path="ISimpleTableReorder.ts" />
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
-/// <reference path="../../../../typings/lodash/lodash.d.ts" />
-'use strict';
-angular.module('simpletable.reorder', ['simpletable.uuid.util'])
-    .directive('stTableDraggable', ['$timeout', 'SimpleTablePluginFactory', '$rootScope', 'simpletableuuid',
-        function($timeout, SimpleTablePluginFactory, $rootScope, uuid){
-            return {
-                require: '^stTable',
-                link: function(scope, element, attrs, parentCtrl){
-                    angular.element(element).attr("draggable", "true");
+module SimpleTableReorder {
+    export class SimpleTableReorder implements ISimpleTableReorder{//extends SimpleTablePlugin.BaseSimpleTablePlugin
+        //********************
+        // ATTRIBUTES - START
+        //********************
 
-                    var id = angular.element(element).attr("id");
+        rootScope: any;
+        scope: any;
+        element:any;
+        attrs: any;
+        plugins:any;
+        initPluginTimeout:Number;
+        id: any;
 
-                    if(!id){
-                        id = uuid.new();
-                        angular.element(element).attr("id", id);
-                    }
-                    element.bind("dragstart", function(event){
-                        event.dataTransfer.setData('text', id);
-                        $rootScope.$emit("SIMPLE-TABLE-DRAG-START");
-                    });
+        //******************
+        // ATTRIBUTES - END
+        //******************
 
-                    element.bind("dragend", function(event){
-                        $rootScope.$emit("SIMPLE-TABLE-DRAG-END");
-                    });
-                }
-            };
+
+        //**************************
+        // OVERRIDE METHODS - START
+        //**************************
+
+        addEventListeners():void{
+            //super.addEventListeners();
         }
-    ])
-    .directive('stTableDropTarget', ['$timeout', 'SimpleTablePluginFactory', '$rootScope', 'simpletableuuid',
-        function ($timeout, SimpleTablePluginFactory, $rootScope, uuid) {
-            return {
-                require: '^stTable',
-                restrict: 'A',
-                scope: {
-                    onSymbolDrop: '&'
-                },
-                link: function(scope, element, attrs, controller){
-                    var id = angular.element(element).attr("id");
-                    if(!id){
-                        id = uuid.new();
-                        angular.element(element).attr("id", id);
-                    }
 
-                    element.bind("dragover", function(event){
-                        if(event.preventDefault){
-                            event.preventDefault(); // Necessary. Allows us to drop.
-                        }
+        //************************
+        // OVERRIDE METHODS - END
+        //************************
 
-                        event.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
-                        return false;
-                    });
 
-                    element.bind("dragenter", function(event){
-                        // this / e.target is the current hover target.
-                        angular.element(event.target).addClass('simple-table-over');
-                    });
+        //*****************
+        // METHODS - START
+        //*****************
 
-                    element.bind("dragleave", function(event){
-                        angular.element(event.target).removeClass('simple-table-over');  // this / e.target is previous target element.
-                    });
+        constructor(scope:any, element:any, attrs:any){
+            // base
+            this.scope = scope;
+            this.element = element;
+            this.attrs = attrs;
 
-                    element.bind("drop", function(event){
-                        if(event.preventDefault){
-                            event.preventDefault(); // Necessary. Allows us to drop.
-                        }
-
-                        if(event.stopPropagation){
-                            event.stopPropagation(); // Necessary. Allows us to drop.
-                        }
-                        var data = event.dataTransfer.getData("text");
-                        var src = document.getElementById(data);
-                        var srcData:any = angular.element(src)[0];
-                        var oldIndex = srcData.cellIndex;
-
-                        var dest:any = angular.element(event.target)[0];
-                        var newIndex = dest.cellIndex;
-                        var columns = scope.$parent.tableConfig.columns;
-
-                        //Se necesita lodash
-                        //var data = _.pullAt(columns, oldIndex);
-
-                        angular.element(event.target).removeClass('simple-table-over');
-
-                        scope.onSymbolDrop({
-                            //dragEl: data,
-                            //dropEl: id//,
-                            //portfolio: portfolio,
-                            //symbol: symbol
-                        });
-                    });
-
-                    $rootScope.$on("SIMPLE-TABLE-DRAG-START", function () {
-                        //var element = document.getElementById(id);
-                        //angular.element(element).addClass("simple-table-target");
-                    });
-
-                    $rootScope.$on("SIMPLE-TABLE-DRAG-END", function () {
-                        //var element = document.getElementById(id);
-                        //angular.element(element).removeClass("simple-table-target");
-                        //angular.element(element).removeClass("simple-table-over");
-                    });
-                }
-            };
+            //this.init();
         }
-    ]);
+
+        onDragStartHandler(event):void{
+            event.dataTransfer.setData('text', this.id);
+            this.rootScope.$emit("SIMPLE-TABLE-DRAG-START");
+        }
+
+        onDragEndHandler(event):void{
+            this.rootScope.$emit("SIMPLE-TABLE-DRAG-END");
+        }
+
+        onDragOverHandler(event):boolean{
+            if(event.preventDefault){
+                event.preventDefault();
+            }
+
+            event.dataTransfer.dropEffect = 'move';
+            return false;
+        }
+
+        onDragEnterHandler(event):void{
+            angular.element(event.target).addClass('simple-table-over');
+        }
+
+        onDragLeaveHandler(event):void{
+            angular.element(event.target).removeClass('simple-table-over');
+        }
+
+        onDropHandler(event):void{
+
+        }
+
+        //***************
+        // METHODS - END
+        //***************
+    }
+}

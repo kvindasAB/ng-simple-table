@@ -1,7 +1,7 @@
 /// <reference path="../core/BaseSimpleTablePlugin.ts" />
 /// <reference path="../core/ISimpleTablePluginDataAware.ts" />
-/// <reference path="../../../../typings2/angularjs/angular.d.ts" />
-/// <reference path="../../../../typings2/log4javascript/log4javascript.d.ts" />
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
+/// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 module SimpleTableSelection {
     export class SimpleTablePluginSelection extends SimpleTablePlugin.BaseSimpleTablePlugin implements SimpleTablePlugin.ISimpleTablePluginDataAware {
 

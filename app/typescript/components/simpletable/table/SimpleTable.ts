@@ -1,7 +1,7 @@
 /// <reference path="ISimpleTable.ts" />
 /// <reference path="../core/ISimpleTablePlugin.ts" />
 /// <reference path="../factory/SimpleTablePluginFactory.ts" />
-/// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
+/// <reference path="../../../../typings2/log4javascript/log4javascript.d.ts" />
 module SimpleTable {
     export class SimpleTable implements ISimpleTable {
         // statics

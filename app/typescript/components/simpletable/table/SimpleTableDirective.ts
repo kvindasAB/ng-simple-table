@@ -1,5 +1,5 @@
 /// <reference path="SimpleTable.ts" />
-/// <reference path="../../../../typings/angularjs/angular.d.ts" />
+/// <reference path="../../../../typings2/angularjs/angular.d.ts" />
 angular.module('simpletable.table', [])
     .directive('stTable', ['$timeout', 'SimpleTablePluginFactory', function($timeout, SimpleTablePluginFactory) {
 

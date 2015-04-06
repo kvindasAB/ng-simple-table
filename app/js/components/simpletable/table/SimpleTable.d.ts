@@ -1,7 +1,7 @@
 /// <reference path="ISimpleTable.d.ts" />
 /// <reference path="../core/ISimpleTablePlugin.d.ts" />
 /// <reference path="../factory/SimpleTablePluginFactory.d.ts" />
-/// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
+/// <reference path="../../../../typings2/log4javascript/log4javascript.d.ts" />
 declare module SimpleTable {
     class SimpleTable implements ISimpleTable {
         log: log4javascript.Logger;

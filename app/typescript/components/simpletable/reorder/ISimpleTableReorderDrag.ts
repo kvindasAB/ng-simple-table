@@ -1,5 +1,5 @@
 module SimpleTableReorder{
-    export interface ISimpleTableReorder{
+    export interface ISimpleTableReorderDrag{
         //********************
         // ATTRIBUTES - START
         //********************
@@ -10,7 +10,7 @@ module SimpleTableReorder{
         attrs: any;
         plugins:any;
         initPluginTimeout:Number;
-        id: any;
+        id: string;
 
         //******************
         // ATTRIBUTES - END
@@ -20,6 +20,11 @@ module SimpleTableReorder{
         //*****************
         // METHODS - START
         //*****************
+
+        initUuid();
+        onDragStartHandler(event):void;
+        onDragEndHandler(event):void;
+
         //***************
         // METHODS - END
         //***************

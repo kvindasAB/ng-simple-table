@@ -1,5 +1,7 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../../../typings/lodash/lodash.d.ts" />
+/// <reference path="SimpleTableReorderDrag.ts" />
+/// <reference path="SimpleTableReorderDrop.ts" />
 'use strict';
 angular.module('simpletable.reorder', ['simpletable.uuid.util'])
     .directive('stTableDraggable', ['$timeout', 'SimpleTablePluginFactory', '$rootScope', 'simpletableuuid',
@@ -7,7 +9,8 @@ angular.module('simpletable.reorder', ['simpletable.uuid.util'])
             return {
                 require: '^stTable',
                 link: function(scope, element, attrs, parentCtrl){
-                    angular.element(element).attr("draggable", "true");
+                    return new SimpleTableReorder.SimpleTableReorderDrag($rootScope, scope, element, attrs);
+                    /*angular.element(element).attr("draggable", "true");
 
                     var id = angular.element(element).attr("id");
 
@@ -22,7 +25,7 @@ angular.module('simpletable.reorder', ['simpletable.uuid.util'])
 
                     element.bind("dragend", function(event){
                         $rootScope.$emit("SIMPLE-TABLE-DRAG-END");
-                    });
+                    });*/
                 }
             };
         }
@@ -36,7 +39,8 @@ angular.module('simpletable.reorder', ['simpletable.uuid.util'])
                     onSymbolDrop: '&'
                 },
                 link: function(scope, element, attrs, controller){
-                    var id = angular.element(element).attr("id");
+                    return new SimpleTableReorder.SimpleTableReorderDrop($rootScope, scope, element, attrs);
+                    /*var id = angular.element(element).attr("id");
                     if(!id){
                         id = uuid.new();
                         angular.element(element).attr("id", id);
@@ -69,7 +73,8 @@ angular.module('simpletable.reorder', ['simpletable.uuid.util'])
                             event.stopPropagation(); // Necessary. Allows us to drop.
                         }
                         var data = event.dataTransfer.getData("text");
-                        var src = document.getElementById(data);
+                        //var src = document.getElementById(data);
+                        var src = angular.element(data);
                         var srcData:any = angular.element(src)[0];
                         var oldIndex = srcData.cellIndex;
 
@@ -105,7 +110,7 @@ angular.module('simpletable.reorder', ['simpletable.uuid.util'])
                         //var element = document.getElementById(id);
                         //angular.element(element).removeClass("simple-table-target");
                         //angular.element(element).removeClass("simple-table-over");
-                    });
+                    });*/
                 }
             };
         }

@@ -188,12 +188,12 @@ module.exports = function ( grunt ) {
         atBegin: true
       },
       src: {
-        files: 'app/**/*.js',
+        files: ['app/**/*.js', '!app/js/components/simpletable/**/*.js'],
         tasks: []//'karma:continuous'
         //tasks: ['jshint', 'karma:continuous']
       },
-      src: {
-        files: 'app/**/*.ts',
+      srcts: {
+        files: 'app/typescript/**/*.ts',
         tasks: ['typescript']//, 'karma:continuous'
       },
       less: {

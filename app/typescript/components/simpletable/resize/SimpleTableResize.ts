@@ -1,4 +1,6 @@
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../core/ISimpleTablePlugin.ts" />
+/// <reference path="../factory/SimpleTablePluginFactory.ts" />
 /// <reference path="ISimpleTableResize.ts" />
 
 module SimpleTableResize{
@@ -11,15 +13,11 @@ module SimpleTableResize{
         element:any;
         attrs: any;
         parent:any;
-        plugins:Array<SimpleTablePlugin.ISimpleTablePlugin> = [];
-        initPluginTimeout:Number;
         initializationComplete:boolean = false;
-
-        $timeout:any;
-        pluginFactory:SimpleTablePluginFactory.SimpleTablePluginFactory;
+        $window:any;
 
         minColumnWidth: number = 25;
-        isMouseDown: boolean = false;
+        isMouseDown:boolean = false;
         startX: number = 0;
         indexColumnResize: number = 0;
         orginalColumnWidth: number = 0;
@@ -35,25 +33,19 @@ module SimpleTableResize{
 
         init():void{
             this.initializationComplete = true;
-        }
-
-        doRegister(parent?:any):void{
-            //this.parent.doRegister(this);
-        }
-
-        onRegistered(simpleTable:any):void{
-            this.init();
+            this.addEventListeners();
         }
 
         isInitialized():boolean{
             return this.initializationComplete;
         }
 
-        addEventListeners():void {
+        addEventListeners():void{
         }
 
         removeEventListeners():void{
         }
+
         //************************
         // OVERRIDE METHODS - END
         //************************
@@ -63,24 +55,36 @@ module SimpleTableResize{
         // METHODS - START
         //*****************
 
-        constructor(scope:any, element:any, attrs:any, $timeout, pluginFactory:SimpleTablePluginFactory.SimpleTablePluginFactory){
+        constructor(scope:any, element:any, attrs:any, $window:any){
             this.scope = scope;
             this.element = element;
             this.attrs = attrs;
             //this.parent = parent;
 
-            this.$timeout = $timeout;
-            this.pluginFactory = pluginFactory;
-            this.doRegister();
+            this.$window = $window;
+            //this.doRegister();
         }
 
-        onMouseDownHandler(event, scope, element):void{
+        onMouseDownHandler(event, scope:any, element):void{
+            if(event.preventDefault){
+                event.preventDefault();
+            }
+            if(event.stopPropagation){
+                event.stopPropagation();
+            }
             this.isMouseDown = true;
             this.startX = event.clientX;
             this.indexColumnResize = scope.this.$index;
             this.orginalColumnWidth = scope.hcol.style.width;
-            //window.on('mousemove', function(event){scope.simpleTableResizable.onMouseMoveHandler(event, scope, element);});
-            //window.on('mouseup', function(event){scope.simpleTableResizable.onMouseUpHandler(event, scope, element);});
+            var self:any = this;
+            angular.element(this.$window).on('mousemove', function(event){
+                var parentScope:any = self.scope;
+                parentScope.simpleTableResize.onMouseMoveHandler(event, scope, element);
+            });
+            angular.element(this.$window).on('mouseup', function(event){
+                var parentScope:any = self.scope;
+                parentScope.simpleTableResize.onMouseUpHandler(event, scope, element);
+            });
         }
 
         onMouseMoveHandler(event, scope, element):void{
@@ -89,7 +93,8 @@ module SimpleTableResize{
             }
             var width = 0;
             width = event.clientX - this.startX;
-            scope.columns[this.indexColumnResize].style.width = this.calculateNewColumnWidth(this.orginalColumnWidth, width);
+            var tableConfig:any = scope.tableConfig;
+            tableConfig.columns[this.indexColumnResize].style.width = this.calculateNewColumnWidth(this.orginalColumnWidth, width);
             scope.$apply();
         }
 
@@ -101,14 +106,13 @@ module SimpleTableResize{
             if(this.minColumnWidth > columnWidth){
                 columnWidth = this.minColumnWidth;
             }
-            //this.$log.log('stringWidth: ' + stringWidth);
             return columnWidth + 'px';
         }
 
-        onMouseUpHandler(event, scope, element):void{
+        onMouseUpHandler(event, scope:any, element):void{
             this.isMouseDown = false;
-            //window.off('mousemove', function(event){scope.simpleTableResizable.onMouseMoveHandler(event, scope, element);});
-            //window.off('mouseup', function(event){scope.simpleTableResizable.onMouseUpHandler(event, scope, element);});
+            angular.element(this.$window).off('mousemove');
+            angular.element(this.$window).off('mouseup');
         }
 
         //***************

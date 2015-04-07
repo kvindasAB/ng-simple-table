@@ -8,8 +8,6 @@ module SimpleTableResize{
         element:any;
         attrs: any;
         parent:any;
-        plugins:any;
-        initPluginTimeout:Number;
         initializationComplete:boolean;
 
         //******************
@@ -22,12 +20,10 @@ module SimpleTableResize{
         //*****************
 
         init();
-        doRegister(parent?:any);
-        onRegistered(simpleTable:any);
         isInitialized():boolean;
         addEventListeners();
         removeEventListeners();
-        onMouseDownHandler(event, scope, element);
+        onMouseDownHandler(event, scope:any, element);
         onMouseMoveHandler(event, scope, element);
         calculateNewColumnWidth(actualWidth, moveWidth):string;
         onMouseUpHandler(event, scope, element);

@@ -72,6 +72,7 @@ module SimpleTable {
 
         initDefaultPlugins():void{
             this.pluginFactory.newPluginSelection().doRegister(this);
+            this.pluginFactory.newPluginSort().doRegister(this);
         }
 
         doInitPlugins():void{
@@ -92,6 +93,11 @@ module SimpleTable {
         onRowClicked($event, row):void{
             console.log("Row clicked: ", arguments);
             this.scope.$broadcast("onRowClicked", $event, row);
+        }
+
+        onHeaderClicked($event, column):void{
+            console.log("Header clicked: ", arguments);
+            this.scope.$broadcast("onHeaderClicked", $event, column);
         }
 
         notifyPreInitialization():void {

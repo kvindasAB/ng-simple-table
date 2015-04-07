@@ -1,4 +1,5 @@
-/// <reference path="../select/SimpleTableSelection" />
+/// <reference path="../select/SimpleTableSelection.ts" />
+/// <reference path="../sort/SimpleTableSort.ts" />
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 var SimpleTablePluginFactory;
 (function (_SimpleTablePluginFactory) {
@@ -7,9 +8,12 @@ var SimpleTablePluginFactory;
             this.log = log4javascript.getLogger("SimpleTablePluginFactory");
         }
         SimpleTablePluginFactory.prototype.newPluginSelection = function () {
-            this.log.debug("creating new SimpleTablePluginSelection");
-            this.log.debug("console creating new SimpleTablePluginSelection");
+            console.log("creating new SimpleTablePluginSelection");
             return new SimpleTableSelection.SimpleTablePluginSelection();
+        };
+        SimpleTablePluginFactory.prototype.newPluginSort = function () {
+            console.log("creating new SimpleTablePluginSort");
+            return new SimpleTableSort.SimpleTablePluginSort();
         };
         return SimpleTablePluginFactory;
     })();

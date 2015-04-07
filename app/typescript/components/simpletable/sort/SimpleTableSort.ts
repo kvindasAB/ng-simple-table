@@ -33,6 +33,7 @@ module SimpleTableSort {
             for(var i:number = 0; i < columns.length; i++){
                 var column:any = columns[i];
                 column.sorted = false;
+                this.applyColumnSortState(column);
             }
         }
 
@@ -41,10 +42,43 @@ module SimpleTableSort {
             column.sortType = !column.sortType || column.sortType === "desc" ? "asc" : "desc";
         }
 
+        applyColumnSortState(column:any):void {
+            if(!column.headerClass){
+                column.headerClass = [];
+            }
+            if(!column.sorted){
+                this.removeFromArray(column.headerClass, ["sort", "asc", "desc"]);
+                return;
+            }
+            this.addToArray(column.headerClass, ["sort", column.sortType]);
+        }
+
+        addToArray(array:any[], values:string[]){
+            for(var i:number = 0; i < values.length; i++){
+                var value = values[i];
+                var indx = array.indexOf(value);
+                if(indx > -1){continue;}
+                array.push(value);
+            }
+            return array;
+        }
+
+        removeFromArray(array:any[], values:string[]){
+            if(array.length == 0){ return; }
+            for(var i:number = 0; i < values.length; i++){
+                var value = values[i];
+                var indx = array.indexOf(value);
+                if(indx < 0){continue;}
+                array.splice(indx, 1);
+            }
+            return array;
+        }
+
         applySort(column:any):void {
             this.currentSort = column.field;
-            this.currentSortReverse = column.sortType ? false : true;
+            this.currentSortReverse = column.sortType === "asc" ? false : true;
             this.currentSortColumn = column;
+            this.applyColumnSortState(column);
         }
 
         sortByColumn(column:any):void {

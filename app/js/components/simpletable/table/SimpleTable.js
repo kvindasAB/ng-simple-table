@@ -52,6 +52,7 @@ var SimpleTable;
         };
         SimpleTable.prototype.initDefaultPlugins = function () {
             this.pluginFactory.newPluginSelection().doRegister(this);
+            this.pluginFactory.newPluginSort().doRegister(this);
         };
         SimpleTable.prototype.doInitPlugins = function () {
             var self = this;
@@ -71,6 +72,10 @@ var SimpleTable;
         SimpleTable.prototype.onRowClicked = function ($event, row) {
             console.log("Row clicked: ", arguments);
             this.scope.$broadcast("onRowClicked", $event, row);
+        };
+        SimpleTable.prototype.onHeaderClicked = function ($event, column) {
+            console.log("Header clicked: ", arguments);
+            this.scope.$broadcast("onHeaderClicked", $event, column);
         };
         SimpleTable.prototype.notifyPreInitialization = function () {
             this.notifyListener("onPreInitialization", this);

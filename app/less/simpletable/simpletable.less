@@ -1,5 +1,20 @@
 .stTable {
 
+  th {
+    &.sort.asc {
+      &:after {
+        content: @fa-var-caret-up;
+        font-family: FontAwesome;
+      }
+    }
+    &.sort.desc {
+      &:after {
+        content: @fa-var-caret-down;
+        font-family: FontAwesome;
+      }
+    }
+  }
+
   tr.selected {
     background-color: #3278b3;
   }

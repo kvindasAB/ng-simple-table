@@ -45,7 +45,9 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
         classes: ["table", "table-bordered", 'table-padding'],
         selectionMultiple: true,
         columns: $scope.columns,
+        tableWidth: '100%',
         headerHeight: '30px',
+        resizeType: 'fixed',
         listeners: {
             onPreInitialization: function(tableApi){
                 $log.log("onPreInitialization: ", tableApi);

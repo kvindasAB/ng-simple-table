@@ -13,7 +13,7 @@ angular.module('simpletable.table', [])
                 return new SimpleTable.SimpleTable($scope, $element, $attrs, $timeout, SimpleTablePluginFactory);
             },
             template:
-            "<table style='overflow: auto;' ng-class='tableConfig.classes'>" +
+            "<table ng-class='tableConfig.classes' style='width:{{tableConfig.tableWidth}};'>" +
             "  <thead>" +
             "    <tr>" +
             "      <th class='table-header' " +

@@ -10,7 +10,8 @@
     <button ng-click="changeCols()" >Change Columns</button>
     <button ng-click="buttonTest()" >Test Data</button>
     <button ng-click="changeData()" >Change Data</button>
-</button></div>
+</div>
+<div>Sort:  <button ng-click="sortByCol1()">Sort by Col1</button> | <button ng-click="sortByCol2()">Sort by Col2</button> </div>
 <div st-table table-config="tableConfig" table-data="data" on-table-complete="onTableComplete(tableApi)"
      st-table-resizable class="stTable" style="overflow-x: auto; width: 700px;">
 </div>

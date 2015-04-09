@@ -98,7 +98,15 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
 
     $scope.onTableComplete = function(tableApi){
         $log.log("Table API: ", tableApi);
-    }
+    };
+
+    $scope.sortByCol1 = function(){
+        $scope.tableApi.sortManager.setSortByColumn($scope.columns[0], "asc");
+    };
+
+    $scope.sortByCol2 = function(){
+        $scope.tableApi.sortManager.setSortByColumn($scope.columns[1], "desc");
+    };
 
 
 }]);

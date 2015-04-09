@@ -39,7 +39,7 @@ module SimpleTableSort {
 
         markColumnAsSorted(column:any):void {
             column.sorted = true;
-            column.sortType = !column.sortType || column.sortType === "desc" ? "asc" : "desc";
+            column.sortType = column.sortType ? column.sortType : "asc";
         }
 
         applyColumnSortState(column:any):void {
@@ -53,6 +53,46 @@ module SimpleTableSort {
             this.addToArray(column.headerClass, ["sort", column.sortType]);
         }
 
+        applySort(column:any):void {
+            this.currentSort = column.field;
+            this.currentSortReverse = column.sortType === "asc" ? false : true;
+            this.currentSortColumn = column;
+            this.applyColumnSortState(column);
+        }
+
+        sortByColumn(column:any):void {
+            this.removePreviousSortFromColumns(this.scope.tableConfig.columns);
+            this.markColumnAsSorted(column);
+            this.applySort(column);
+        }
+
+        onHeaderClicked(scopeEvent:any, $event:any, column:any):any{
+            this.switchColumnSortType(column);
+            this.sortByColumn(column);
+        }
+
+        revalidateSort():void {
+            if(!this.currentSortColumn){
+                return;
+            }
+            this.applySort(this.currentSortColumn);
+        }
+
+        onDataChanged(newValue, oldValue):void {
+            this.revalidateSort();
+        }
+
+        switchColumnSortType(column:any):void {
+            column.sortType = !column.sortType || column.sortType === "desc" ? "asc" : "desc";
+        }
+
+        setSortByColumn(column:any, sortType:string):void {
+            column.sortType = sortType;
+            this.sortByColumn(column);
+        }
+
+        // Utility methods
+        // TODO: Move to utility class
         addToArray(array:any[], values:string[]){
             for(var i:number = 0; i < values.length; i++){
                 var value = values[i];
@@ -74,30 +114,7 @@ module SimpleTableSort {
             return array;
         }
 
-        applySort(column:any):void {
-            this.currentSort = column.field;
-            this.currentSortReverse = column.sortType === "asc" ? false : true;
-            this.currentSortColumn = column;
-            this.applyColumnSortState(column);
-        }
 
-        sortByColumn(column:any):void {
-            this.removePreviousSortFromColumns(this.scope.tableConfig.columns);
-            this.markColumnAsSorted(column);
-            this.applySort(column);
-        }
-
-        onHeaderClicked(scopeEvent:any, $event:any, column:any):any{
-            this.sortByColumn(column);
-        }
-
-        revalidateSort():void {
-            this.sortByColumn(this.currentSortColumn);
-        }
-
-        onDataChanged(newValue, oldValue):void {
-            this.revalidateSort();
-        }
 
     }
 }

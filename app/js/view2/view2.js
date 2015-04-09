@@ -56,7 +56,14 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
             onInitializationComplete: function(tableApi){
                 $log.log("onInitializationComplete: ", tableApi);
                 $scope.selection = $scope.tableApi.selection.selectedRows;
+            },
+            onHeaderSortEnd: function(column){
+                $log.log("onHeaderSortEnd: ", column);
+            },
+            onSortEnd: function(column){
+                $log.log("onSortEnd: ", column);
             }
+
         }
     };
 

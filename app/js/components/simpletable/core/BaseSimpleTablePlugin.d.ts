@@ -10,5 +10,6 @@ declare module SimpleTablePlugin {
         isInitialized(): boolean;
         addEventListeners(): void;
         removeEventListeners(): void;
+        notifyListener(eventName: string, params: any): void;
     }
 }

@@ -61,14 +61,18 @@ module SimpleTableSort {
         }
 
         sortByColumn(column:any):void {
+            this.notifyListener("onSortStart", column);
             this.removePreviousSortFromColumns(this.scope.tableConfig.columns);
             this.markColumnAsSorted(column);
             this.applySort(column);
+            this.notifyListener("onSortEnd", column);
         }
 
         onHeaderClicked(scopeEvent:any, $event:any, column:any):any{
+            this.notifyListener("onHeaderSortStart", column);
             this.switchColumnSortType(column);
             this.sortByColumn(column);
+            this.notifyListener("onHeaderSortEnd", column);
         }
 
         revalidateSort():void {

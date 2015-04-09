@@ -26,6 +26,12 @@ var SimpleTablePlugin;
         };
         BaseSimpleTablePlugin.prototype.removeEventListeners = function () {
         };
+        BaseSimpleTablePlugin.prototype.notifyListener = function (eventName, params) {
+            if (!this.simpleTable) {
+                return;
+            }
+            this.simpleTable.notifyListener(eventName, params);
+        };
         return BaseSimpleTablePlugin;
     })();
     SimpleTablePlugin.BaseSimpleTablePlugin = BaseSimpleTablePlugin;

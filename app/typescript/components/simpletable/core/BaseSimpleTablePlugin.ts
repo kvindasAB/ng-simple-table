@@ -30,5 +30,10 @@ module SimpleTablePlugin {
         removeEventListeners():void {
         }
 
+        notifyListener(eventName:string, params:any):void {
+            if(!this.simpleTable){ return; }
+            this.simpleTable.notifyListener(eventName, params);
+        }
+
     }
 }

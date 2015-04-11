@@ -2,6 +2,7 @@
 /// <reference path="../core/ISimpleTablePlugin.ts" />
 /// <reference path="../factory/SimpleTablePluginFactory.ts" />
 /// <reference path="ISimpleTableResize.ts" />
+/// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 
 module SimpleTableResize{
     export class SimpleTableResize implements ISimpleTableResize{
@@ -128,49 +129,34 @@ module SimpleTableResize{
         updateFixedTableColumns(event, tableConfig, scope):void{
             var width = 0;
             width = event.clientX - this.startX;
-            tableConfig.tableWidth = this.calculateNewTableWidth(width);
-            tableConfig.columns[this.indexColumnResize].style.width = this.calculateNewColumnWidth(this.orginalColumnWidth, width);
+            tableConfig.columns[this.indexColumnResize].style.width = this.calculateNewColumnWidth(tableConfig, this.orginalColumnWidth, width);
+            if(!this.isMinColumnWidth(this.orginalColumnWidth, width)){
+                tableConfig.tableWidth = this.calculateNewTableWidth(width);
+            }
+            //console.log("tableConfig.tableWidth...: ", tableConfig.tableWidth);
             scope.$apply();
         }
 
         calculateNewTableWidth(extraWidth):string{
             var newWidth =  this.originalTableWidth + extraWidth;
             return newWidth + this.WIDTH_PIXELS_TYPE;
-           /* var widthString:string = tableConfig.tableWidth;
-            var widthType:string = widthString.substring(widthString.length - 2, widthString.length);
-            var width:number = 0;
-            var tableWidth:number = 0;
-            if(widthType === this.WIDTH_PIXELS_TYPE){
-                tableWidth = parseInt(widthString.substring(0, widthString.length - 2));
-                width = columnWidth + extraWidth;
-                if(columnWidth >= width){
-                    tableWidth = tableWidth + (columnWidth - width);
-                }
-                return width + this.WIDTH_PIXELS_TYPE;
-            }
-            widthType = widthString.substring(widthString.length - 1, widthString.length);
-            if(widthType === this.WIDTH_PERCENTAGE_TYPE){
-                width = angular.element(this.table).width();
-                width = width + extraWidth;
-                return width + this.WIDTH_PIXELS_TYPE;
-            }*/
         }
 
         updateAdjustableTableColumns(event, tableConfig, scope):void{
             var width = 0;
             width = event.clientX - this.startX;
-            tableConfig.columns[this.indexColumnResize].style.width = this.calculateNewColumnWidth(this.orginalColumnWidth, width);
+            tableConfig.columns[this.indexColumnResize].style.width = this.calculateNewColumnWidth(tableConfig, this.orginalColumnWidth, width);
             scope.$apply();
         }
 
-        calculateNewColumnWidth(actualWidth, moveWidth):string{
+        calculateNewColumnWidth(tableConfig, actualWidth, moveWidth):string{
             var widthType:string = actualWidth.substring(actualWidth.length - 2, actualWidth.length);
             if(widthType === this.WIDTH_PIXELS_TYPE){
                 return this.calculatePixels(actualWidth, moveWidth);
             }
             widthType = actualWidth.substring(actualWidth.length - 1, actualWidth.length);
             if(widthType === this.WIDTH_PERCENTAGE_TYPE){
-                return this.calculatePercentage(actualWidth, moveWidth);
+                return this.calculatePercentage(tableConfig, actualWidth, moveWidth);
             }
             return actualWidth;
         }
@@ -186,20 +172,154 @@ module SimpleTableResize{
             return columnWidth + this.WIDTH_PIXELS_TYPE;
         }
 
-        calculatePercentage(actualWidth, moveWidth):string{
-            var width = angular.element(this.parentMoveHandle).width();
-            var columnWidth = width;
+        calculatePercentage(tableConfig, actualWidth, moveWidth):string{
+            //var width = angular.element(this.parentMoveHandle).width();
+            //var columnWidth = width;
             var stringWidthPercent = actualWidth.substring(0 , actualWidth.length - 1);
             var columnWidthPercent = parseFloat(stringWidthPercent);
+            var columnWidth = 0;
+            if(tableConfig.resizeType === this.RESIZE_TYPE_FIXED){
+                columnWidth = ((this.originalTableWidth + moveWidth) * columnWidthPercent) / 100;
+            }else{
+                columnWidth = (this.originalTableWidth * columnWidthPercent) / 100;
+            }
             columnWidth = columnWidth + moveWidth;
-            var newPercentage = (columnWidthPercent * columnWidth) / width;
+            if(this.minColumnWidth > columnWidth){
+                columnWidth = this.minColumnWidth;
+            }
+
+            var newPercentage = 0;
+
+            if(tableConfig.resizeType === this.RESIZE_TYPE_FIXED){
+                newPercentage = (columnWidth / (this.originalTableWidth + moveWidth)) * 100;
+            }else{
+                newPercentage = (columnWidth / this.originalTableWidth) * 100;
+            }
+            //var newPercentage = (columnWidthPercent * columnWidth) / width;
+            //console.log("this.orginalColumnWidth...: ", this.orginalColumnWidth);
+            //console.log("width...: ", width);
+            //console.log("moveWidth...: ", moveWidth);
+            //console.log("columnWidth...: ", columnWidth);
+            //console.log("newPercentage...: ", newPercentage);
             return newPercentage + this.WIDTH_PERCENTAGE_TYPE;
+        }
+
+        isMinColumnWidth(actualWidth, moveWidth):boolean{
+            var stringWidth:string = '';
+            var widthType:string = actualWidth.substring(actualWidth.length - 2, actualWidth.length);
+            if(widthType === this.WIDTH_PIXELS_TYPE){
+                stringWidth = actualWidth.substring(0 , actualWidth.length - 2);
+            }
+            widthType = actualWidth.substring(actualWidth.length - 1, actualWidth.length);
+            if(widthType === this.WIDTH_PERCENTAGE_TYPE){
+                stringWidth = actualWidth.substring(0 , actualWidth.length - 1);
+                var percentageWidth = parseInt(stringWidth);
+                var tmpColumnWidth = (this.originalTableWidth * percentageWidth) / 100;
+                stringWidth = tmpColumnWidth + '';
+            }
+            var columnWidth:number = parseInt(stringWidth);
+            columnWidth = columnWidth + moveWidth;
+
+            if(this.minColumnWidth > columnWidth){
+                return true;
+            }
+            return false;
         }
 
         onMouseUpHandler(event, scope:any, element):void{
             this.isMouseDown = false;
+            var columnData = scope.hcol;
+            var tableConfig = scope.$parent.tableConfig;
+            if(tableConfig.resizeType === this.RESIZE_TYPE_ADJUSTABLE){
+                this.updateOtherColumns(columnData, tableConfig);
+            }
             angular.element(this.$window).off('mousemove');
             angular.element(this.$window).off('mouseup');
+        }
+
+        updateOtherColumns(columnData, tableConfig):void{
+            var oldWidth = this.getWidthInNumber(this.orginalColumnWidth);
+            var newWidth = this.getWidthInNumber(columnData.style.width);
+            if(newWidth > oldWidth){
+                this.removeWidth((newWidth - oldWidth), tableConfig, columnData.id);
+                return;
+            }
+            if(oldWidth > newWidth){
+                this.addWidth((oldWidth - newWidth), tableConfig, columnData.id);
+                return;
+            }
+        }
+
+        addWidth(widthToAdd:number, tableConfig:any, updatedColumnId:string):void{
+            widthToAdd = widthToAdd / (tableConfig.columns.length - 1);
+            for(var i = 0; i < tableConfig.columns.length; i++){
+                var column = tableConfig.columns[i];
+                if(updatedColumnId === column.id){
+                    continue;
+                }
+                var type:string = this.getWidthType(column.style.width);
+                var originalWidth:number = this.getWidthInNumber(column.style.width);
+                column.style.width = this.addPixelsOrPercentageToColumn(originalWidth, (widthToAdd), type) + type;
+            }
+        }
+
+        addPixelsOrPercentageToColumn(originalWidth:number, widthToAdd:number, widthType:string):number{
+            var newWidth:number = 0;
+            if(widthType === this.WIDTH_PIXELS_TYPE){
+                newWidth = originalWidth + widthToAdd;
+                return newWidth;
+            }else{
+                var columnWidth:number = (this.originalTableWidth * originalWidth) / 100;
+                columnWidth = columnWidth + widthToAdd;
+                newWidth = (columnWidth / this.originalTableWidth) * 100;
+                return newWidth;
+            }
+        }
+
+        removeWidth(widthToRemove:number, tableConfig:any, updatedColumnId:string):void{
+            widthToRemove = widthToRemove / (tableConfig.columns.length - 1);
+            for(var i = 0; i < tableConfig.columns.length; i++){
+                var column = tableConfig.columns[i];
+                if(updatedColumnId === column.id){
+                    continue;
+                }
+                var type:string = this.getWidthType(column.style.width);
+                var originalWidth:number = this.getWidthInNumber(column.style.width);
+                column.style.width = this.removePixelsOrPercentageToColumn(originalWidth, (widthToRemove), type) + type;
+            }
+        }
+
+        removePixelsOrPercentageToColumn(originalWidth:number, widthToRemove:number, widthType:string):number{
+            var newWidth:number = 0;
+            if(widthType === this.WIDTH_PIXELS_TYPE){
+                newWidth = originalWidth - widthToRemove;
+                return newWidth;
+            }else{
+                var columnWidth:number = (this.originalTableWidth * originalWidth) / 100;
+                columnWidth = columnWidth - widthToRemove;
+                newWidth = (columnWidth / this.originalTableWidth) * 100;
+                return newWidth;
+            }
+        }
+
+        getWidthInNumber(width):number{
+            var stringWidth:string = '';
+            var widthType:string = this.getWidthType(width);
+            if(widthType === this.WIDTH_PIXELS_TYPE){
+                stringWidth = width.substring(0 , width.length - 2);
+            }else{
+                stringWidth = width.substring(0 , width.length - 1);
+            }
+            var columnWidth:number = parseInt(stringWidth);
+            return columnWidth;
+        }
+
+        getWidthType(width):string{
+            var widthType:string = width.substring(width.length - 2, width.length);
+            if(widthType === this.WIDTH_PIXELS_TYPE){
+                return this.WIDTH_PIXELS_TYPE;
+            }
+            return this.WIDTH_PERCENTAGE_TYPE;
         }
 
         //***************

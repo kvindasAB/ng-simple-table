@@ -35,10 +35,10 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
     ];
 
     $scope.columns = [
-        {title: "Id", field: 'id', style: {width: "150px"}, headerClass:["myclass1", "myclass2"], cellClass:["cellclass1", "cellclass2"], template: "js/view2/col1tpl.html"},
-        {title: "Name", field: 'name', style: {width: "150px"} },
-        {title: "Last Name", field: 'lastname', style: {width: "150px"} },
-        {title: "Age", field: 'age', style: {width: "150px"}}
+        {id:"id", title: "Id", field: 'id', style: {width: "25%"}, headerClass:["myclass1", "myclass2"], cellClass:["cellclass1", "cellclass2"], template: "js/view2/col1tpl.html"},
+        {id:"name", title: "Name", field: 'name', style: {width: "25%"} },
+        {id:"lastName", title: "Last Name", field: 'lastname', style: {width: "25%"} },
+        {id:"age", title: "Age", field: 'age', style: {width: "25%"}}
     ];
 
     $scope.tableConfig = {
@@ -47,7 +47,7 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
         columns: $scope.columns,
         tableWidth: '100%',
         headerHeight: '30px',
-        resizeType: 'fixed',
+        resizeType: 'adjustable',
         listeners: {
             onPreInitialization: function(tableApi){
                 $log.log("onPreInitialization: ", tableApi);

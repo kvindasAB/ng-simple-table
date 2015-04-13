@@ -77,10 +77,7 @@ module SimpleTableResize{
             this.scope = scope;
             this.element = element;
             this.attrs = attrs;
-            //this.parent = parent;
-
             this.$window = $window;
-            //this.doRegister();
         }
 
         onMouseDownHandler(event, scope:any, element):void{
@@ -133,7 +130,6 @@ module SimpleTableResize{
             if(!this.isMinColumnWidth(this.orginalColumnWidth, width)){
                 tableConfig.tableWidth = this.calculateNewTableWidth(width);
             }
-            //console.log("tableConfig.tableWidth...: ", tableConfig.tableWidth);
             scope.$apply();
         }
 
@@ -150,11 +146,10 @@ module SimpleTableResize{
         }
 
         calculateNewColumnWidth(tableConfig, actualWidth, moveWidth):string{
-            var widthType:string = actualWidth.substring(actualWidth.length - 2, actualWidth.length);
+            var widthType:string  = this.getWidthType(actualWidth);
             if(widthType === this.WIDTH_PIXELS_TYPE){
                 return this.calculatePixels(actualWidth, moveWidth);
             }
-            widthType = actualWidth.substring(actualWidth.length - 1, actualWidth.length);
             if(widthType === this.WIDTH_PERCENTAGE_TYPE){
                 return this.calculatePercentage(tableConfig, actualWidth, moveWidth);
             }
@@ -162,8 +157,7 @@ module SimpleTableResize{
         }
 
         calculatePixels(actualWidth, moveWidth):string{
-            var stringWidth = actualWidth.substring(0 , actualWidth.length - 2);
-            var columnWidth = parseInt(stringWidth);
+            var columnWidth:number = this.getWidthInNumber(actualWidth);
             columnWidth = columnWidth + moveWidth;
 
             if(this.minColumnWidth > columnWidth){
@@ -173,11 +167,8 @@ module SimpleTableResize{
         }
 
         calculatePercentage(tableConfig, actualWidth, moveWidth):string{
-            //var width = angular.element(this.parentMoveHandle).width();
-            //var columnWidth = width;
-            var stringWidthPercent = actualWidth.substring(0 , actualWidth.length - 1);
-            var columnWidthPercent = parseFloat(stringWidthPercent);
-            var columnWidth = 0;
+            var columnWidthPercent:number = this.getWidthInNumber(actualWidth);
+            var columnWidth:number = 0;
             if(tableConfig.resizeType === this.RESIZE_TYPE_FIXED){
                 columnWidth = ((this.originalTableWidth + moveWidth) * columnWidthPercent) / 100;
             }else{
@@ -187,37 +178,21 @@ module SimpleTableResize{
             if(this.minColumnWidth > columnWidth){
                 columnWidth = this.minColumnWidth;
             }
-
             var newPercentage = 0;
-
             if(tableConfig.resizeType === this.RESIZE_TYPE_FIXED){
                 newPercentage = (columnWidth / (this.originalTableWidth + moveWidth)) * 100;
             }else{
                 newPercentage = (columnWidth / this.originalTableWidth) * 100;
             }
-            //var newPercentage = (columnWidthPercent * columnWidth) / width;
-            //console.log("this.orginalColumnWidth...: ", this.orginalColumnWidth);
-            //console.log("width...: ", width);
-            //console.log("moveWidth...: ", moveWidth);
-            //console.log("columnWidth...: ", columnWidth);
-            //console.log("newPercentage...: ", newPercentage);
             return newPercentage + this.WIDTH_PERCENTAGE_TYPE;
         }
 
         isMinColumnWidth(actualWidth, moveWidth):boolean{
-            var stringWidth:string = '';
-            var widthType:string = actualWidth.substring(actualWidth.length - 2, actualWidth.length);
-            if(widthType === this.WIDTH_PIXELS_TYPE){
-                stringWidth = actualWidth.substring(0 , actualWidth.length - 2);
-            }
-            widthType = actualWidth.substring(actualWidth.length - 1, actualWidth.length);
+            var widthType:string = this.getWidthType(actualWidth);
+            var columnWidth:number = this.getWidthInNumber(actualWidth);
             if(widthType === this.WIDTH_PERCENTAGE_TYPE){
-                stringWidth = actualWidth.substring(0 , actualWidth.length - 1);
-                var percentageWidth = parseInt(stringWidth);
-                var tmpColumnWidth = (this.originalTableWidth * percentageWidth) / 100;
-                stringWidth = tmpColumnWidth + '';
+                columnWidth = (this.originalTableWidth * columnWidth) / 100;
             }
-            var columnWidth:number = parseInt(stringWidth);
             columnWidth = columnWidth + moveWidth;
 
             if(this.minColumnWidth > columnWidth){
@@ -310,7 +285,7 @@ module SimpleTableResize{
             }else{
                 stringWidth = width.substring(0 , width.length - 1);
             }
-            var columnWidth:number = parseInt(stringWidth);
+            var columnWidth:number = parseFloat(stringWidth);
             return columnWidth;
         }
 

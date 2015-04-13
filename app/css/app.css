@@ -1690,7 +1690,6 @@ body .main-container {
   position: relative;
 }
 .table-header-cursor-container {
-  background-color: #000011;
   cursor: e-resize;
   height: 100%;
   float: left;
@@ -1705,6 +1704,9 @@ body .main-container {
 .simple-table-target {
   background-color: #ddd;
   opacity: .5;
+}
+.resize-cursor {
+  cursor: e-resize;
 }
 .stTable th.sort.asc:after {
   content: "\f0d8";

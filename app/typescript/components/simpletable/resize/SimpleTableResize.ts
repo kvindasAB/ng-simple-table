@@ -38,6 +38,7 @@ module SimpleTableResize{
         orginalColumnWidth: number = 0;
         parentMoveHandle:any = null;
         table:any = null;
+        tableHeaderColumnList:any = null;
         originalTableWidth:number = 0;
 
         //******************
@@ -91,6 +92,7 @@ module SimpleTableResize{
                 var th:any = angular.element(element).parent();
                 var tr:any = angular.element(th).parent();
                 var tHead:any = angular.element(tr).parent();
+                this.tableHeaderColumnList = angular.element(tr).children();
                 this.table = angular.element(tHead).parent();
             }
             this.parentMoveHandle = angular.element(element).parent();
@@ -100,6 +102,8 @@ module SimpleTableResize{
             this.orginalColumnWidth = scope.hcol.style.width;
             this.originalTableWidth = angular.element(this.table).width();
             var self:any = this;
+            angular.element('body').addClass('resize-cursor');
+            angular.element(this.table).addClass('resize-cursor');
             angular.element(this.$window).on('mousemove', function(event){
                 var parentScope:any = self.scope;
                 parentScope.simpleTableResize.onMouseMoveHandler(event, scope, element);
@@ -202,14 +206,16 @@ module SimpleTableResize{
         }
 
         onMouseUpHandler(event, scope:any, element):void{
+            angular.element('body').removeClass('resize-cursor');
+            angular.element(this.table).removeClass('resize-cursor');
+            angular.element(this.$window).off('mousemove');
+            angular.element(this.$window).off('mouseup');
             this.isMouseDown = false;
             var columnData = scope.hcol;
             var tableConfig = scope.$parent.tableConfig;
             if(tableConfig.resizeType === this.RESIZE_TYPE_ADJUSTABLE){
                 this.updateOtherColumns(columnData, tableConfig);
             }
-            angular.element(this.$window).off('mousemove');
-            angular.element(this.$window).off('mouseup');
         }
 
         updateOtherColumns(columnData, tableConfig):void{
@@ -226,55 +232,47 @@ module SimpleTableResize{
         }
 
         addWidth(widthToAdd:number, tableConfig:any, updatedColumnId:string):void{
-            widthToAdd = widthToAdd / (tableConfig.columns.length - 1);
             for(var i = 0; i < tableConfig.columns.length; i++){
-                var column = tableConfig.columns[i];
-                if(updatedColumnId === column.id){
+                var th = this.tableHeaderColumnList[i];
+                if(updatedColumnId === th.id){
                     continue;
                 }
+                var column = this.getColumnDataById(th.id, tableConfig);
                 var type:string = this.getWidthType(column.style.width);
-                var originalWidth:number = this.getWidthInNumber(column.style.width);
-                column.style.width = this.addPixelsOrPercentageToColumn(originalWidth, (widthToAdd), type) + type;
-            }
-        }
-
-        addPixelsOrPercentageToColumn(originalWidth:number, widthToAdd:number, widthType:string):number{
-            var newWidth:number = 0;
-            if(widthType === this.WIDTH_PIXELS_TYPE){
-                newWidth = originalWidth + widthToAdd;
-                return newWidth;
-            }else{
-                var columnWidth:number = (this.originalTableWidth * originalWidth) / 100;
-                columnWidth = columnWidth + widthToAdd;
-                newWidth = (columnWidth / this.originalTableWidth) * 100;
-                return newWidth;
+                var originalWidth:number = angular.element(th).width();
+                column.style.width = this.convertToPixelsOrPercentage(originalWidth, type);
             }
         }
 
         removeWidth(widthToRemove:number, tableConfig:any, updatedColumnId:string):void{
-            widthToRemove = widthToRemove / (tableConfig.columns.length - 1);
             for(var i = 0; i < tableConfig.columns.length; i++){
-                var column = tableConfig.columns[i];
-                if(updatedColumnId === column.id){
+                var th = this.tableHeaderColumnList[i];
+                if(updatedColumnId === th.id){
                     continue;
                 }
+                var column = this.getColumnDataById(th.id, tableConfig);
                 var type:string = this.getWidthType(column.style.width);
-                var originalWidth:number = this.getWidthInNumber(column.style.width);
-                column.style.width = this.removePixelsOrPercentageToColumn(originalWidth, (widthToRemove), type) + type;
+                var originalWidth:number = angular.element(th).width();
+                column.style.width = this.convertToPixelsOrPercentage(originalWidth, type);
             }
         }
 
-        removePixelsOrPercentageToColumn(originalWidth:number, widthToRemove:number, widthType:string):number{
-            var newWidth:number = 0;
+        convertToPixelsOrPercentage(originalWidth:number, widthType:string):string{
             if(widthType === this.WIDTH_PIXELS_TYPE){
-                newWidth = originalWidth - widthToRemove;
-                return newWidth;
-            }else{
-                var columnWidth:number = (this.originalTableWidth * originalWidth) / 100;
-                columnWidth = columnWidth - widthToRemove;
-                newWidth = (columnWidth / this.originalTableWidth) * 100;
-                return newWidth;
+                return originalWidth + this.WIDTH_PIXELS_TYPE;
             }
+            var newWidth:number = (originalWidth / this.originalTableWidth) * 100;
+            return newWidth + this.WIDTH_PERCENTAGE_TYPE;
+        }
+
+        getColumnDataById(id:string, tableConfig:any):any{
+            for(var i = 0; i < tableConfig.columns.length; i++){
+                var column = tableConfig.columns[i];
+                if(id === column.id){
+                    return column;
+                }
+            }
+            return null;
         }
 
         getWidthInNumber(width):number{

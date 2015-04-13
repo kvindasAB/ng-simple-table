@@ -17,7 +17,7 @@ angular.module('simpletable.table', [])
             "  <table ng-class='tableConfig.classes' ng-style='{width:tableConfig.tableWidth}'>" +
             "    <thead>" +
             "      <tr>" +
-            "        <th class='table-header' " +
+            "        <th id='{{hcol.id}}' class='table-header' " +
             "         ng-click='simpleTable.onHeaderClicked($event, hcol)'    " +
             "         ng-repeat='hcol in tableConfig.columns' " +
             "         ng-class='hcol.headerClass' " +

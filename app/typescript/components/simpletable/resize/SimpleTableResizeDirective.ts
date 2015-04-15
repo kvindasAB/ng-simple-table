@@ -1,8 +1,8 @@
 /// <reference path="SimpleTableResize.ts" />
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 angular.module('simpletable.resizable', [])
-    .directive('stTableResizable', ['$timeout', '$window', 'SimpleTablePluginFactory',
-        function($timeout, $window, SimpleTablePluginFactory){
+    .directive('stTableResizable', ['$timeout', '$window',
+        function($timeout, $window){
         return {
             require: '^stTable',
             restrict: 'A',

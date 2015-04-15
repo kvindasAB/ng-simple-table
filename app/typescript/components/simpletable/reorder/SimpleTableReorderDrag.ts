@@ -70,7 +70,9 @@ module SimpleTableReorder{
             this.uuid = new SimpleTableReorder.SimpleTableReorderUuidUtil();
             angular.element(this.element).attr("draggable", "true");
 
-            var id = angular.element(this.element).attr("id");
+            //var id = angular.element(this.element).attr("id");
+            var scope:any = angular.element(this.element).scope();
+            var id:string = scope.hcol.id;
 
             if(!id){
                 id = this.uuid.new();

@@ -66,8 +66,9 @@ var SimpleTable;
         };
         SimpleTable.prototype.onDataChanged = function (newValue, oldValue) {
             console.log("SimpleTable.onDataChanged...: ", this.initializationComplete);
-            if (this.initializationComplete)
+            if (this.initializationComplete) {
                 this.notifyPluginsDataChanged(newValue, oldValue);
+            }
         };
         SimpleTable.prototype.onRowClicked = function ($event, row) {
             console.log("Row clicked: ", arguments);

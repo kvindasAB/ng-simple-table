@@ -108,7 +108,7 @@ module SimpleTableSort {
         }
 
         removeFromArray(array:any[], values:string[]){
-            if(array.length == 0){ return; }
+            if(array.length === 0){ return; }
             for(var i:number = 0; i < values.length; i++){
                 var value = values[i];
                 var indx = array.indexOf(value);

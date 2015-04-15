@@ -86,8 +86,9 @@ module SimpleTable {
 
         onDataChanged(newValue, oldValue):void {
             console.log("SimpleTable.onDataChanged...: ", this.initializationComplete);
-            if(this.initializationComplete)
-            this.notifyPluginsDataChanged(newValue, oldValue);
+            if(this.initializationComplete){
+                this.notifyPluginsDataChanged(newValue, oldValue);
+            }
         }
 
         onRowClicked($event, row):void{

@@ -1,4 +1,3 @@
-'use strict';
 angular.module('simpletable.uuid.util', []).factory('simpletableuuid', function(){
     var svc = {
         new: function() {

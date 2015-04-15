@@ -2,7 +2,6 @@
 /// <reference path="../../../../typings/lodash/lodash.d.ts" />
 /// <reference path="SimpleTableReorderDrag.ts" />
 /// <reference path="SimpleTableReorderDrop.ts" />
-'use strict';
 angular.module('simpletable.reorder', ['simpletable.uuid.util'])
     .directive('stTableDraggable', ['$timeout', 'SimpleTablePluginFactory', '$rootScope', 'simpletableuuid',
         function($timeout, SimpleTablePluginFactory, $rootScope, uuid){

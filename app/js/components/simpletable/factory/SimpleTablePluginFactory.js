@@ -5,7 +5,6 @@ var SimpleTablePluginFactory;
 (function (_SimpleTablePluginFactory) {
     var SimpleTablePluginFactory = (function () {
         function SimpleTablePluginFactory() {
-            this.log = log4javascript.getLogger("SimpleTablePluginFactory");
         }
         SimpleTablePluginFactory.prototype.newPluginSelection = function () {
             console.log("creating new SimpleTablePluginSelection");
@@ -19,8 +18,8 @@ var SimpleTablePluginFactory;
     })();
     _SimpleTablePluginFactory.SimpleTablePluginFactory = SimpleTablePluginFactory;
 })(SimpleTablePluginFactory || (SimpleTablePluginFactory = {}));
-console.log("Creating angular module...: " + "simpletable.core.selection");
-angular.module('simpletable.core.selection', []).service('SimpleTablePluginFactory', [function () {
+console.log("Creating angular module...: " + "simpletable.factory");
+angular.module('simpletable.factory', []).service('SimpleTablePluginFactory', [function () {
     console.log("instantiating service...");
     return new SimpleTablePluginFactory.SimpleTablePluginFactory();
 }]);

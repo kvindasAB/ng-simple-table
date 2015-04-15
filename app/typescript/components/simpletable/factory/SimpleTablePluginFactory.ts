@@ -4,8 +4,6 @@
 module SimpleTablePluginFactory {
 
     export class SimpleTablePluginFactory {
-        log = log4javascript.getLogger("SimpleTablePluginFactory");
-
 
         newPluginSelection():SimpleTableSelection.SimpleTablePluginSelection {
             console.log("creating new SimpleTablePluginSelection");
@@ -19,8 +17,8 @@ module SimpleTablePluginFactory {
     }
 }
 
-console.log("Creating angular module...: " +  "simpletable.core.selection");
-angular.module('simpletable.core.selection', [])
+console.log("Creating angular module...: " +  "simpletable.factory");
+angular.module('simpletable.factory', [])
     .service('SimpleTablePluginFactory', [function() {
         console.log("instantiating service...");
         return new SimpleTablePluginFactory.SimpleTablePluginFactory();

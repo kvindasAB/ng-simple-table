@@ -11,6 +11,7 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-protractor-runner');
   grunt.loadNpmTasks('grunt-typescript');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
 
 
   /**
@@ -94,6 +95,41 @@ module.exports = function ( grunt ) {
               sourceMap: true,
               declaration: true
           }
+      },
+      distdebug: {
+        src: ['app/typescript/**/*.ts'],
+        dest: 'dist/simple-table-debug.js',
+        options: {
+          module: 'amd', //or commonjs
+          target: 'es5', //or es3
+          basePath: 'app/typescript/',
+          sourceMap: true,
+          declaration: true
+        }
+      },
+      dist: {
+        src: ['app/typescript/**/*.ts'],
+        dest: 'dist/simple-table.js',
+        options: {
+          module: 'amd', //or commonjs
+          target: 'es5', //or es3
+          basePath: 'app/typescript/',
+          sourceMap: true,
+          declaration: true,
+          removeComments: true
+        }
+      }
+    },
+
+    uglify: {
+      dist: {
+        options: {
+          mangle: false,
+          sourceMap: true
+        },
+        files: {
+          'dist/simple-table.min.js': ['dist/simple-table.js']
+        }
       }
     },
 
@@ -236,6 +272,10 @@ module.exports = function ( grunt ) {
 
   grunt.registerTask( 'test:e2edebug', [
     'build', 'connect:testserver', 'protractor:e2edebug'
+  ]);
+
+  grunt.registerTask( 'dist', [
+    'typescript:distdebug', 'typescript:dist', 'uglify:dist'
   ]);
 
 

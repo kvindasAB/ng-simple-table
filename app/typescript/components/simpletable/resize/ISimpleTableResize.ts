@@ -26,7 +26,7 @@ module SimpleTableResize{
         onMouseDownHandler(event, scope:any, element);
         onMouseMoveHandler(event, scope, element);
         onMouseUpHandler(event, scope, element);
-        calculateNewColumnWidth(actualWidth, moveWidth):string;
+        calculateNewColumnWidth(tableConfig, actualWidth, moveWidth):string;
 
         //***************
         // METHODS - END

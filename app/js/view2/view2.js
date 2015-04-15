@@ -8,11 +8,13 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
       templateUrl: 'js/view2/view2.html',
       controller: 'View2Ctrl'
     });
+        /*
     var log = log4javascript.getLogger(),
         consoleAppender = new log4javascript.BrowserConsoleAppender();
     consoleAppender.setLayout(new log4javascript.PatternLayout("%r %p %c - %m%n"))
     log.addAppender(consoleAppender);
     log.debug("init log4javascript...");
+    */
   }])
 
 .controller('View2Ctrl', ['$scope', "$log", function($scope, $log) {

@@ -6,7 +6,6 @@ module SimpleTableSelection {
     export class SimpleTablePluginSelection extends SimpleTablePlugin.BaseSimpleTablePlugin implements SimpleTablePlugin.ISimpleTablePluginDataAware {
 
         // Attributes
-        log = log4javascript.getLogger("SimpleTablePluginSelection");
         scope:any;
         selectedRows:any[] = [];
 
@@ -46,7 +45,7 @@ module SimpleTableSelection {
         }
 
         addSelectedRow(row:any):any {
-            this.log.debug("SimpleTableSelection.addSelectedRow:", arguments);
+            console.log("SimpleTableSelection.addSelectedRow:", arguments);
             if(!this.isRowValid(row)){
                 return;
             }
@@ -63,7 +62,7 @@ module SimpleTableSelection {
                 return;
             }
             this.selectedRows.push(row);
-            this.log.debug("selectedRows: ", this.selectedRows);
+            console.log("selectedRows: ", this.selectedRows);
         }
 
         doMultipleSelection(row:any){

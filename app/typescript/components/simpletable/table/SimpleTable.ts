@@ -5,7 +5,6 @@
 module SimpleTable {
     export class SimpleTable implements ISimpleTable {
         // statics
-        log = log4javascript.getLogger("SimpleTable");
 
         // Attributes
         scope:any;
@@ -35,7 +34,7 @@ module SimpleTable {
             this.scope.simpleTable = this;
 
             this.init();
-            this.log.debug("SimpleTable created: ", this.scope);
+            console.log("SimpleTable created: ", this.scope);
         }
 
         init():void{
@@ -46,7 +45,7 @@ module SimpleTable {
         }
 
         registerPlugin(plugin:SimpleTablePlugin.ISimpleTablePlugin):void{
-            this.log.debug("initializing plugins...", plugin);
+            console.log("initializing plugins...", plugin);
             this.plugins.push(plugin);
             this.initPlugins();
         }
@@ -64,7 +63,7 @@ module SimpleTable {
         }
 
         removeEventListeners():void{
-            this.log.debug("removing listeners...", this);
+            console.log("removing listeners...", this);
         }
 
         validateConfig():void {

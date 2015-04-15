@@ -4,7 +4,6 @@
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 declare module SimpleTableSelection {
     class SimpleTablePluginSelection extends SimpleTablePlugin.BaseSimpleTablePlugin implements SimpleTablePlugin.ISimpleTablePluginDataAware {
-        log: log4javascript.Logger;
         scope: any;
         selectedRows: any[];
         init(): void;

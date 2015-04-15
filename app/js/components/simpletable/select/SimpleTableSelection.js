@@ -14,8 +14,6 @@ var SimpleTableSelection;
         __extends(SimpleTablePluginSelection, _super);
         function SimpleTablePluginSelection() {
             _super.apply(this, arguments);
-            // Attributes
-            this.log = log4javascript.getLogger("SimpleTablePluginSelection");
             this.selectedRows = [];
         }
         // Overrides
@@ -48,7 +46,7 @@ var SimpleTableSelection;
             this.addSelectedRow(row);
         };
         SimpleTablePluginSelection.prototype.addSelectedRow = function (row) {
-            this.log.debug("SimpleTableSelection.addSelectedRow:", arguments);
+            console.log("SimpleTableSelection.addSelectedRow:", arguments);
             if (!this.isRowValid(row)) {
                 return;
             }
@@ -64,7 +62,7 @@ var SimpleTableSelection;
                 return;
             }
             this.selectedRows.push(row);
-            this.log.debug("selectedRows: ", this.selectedRows);
+            console.log("selectedRows: ", this.selectedRows);
         };
         SimpleTablePluginSelection.prototype.doMultipleSelection = function (row) {
             var index = this.selectedRows.indexOf(row);

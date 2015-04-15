@@ -53,7 +53,6 @@ var SimpleTableSelection;
         __extends(SimpleTablePluginSelection, _super);
         function SimpleTablePluginSelection() {
             _super.apply(this, arguments);
-            this.log = log4javascript.getLogger("SimpleTablePluginSelection");
             this.selectedRows = [];
         }
         SimpleTablePluginSelection.prototype.init = function () {
@@ -84,7 +83,7 @@ var SimpleTableSelection;
             this.addSelectedRow(row);
         };
         SimpleTablePluginSelection.prototype.addSelectedRow = function (row) {
-            this.log.debug("SimpleTableSelection.addSelectedRow:", arguments);
+            console.log("SimpleTableSelection.addSelectedRow:", arguments);
             if (!this.isRowValid(row)) {
                 return;
             }
@@ -100,7 +99,7 @@ var SimpleTableSelection;
                 return;
             }
             this.selectedRows.push(row);
-            this.log.debug("selectedRows: ", this.selectedRows);
+            console.log("selectedRows: ", this.selectedRows);
         };
         SimpleTablePluginSelection.prototype.doMultipleSelection = function (row) {
             var index = this.selectedRows.indexOf(row);
@@ -729,7 +728,6 @@ var SimpleTable;
 (function (_SimpleTable) {
     var SimpleTable = (function () {
         function SimpleTable(scope, element, attrs, $timeout, pluginFactory) {
-            this.log = log4javascript.getLogger("SimpleTable");
             this.plugins = [];
             this.initializationComplete = false;
             this.scope = scope;
@@ -739,7 +737,7 @@ var SimpleTable;
             this.pluginFactory = pluginFactory;
             this.scope.simpleTable = this;
             this.init();
-            this.log.debug("SimpleTable created: ", this.scope);
+            console.log("SimpleTable created: ", this.scope);
         }
         SimpleTable.prototype.init = function () {
             this.notifyPreInitialization();
@@ -748,7 +746,7 @@ var SimpleTable;
             this.initDefaultPlugins();
         };
         SimpleTable.prototype.registerPlugin = function (plugin) {
-            this.log.debug("initializing plugins...", plugin);
+            console.log("initializing plugins...", plugin);
             this.plugins.push(plugin);
             this.initPlugins();
         };
@@ -764,7 +762,7 @@ var SimpleTable;
             this.scope.$watch("tableData", angular.bind(this, this.onDataChanged));
         };
         SimpleTable.prototype.removeEventListeners = function () {
-            this.log.debug("removing listeners...", this);
+            console.log("removing listeners...", this);
         };
         SimpleTable.prototype.validateConfig = function () {
         };

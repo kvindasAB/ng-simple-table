@@ -44,7 +44,6 @@ declare module SimpleTablePlugin {
 }
 declare module SimpleTableSelection {
     class SimpleTablePluginSelection extends SimpleTablePlugin.BaseSimpleTablePlugin implements SimpleTablePlugin.ISimpleTablePluginDataAware {
-        log: log4javascript.Logger;
         scope: any;
         selectedRows: any[];
         init(): void;
@@ -252,7 +251,6 @@ declare module SimpleTable {
 }
 declare module SimpleTable {
     class SimpleTable implements ISimpleTable {
-        log: log4javascript.Logger;
         scope: any;
         element: any;
         attrs: any;

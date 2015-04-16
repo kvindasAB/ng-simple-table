@@ -1680,6 +1680,17 @@ body .main-container {
 .header a {
   color: #ff0000;
 }
+.stTable th.sort.asc:after {
+  content: "\f0d8";
+  font-family: FontAwesome;
+}
+.stTable th.sort.desc:after {
+  content: "\f0d7";
+  font-family: FontAwesome;
+}
+.stTable tr.selected {
+  background-color: #3278b3;
+}
 .table-padding {
   padding: 0px !important;
 }
@@ -1707,15 +1718,4 @@ body .main-container {
 }
 .resize-cursor {
   cursor: e-resize;
-}
-.stTable th.sort.asc:after {
-  content: "\f0d8";
-  font-family: FontAwesome;
-}
-.stTable th.sort.desc:after {
-  content: "\f0d7";
-  font-family: FontAwesome;
-}
-.stTable tr.selected {
-  background-color: #3278b3;
 }

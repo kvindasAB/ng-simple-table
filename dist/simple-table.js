@@ -702,6 +702,9 @@ angular.module('simpletable.resizable', []).directive('stTableResizable', ['$tim
             if (!$scope.simpleTableResize) {
                 $scope.simpleTableResize = new SimpleTableResize.SimpleTableResize($scope, $element, $attrs, $window);
             }
+            this.getParent = function () {
+                return $scope.simpleTableResize;
+            };
             return $scope.simpleTableResize;
         },
         link: function ($scope, $element, $attrs, parent) {
@@ -719,7 +722,7 @@ angular.module('simpletable.resizable', []).directive('stTableResizable', ['$tim
         restrict: 'A',
         link: function (scope, element, attrs, parentCtrl) {
             element.on('mousedown', function (event) {
-                parentCtrl.onMouseDownHandler(event, scope, element);
+                parentCtrl.getParent().onMouseDownHandler(event, scope, element);
             });
         }
     };

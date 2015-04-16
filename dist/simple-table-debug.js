@@ -615,7 +615,7 @@ var SimpleTableResize;
             this.parentMoveHandle = angular.element(element).parent();
             this.isMouseDown = true;
             this.startX = event.clientX;
-            this.indexColumnResize = scope.this.$index;
+            this.indexColumnResize = scope.$index;
             this.orginalColumnWidth = scope.hcol.style.width;
             this.originalTableWidth = angular.element(this.table).width();
             var self = this;

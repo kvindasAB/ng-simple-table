@@ -93,6 +93,7 @@ module SimpleTable {
         onRowClicked($event, row):void{
             console.log("Row clicked: ", arguments);
             this.scope.$broadcast("onRowClicked", $event, row);
+            this.notifyListener('onRowClicked', [$event, row]);
         }
 
         onHeaderClicked($event, column):void{
@@ -116,6 +117,7 @@ module SimpleTable {
             if(!this.scope.tableConfig.listeners || !this.scope.tableConfig.listeners[eventName]){
                 return;
             }
+            //this.scope.tableConfig.listeners[eventName].apply(this.scope.tableConfig.listeners, params);
             this.scope.tableConfig.listeners[eventName](params);
         }
 

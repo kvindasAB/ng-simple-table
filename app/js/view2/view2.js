@@ -37,10 +37,10 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
     ];
 
     $scope.columns = [
-        {id:"id", title: "Id", field: 'id', style: {width: "25%"}, headerClass:["myclass1", "myclass2"], cellClass:["cellclass1", "cellclass2"], template: "js/view2/col1tpl.html"},
-        {id:"name", title: "Name", field: 'name', style: {width: "25%"} },
-        {id:"lastName", title: "Last Name", field: 'lastname', style: {width: "25%"} },
-        {id:"age", title: "Age", field: 'age', style: {width: "25%"}}
+        {id:"id", title: "Id", field: 'id', active: true, style: {width: "25%"}, headerClass:["myclass1", "myclass2"], cellClass:["cellclass1", "cellclass2"], template: "js/view2/col1tpl.html"},
+        {id:"name", title: "Name", field: 'name', active: true, style: {width: "25%"} },
+        {id:"lastName", title: "Last Name", field: 'lastname', active: false, style: {width: "25%"} },
+        {id:"age", title: "Age", field: 'age', active: true, style: {width: "25%"}}
     ];
 
     $scope.tableConfig = {

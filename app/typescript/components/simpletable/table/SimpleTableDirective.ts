@@ -28,7 +28,7 @@ angular.module('simpletable.table', [])
             "        </th>" +
             "      </tr>" +
             "    </thead>" +
-            "    <tbody>" +
+            "    <tbody ng-if='!tableConfig.rowTemplate'>" +
             "      <tr ng-click='simpleTable.onRowClicked($event, row)' ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
             "        ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' >" +
             "        <td ng-repeat='col in tableConfig.columns' ng-class='col.cellClass'>" +
@@ -36,6 +36,8 @@ angular.module('simpletable.table', [])
             "          <span ng-if='!!col.template' ng-include='col.template'></span>     " +
             "        </td>" +
             "      </tr>" +
+            "    </tbody>" +
+            "    <tbody ng-if='tableConfig.rowTemplate' ng-include='tableConfig.rowTemplate'>" +
             "    </tbody>" +
             "  </table>" +
             "</div>"

@@ -50,6 +50,7 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
         tableWidth: '100%',
         headerHeight: '30px',
         resizeType: 'adjustable',
+        rowTemplate: 'js/view2/rowtpl.html',
         listeners: {
             onPreInitialization: function(tableApi){
                 $log.log("onPreInitialization: ", tableApi);

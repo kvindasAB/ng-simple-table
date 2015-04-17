@@ -111,17 +111,18 @@ module SimpleTableReorder{
                  event.stopPropagation();
              }
 
-             var data = event.dataTransfer.getData("text");
-             var src = document.getElementById(data);
-             //var src = angular.element(data);
-             var srcData:any = angular.element(src)[0];
-             var oldIndex = srcData.cellIndex;
-
-             var dest:any = angular.element(event.target)[0];
-             var newIndex = dest.cellIndex;
              var parent:any = this.scope.$parent;
              var tableConfig:any = parent.tableConfig;
              var columns:any = tableConfig.columns;
+
+             var data = event.dataTransfer.getData("text");
+             //var src = document.getElementById(data);
+             var src = angular.element('#' + data);
+             var srcData:any = angular.element(src)[0];
+             var oldIndex = this.getIndexById(columns, srcData.id); //srcData.cellIndex;
+
+             var dest:any = angular.element(event.target)[0];
+             var newIndex = this.getIndexById(columns, dest.id);//dest.cellIndex;
 
              var dataColumn = columns[oldIndex];
              columns.splice(oldIndex, 1);
@@ -136,6 +137,15 @@ module SimpleTableReorder{
              this.scope.onSymbolDrop({});
              this.scope.$apply();
          }
+
+        getIndexById(columns, id):number{
+            for(var i = 0; i < columns.length; i++){
+                if(columns[i].id === id){
+                    return i;
+                }
+            }
+            return 0;
+        }
 
         onDragStartHandler():void{
             var element = document.getElementById(this.id);

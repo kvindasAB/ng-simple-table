@@ -58,6 +58,7 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
             },
             onInitializationComplete: function(tableApi){
                 $log.log("onInitializationComplete: ", tableApi);
+                $log.log("onInitializationComplete.this: ", this);
                 $scope.selection = $scope.tableApi.selection.selectedRows;
             },
             onHeaderSortEnd: function(column){
@@ -65,6 +66,11 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
             },
             onSortEnd: function(column){
                 $log.log("onSortEnd: ", column);
+            },
+            onRowClicked: function(params){
+                var $event = params[0],
+                    row = params[1];
+                $log.log("onRowClicked: ", row, $event);
             }
 
         }

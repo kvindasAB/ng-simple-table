@@ -792,6 +792,7 @@ var SimpleTable;
         SimpleTable.prototype.onRowClicked = function ($event, row) {
             console.log("Row clicked: ", arguments);
             this.scope.$broadcast("onRowClicked", $event, row);
+            this.notifyListener('onRowClicked', [$event, row]);
         };
         SimpleTable.prototype.onHeaderClicked = function ($event, column) {
             console.log("Header clicked: ", arguments);

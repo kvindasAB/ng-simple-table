@@ -746,7 +746,7 @@ var SimpleTableResize;
             }
         };
         SimpleTableResize.prototype.addWidth = function (widthToAdd, tableConfig, updatedColumnId) {
-            for (var i = 0; i < tableConfig.columns.length; i++) {
+            for (var i = 0; i < this.tableHeaderColumnList.length; i++) {
                 var th = this.tableHeaderColumnList[i];
                 if (updatedColumnId === th.id) {
                     continue;
@@ -758,7 +758,7 @@ var SimpleTableResize;
             }
         };
         SimpleTableResize.prototype.removeWidth = function (widthToRemove, tableConfig, updatedColumnId) {
-            for (var i = 0; i < tableConfig.columns.length; i++) {
+            for (var i = 0; i < this.tableHeaderColumnList.length; i++) {
                 var th = this.tableHeaderColumnList[i];
                 if (updatedColumnId === th.id) {
                     continue;

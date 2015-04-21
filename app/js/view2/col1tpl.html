@@ -1,1 +1,1 @@
-Custom Template: <button class="btn btn-default">{{row[col.field]}}</button>
+Custom Template: <button class="btn btn-default" ng-class="{trasclass: tableConfig.methods.onTranscludeClass(row)}" >{{row[col.field]}} </button>

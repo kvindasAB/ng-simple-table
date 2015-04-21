@@ -152,11 +152,6 @@ var SimpleTableSort;
         SimpleTablePluginSort.prototype.addEventListeners = function () {
             _super.prototype.addEventListeners.call(this);
             this.scope.$on("onHeaderClicked", angular.bind(this, this.onHeaderClicked));
-            this.scope.$on("$destroy", this.removeEventListeners);
-        };
-        SimpleTablePluginSort.prototype.removeEventListeners = function () {
-            this.scope.$off("onHeaderClicked");
-            this.scope.$off("$destroy");
         };
         // Methods
         SimpleTablePluginSort.prototype.removePreviousSortFromColumns = function (columns) {

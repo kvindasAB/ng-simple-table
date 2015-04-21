@@ -163,6 +163,7 @@ declare module SimpleTableReorder {
         onDragEnterHandler(event: any): void;
         onDragLeaveHandler(event: any): void;
         onDropHandler(event: any): void;
+        getIndexById(columns: any, id: any): number;
         onDragStartHandler(): void;
         onDragEndHandler(): void;
         constructor(rootScope: any, scope: any, element: any, attrs: any);

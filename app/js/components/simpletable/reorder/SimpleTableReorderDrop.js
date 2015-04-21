@@ -97,16 +97,16 @@ var SimpleTableReorder;
             if (event.stopPropagation) {
                 event.stopPropagation();
             }
-            var data = event.dataTransfer.getData("text");
-            var src = document.getElementById(data);
-            //var src = angular.element(data);
-            var srcData = angular.element(src)[0];
-            var oldIndex = srcData.cellIndex;
-            var dest = angular.element(event.target)[0];
-            var newIndex = dest.cellIndex;
             var parent = this.scope.$parent;
             var tableConfig = parent.tableConfig;
             var columns = tableConfig.columns;
+            var data = event.dataTransfer.getData("text");
+            //var src = document.getElementById(data);
+            var src = angular.element('#' + data);
+            var srcData = angular.element(src)[0];
+            var oldIndex = this.getIndexById(columns, srcData.id); //srcData.cellIndex;
+            var dest = angular.element(event.target)[0];
+            var newIndex = this.getIndexById(columns, dest.id); //dest.cellIndex;
             var dataColumn = columns[oldIndex];
             columns.splice(oldIndex, 1);
             if (newIndex === columns.length) {
@@ -118,6 +118,14 @@ var SimpleTableReorder;
             angular.element(event.target).removeClass('simple-table-over');
             this.scope.onSymbolDrop({});
             this.scope.$apply();
+        };
+        SimpleTableReorderDrop.prototype.getIndexById = function (columns, id) {
+            for (var i = 0; i < columns.length; i++) {
+                if (columns[i].id === id) {
+                    return i;
+                }
+            }
+            return 0;
         };
         SimpleTableReorderDrop.prototype.onDragStartHandler = function () {
             var element = document.getElementById(this.id);

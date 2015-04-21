@@ -270,6 +270,9 @@ declare module SimpleTable {
         doInitPlugins(): void;
         onDataChanged(newValue: any, oldValue: any): void;
         onRowClicked($event: any, row: any): void;
+        onRowDoubleClicked($event: any, row: any): void;
+        onRowMouseEnter($event: any, row: any): void;
+        onRowMouseLeave($event: any, row: any): void;
         onHeaderClicked($event: any, column: any): void;
         notifyPreInitialization(): void;
         notifyInitializationComplete(): void;

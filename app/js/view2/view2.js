@@ -70,7 +70,25 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
             onRowClicked: function(params){
                 var $event = params[0],
                     row = params[1];
-                //$log.log("onRowClicked: ", row, $event);
+                $log.log("onRowClicked: ", row, $event);
+            },
+
+            onRowDoubleClicked: function(params){
+                var $event = params[0],
+                    row = params[1];
+                $log.log("onRowDoubleClicked: ", row, $event);
+            },
+
+            onRowMouseEnter: function(params){
+                var $event = params[0],
+                    row = params[1];
+                $log.log("onRowMouseEnter: ", row, $event);
+            },
+
+            onRowMouseLeave: function(params){
+                var $event = params[0],
+                    row = params[1];
+                $log.log("onRowMouseLeave: ", row, $event);
             }
         },
         methods: {

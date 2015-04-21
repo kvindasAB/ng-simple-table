@@ -73,6 +73,21 @@ var SimpleTable;
             this.scope.$broadcast("onRowClicked", $event, row);
             this.notifyListener('onRowClicked', [$event, row]);
         };
+        SimpleTable.prototype.onRowDoubleClicked = function ($event, row) {
+            //console.log("Row Double Clicked: ", arguments);
+            this.scope.$broadcast("onRowDoubleClicked", $event, row);
+            this.notifyListener('onRowDoubleClicked', [$event, row]);
+        };
+        SimpleTable.prototype.onRowMouseEnter = function ($event, row) {
+            //console.log("Row mouse enter: ", arguments);
+            this.scope.$broadcast("onRowMouseEnter", $event, row);
+            this.notifyListener('onRowMouseEnter', [$event, row]);
+        };
+        SimpleTable.prototype.onRowMouseLeave = function ($event, row) {
+            //console.log("Row mouse leave: ", arguments);
+            this.scope.$broadcast("onRowMouseLeave", $event, row);
+            this.notifyListener('onRowMouseLeave', [$event, row]);
+        };
         SimpleTable.prototype.onHeaderClicked = function ($event, column) {
             console.log("Header clicked: ", arguments);
             this.scope.$broadcast("onHeaderClicked", $event, column);

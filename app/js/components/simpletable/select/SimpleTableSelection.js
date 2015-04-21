@@ -36,7 +36,7 @@ var SimpleTableSelection;
             return (this.selectedRows.indexOf(row) > -1);
         };
         SimpleTablePluginSelection.prototype.setSelectedRows = function (rows) {
-            console.log("setSelectedRows: ", rows);
+            //console.log("setSelectedRows: ", rows);
             this.selectedRows.length = 0;
             for (var i = 0; i < rows.length; i++) {
                 this.addSelectedRow(rows[i]);
@@ -46,7 +46,7 @@ var SimpleTableSelection;
             this.addSelectedRow(row);
         };
         SimpleTablePluginSelection.prototype.addSelectedRow = function (row) {
-            console.log("SimpleTableSelection.addSelectedRow:", arguments);
+            //console.log("SimpleTableSelection.addSelectedRow:", arguments);
             if (!this.isRowValid(row)) {
                 return;
             }
@@ -62,7 +62,7 @@ var SimpleTableSelection;
                 return;
             }
             this.selectedRows.push(row);
-            console.log("selectedRows: ", this.selectedRows);
+            //console.log("selectedRows: ", this.selectedRows);
         };
         SimpleTablePluginSelection.prototype.doMultipleSelection = function (row) {
             var index = this.selectedRows.indexOf(row);

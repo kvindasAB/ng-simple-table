@@ -21,7 +21,8 @@ angular.module('simpletable.table', [])
             "         ng-click='simpleTable.onHeaderClicked($event, hcol)' " +
             "         ng-repeat='hcol in tableConfig.columns' " +
             "         ng-class='hcol.headerClass' ng-if='hcol.active' " +
-            "         height='{{tableConfig.headerHeight}}' width='{{hcol.style.width}}' " +
+            "         height='{{tableConfig.headerHeight}}' " +
+            "         style='{width:hcol.style.width}' " +
             "         st-table-drop-target='true' st-table-draggable='true'>" +
             "          {{hcol.title}}" +
             "          <div st-table-resizable-handler class='table-header-cursor-container'></div>" +

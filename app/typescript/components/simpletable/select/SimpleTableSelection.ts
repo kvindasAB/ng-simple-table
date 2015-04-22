@@ -33,7 +33,7 @@ module SimpleTableSelection {
         }
 
         setSelectedRows(rows:Array<any>):void{
-            console.log("setSelectedRows: ", rows);
+            //console.log("setSelectedRows: ", rows);
             this.selectedRows.length = 0;
             for(var i:number = 0; i < rows.length; i++){
                 this.addSelectedRow(rows[i]);
@@ -45,7 +45,7 @@ module SimpleTableSelection {
         }
 
         addSelectedRow(row:any):any {
-            console.log("SimpleTableSelection.addSelectedRow:", arguments);
+            //console.log("SimpleTableSelection.addSelectedRow:", arguments);
             if(!this.isRowValid(row)){
                 return;
             }
@@ -62,7 +62,7 @@ module SimpleTableSelection {
                 return;
             }
             this.selectedRows.push(row);
-            console.log("selectedRows: ", this.selectedRows);
+            //console.log("selectedRows: ", this.selectedRows);
         }
 
         doMultipleSelection(row:any){

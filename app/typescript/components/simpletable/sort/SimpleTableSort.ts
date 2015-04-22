@@ -20,12 +20,6 @@ module SimpleTableSort {
         addEventListeners():void {
             super.addEventListeners();
             this.scope.$on("onHeaderClicked", angular.bind(this, this.onHeaderClicked));
-            this.scope.$on("$destroy", this.removeEventListeners);
-        }
-
-        removeEventListeners():void {
-            this.scope.$off("onHeaderClicked");
-            this.scope.$off("$destroy");
         }
 
         // Methods

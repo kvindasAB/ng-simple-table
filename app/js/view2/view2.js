@@ -6,7 +6,7 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
     $stateProvider.state( 'view2', {
       url: '/view2',
       templateUrl: 'js/view2/view2.html',
-      controller: 'View2Ctrl'
+      controller: 'View2Ctrl as view2ctrl'
     });
         /*
     var log = log4javascript.getLogger(),
@@ -50,7 +50,7 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
         tableWidth: '100%',
         headerHeight: '30px',
         resizeType: 'adjustable',
-        rowTemplate: 'js/view2/rowtpl.html',
+        //rowTemplate: 'js/view2/rowtpl.html',
         listeners: {
             onPreInitialization: function(tableApi){
                 $log.log("onPreInitialization: ", tableApi);
@@ -71,8 +71,30 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
                 var $event = params[0],
                     row = params[1];
                 $log.log("onRowClicked: ", row, $event);
-            }
+            },
 
+            onRowDoubleClicked: function(params){
+                var $event = params[0],
+                    row = params[1];
+                $log.log("onRowDoubleClicked: ", row, $event);
+            },
+
+            onRowMouseEnter: function(params){
+                var $event = params[0],
+                    row = params[1];
+                $log.log("onRowMouseEnter: ", row, $event);
+            },
+
+            onRowMouseLeave: function(params){
+                var $event = params[0],
+                    row = params[1];
+                $log.log("onRowMouseLeave: ", row, $event);
+            }
+        },
+        methods: {
+            onTranscludeClass: function(row){
+                return row.id % 2 == 0;
+            }
         }
     };
 
@@ -123,6 +145,14 @@ angular.module('myApp.view2', ['ui.router', 'simpletable'])
     $scope.sortByCol2 = function(){
         $scope.tableApi.sortManager.setSortByColumn($scope.columns[1], "desc");
     };
+
+    $scope.onTranscludeButtonClick = function($event){
+        console.log("onTranscludeButtonClick: ", $event);
+    }
+
+    $scope.onTranscludeClass = function(row){
+        return row.id % 2 == 0;
+    }
 
 
 }]);

@@ -232,7 +232,7 @@ module SimpleTableResize{
         }
 
         addWidth(widthToAdd:number, tableConfig:any, updatedColumnId:string):void{
-            for(var i = 0; i < tableConfig.columns.length; i++){
+            for(var i = 0; i < this.tableHeaderColumnList.length; i++){
                 var th = this.tableHeaderColumnList[i];
                 if(updatedColumnId === th.id){
                     continue;
@@ -245,7 +245,7 @@ module SimpleTableResize{
         }
 
         removeWidth(widthToRemove:number, tableConfig:any, updatedColumnId:string):void{
-            for(var i = 0; i < tableConfig.columns.length; i++){
+            for(var i = 0; i < this.tableHeaderColumnList.length; i++){
                 var th = this.tableHeaderColumnList[i];
                 if(updatedColumnId === th.id){
                     continue;

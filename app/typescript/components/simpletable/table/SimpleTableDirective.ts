@@ -5,6 +5,7 @@ angular.module('simpletable.table', [])
 
         return {
             restrict: 'AE',
+            transclude: true,
             scope: {
                 tableConfig: '=',
                 tableData: '='
@@ -31,8 +32,10 @@ angular.module('simpletable.table', [])
             "    </thead>" +
             "    <tbody ng-if='!tableConfig.rowTemplate'>" +
             "      <tr ng-click='simpleTable.onRowClicked($event, row)' ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
+            "          ng-dblclick='simpleTable.onRowDoubleClicked($event, row)' " +
+            "          ng-mouseenter='simpleTable.onRowMouseEnter($event, row)' ng-mouseleave='simpleTable.onRowMouseLeave($event, row)' " +
             "        ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' >" +
-            "        <td ng-repeat='col in tableConfig.columns' ng-class='col.cellClass' ng-if='col.active'>" +
+            "        <td ng-repeat='col in tableConfig.columns' ng-class='col.cellClass' ng-if='col.active' >" +
             "          <span ng-if='!col.template'>{{row[col.field]}}</span> " +
             "          <span ng-if='!!col.template' ng-include='col.template'></span> " +
             "        </td>" +

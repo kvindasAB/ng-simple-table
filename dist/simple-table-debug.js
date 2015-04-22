@@ -82,7 +82,7 @@ var SimpleTableSelection;
             return (this.selectedRows.indexOf(row) > -1);
         };
         SimpleTablePluginSelection.prototype.setSelectedRows = function (rows) {
-            console.log("setSelectedRows: ", rows);
+            //console.log("setSelectedRows: ", rows);
             this.selectedRows.length = 0;
             for (var i = 0; i < rows.length; i++) {
                 this.addSelectedRow(rows[i]);
@@ -92,7 +92,7 @@ var SimpleTableSelection;
             this.addSelectedRow(row);
         };
         SimpleTablePluginSelection.prototype.addSelectedRow = function (row) {
-            console.log("SimpleTableSelection.addSelectedRow:", arguments);
+            //console.log("SimpleTableSelection.addSelectedRow:", arguments);
             if (!this.isRowValid(row)) {
                 return;
             }
@@ -108,7 +108,7 @@ var SimpleTableSelection;
                 return;
             }
             this.selectedRows.push(row);
-            console.log("selectedRows: ", this.selectedRows);
+            //console.log("selectedRows: ", this.selectedRows);
         };
         SimpleTablePluginSelection.prototype.doMultipleSelection = function (row) {
             var index = this.selectedRows.indexOf(row);
@@ -152,11 +152,6 @@ var SimpleTableSort;
         SimpleTablePluginSort.prototype.addEventListeners = function () {
             _super.prototype.addEventListeners.call(this);
             this.scope.$on("onHeaderClicked", angular.bind(this, this.onHeaderClicked));
-            this.scope.$on("$destroy", this.removeEventListeners);
-        };
-        SimpleTablePluginSort.prototype.removeEventListeners = function () {
-            this.scope.$off("onHeaderClicked");
-            this.scope.$off("$destroy");
         };
         // Methods
         SimpleTablePluginSort.prototype.removePreviousSortFromColumns = function (columns) {
@@ -746,7 +741,7 @@ var SimpleTableResize;
             }
         };
         SimpleTableResize.prototype.addWidth = function (widthToAdd, tableConfig, updatedColumnId) {
-            for (var i = 0; i < tableConfig.columns.length; i++) {
+            for (var i = 0; i < this.tableHeaderColumnList.length; i++) {
                 var th = this.tableHeaderColumnList[i];
                 if (updatedColumnId === th.id) {
                     continue;
@@ -758,7 +753,7 @@ var SimpleTableResize;
             }
         };
         SimpleTableResize.prototype.removeWidth = function (widthToRemove, tableConfig, updatedColumnId) {
-            for (var i = 0; i < tableConfig.columns.length; i++) {
+            for (var i = 0; i < this.tableHeaderColumnList.length; i++) {
                 var th = this.tableHeaderColumnList[i];
                 if (updatedColumnId === th.id) {
                     continue;
@@ -918,9 +913,24 @@ var SimpleTable;
             }
         };
         SimpleTable.prototype.onRowClicked = function ($event, row) {
-            console.log("Row clicked: ", arguments);
+            //console.log("Row clicked: ", arguments);
             this.scope.$broadcast("onRowClicked", $event, row);
             this.notifyListener('onRowClicked', [$event, row]);
+        };
+        SimpleTable.prototype.onRowDoubleClicked = function ($event, row) {
+            //console.log("Row Double Clicked: ", arguments);
+            this.scope.$broadcast("onRowDoubleClicked", $event, row);
+            this.notifyListener('onRowDoubleClicked', [$event, row]);
+        };
+        SimpleTable.prototype.onRowMouseEnter = function ($event, row) {
+            //console.log("Row mouse enter: ", arguments);
+            this.scope.$broadcast("onRowMouseEnter", $event, row);
+            this.notifyListener('onRowMouseEnter', [$event, row]);
+        };
+        SimpleTable.prototype.onRowMouseLeave = function ($event, row) {
+            //console.log("Row mouse leave: ", arguments);
+            this.scope.$broadcast("onRowMouseLeave", $event, row);
+            this.notifyListener('onRowMouseLeave', [$event, row]);
         };
         SimpleTable.prototype.onHeaderClicked = function ($event, column) {
             console.log("Header clicked: ", arguments);
@@ -961,6 +971,7 @@ var SimpleTable;
 angular.module('simpletable.table', []).directive('stTable', ['$timeout', 'SimpleTablePluginFactory', function ($timeout, SimpleTablePluginFactory) {
     return {
         restrict: 'AE',
+        transclude: true,
         scope: {
             tableConfig: '=',
             tableData: '='
@@ -968,7 +979,7 @@ angular.module('simpletable.table', []).directive('stTable', ['$timeout', 'Simpl
         controller: function ($scope, $element, $attrs) {
             return new SimpleTable.SimpleTable($scope, $element, $attrs, $timeout, SimpleTablePluginFactory);
         },
-        template: "<div ng-style='{width:tableConfig.tableWidth}'>" + "  <table ng-class='tableConfig.classes' ng-style='{width:tableConfig.tableWidth}'>" + "    <thead>" + "      <tr>" + "        <th id='{{hcol.id}}' class='table-header' " + "         ng-click='simpleTable.onHeaderClicked($event, hcol)' " + "         ng-repeat='hcol in tableConfig.columns' " + "         ng-class='hcol.headerClass' ng-if='hcol.active' " + "         height='{{tableConfig.headerHeight}}' " + "         style='{width:hcol.style.width}' " + "         st-table-drop-target='true' st-table-draggable='true'>" + "          {{hcol.title}}" + "          <div st-table-resizable-handler class='table-header-cursor-container'></div>" + "        </th>" + "      </tr>" + "    </thead>" + "    <tbody ng-if='!tableConfig.rowTemplate'>" + "      <tr ng-click='simpleTable.onRowClicked($event, row)' ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " + "        ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' >" + "        <td ng-repeat='col in tableConfig.columns' ng-class='col.cellClass' ng-if='col.active'>" + "          <span ng-if='!col.template'>{{row[col.field]}}</span> " + "          <span ng-if='!!col.template' ng-include='col.template'></span> " + "        </td>" + "      </tr>" + "    </tbody>" + "    <tbody ng-if='tableConfig.rowTemplate' ng-include='tableConfig.rowTemplate'>" + "    </tbody>" + "  </table>" + "</div>"
+        template: "<div ng-style='{width:tableConfig.tableWidth}'>" + "  <table ng-class='tableConfig.classes' ng-style='{width:tableConfig.tableWidth}'>" + "    <thead>" + "      <tr>" + "        <th id='{{hcol.id}}' class='table-header' " + "         ng-click='simpleTable.onHeaderClicked($event, hcol)' " + "         ng-repeat='hcol in tableConfig.columns' " + "         ng-class='hcol.headerClass' ng-if='hcol.active' " + "         height='{{tableConfig.headerHeight}}' " + "         style='{width:hcol.style.width}' " + "         st-table-drop-target='true' st-table-draggable='true'>" + "          {{hcol.title}}" + "          <div st-table-resizable-handler class='table-header-cursor-container'></div>" + "        </th>" + "      </tr>" + "    </thead>" + "    <tbody ng-if='!tableConfig.rowTemplate'>" + "      <tr ng-click='simpleTable.onRowClicked($event, row)' ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " + "          ng-dblclick='simpleTable.onRowDoubleClicked($event, row)' " + "          ng-mouseenter='simpleTable.onRowMouseEnter($event, row)' ng-mouseleave='simpleTable.onRowMouseLeave($event, row)' " + "        ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' >" + "        <td ng-repeat='col in tableConfig.columns' ng-class='col.cellClass' ng-if='col.active' >" + "          <span ng-if='!col.template'>{{row[col.field]}}</span> " + "          <span ng-if='!!col.template' ng-include='col.template'></span> " + "        </td>" + "      </tr>" + "    </tbody>" + "    <tbody ng-if='tableConfig.rowTemplate' ng-include='tableConfig.rowTemplate'>" + "    </tbody>" + "  </table>" + "</div>"
     };
 }]);
 //# sourceMappingURL=simple-table-debug.js.map

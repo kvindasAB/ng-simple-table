@@ -28,8 +28,6 @@ var SimpleTableSelection;
             this.scope.$on("$destroy", this.removeEventListeners);
         };
         SimpleTablePluginSelection.prototype.removeEventListeners = function () {
-            this.scope.$off("onRowClicked");
-            this.scope.$off("$destroy");
         };
         // Methods
         SimpleTablePluginSelection.prototype.isRowSelected = function (row) {

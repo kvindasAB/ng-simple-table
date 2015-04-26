@@ -23,8 +23,6 @@ module SimpleTableSelection {
         }
 
         removeEventListeners():void {
-            this.scope.$off("onRowClicked");
-            this.scope.$off("$destroy");
         }
 
         // Methods

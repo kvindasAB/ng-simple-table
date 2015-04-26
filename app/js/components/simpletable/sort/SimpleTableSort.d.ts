@@ -9,7 +9,6 @@ declare module SimpleTableSort {
         currentSortReverse: boolean;
         init(): void;
         addEventListeners(): void;
-        removeEventListeners(): void;
         removePreviousSortFromColumns(columns: any[]): void;
         markColumnAsSorted(column: any): void;
         applyColumnSortState(column: any): void;

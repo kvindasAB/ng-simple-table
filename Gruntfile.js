@@ -230,7 +230,7 @@ module.exports = function ( grunt ) {
       },
       srcts: {
         files: 'app/typescript/**/*.ts',
-        tasks: ['typescript']//, 'karma:continuous'
+        tasks: ['typescript:base']//, 'karma:continuous'
       },
       less: {
         files: 'app/less/**/*.less',

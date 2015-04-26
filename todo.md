@@ -1,25 +1,36 @@
 TODO List
 ========
 
+- Column refactoring
+- External template functionality refactoring
+- Auto checkbox column
+- Inline edition
+- Responsive columns adapting via resolution and functionality.
+- Responsive functionality ex. on resize or drag.
+- II - Multi Column sort
+- Save state feature 
+
+## Completed
+
 - Sort
    - Create directive per header - NOT REQUIRED 
    - Communicate child directives with parent directive. - NOT REQUIRED
    - Listen to click - DONE
    - Sort data accordingly - DONE
-   - Issue with Sort reapply
-   - Get sort externally
-   - Column custom sort
-   - Set sort externally
-   - II - Multi Column sort
+   - Issue with Sort reapply - DONE
+   - Get sort externally - DONE
+   - Column custom sort - DONE
+   - Set sort externally - DONE
+   
 - Resize functionality
-   - Resize functionality type FitToScreen
-   - Resize functionality type Static
-- Drag and drop functionality
-- Save state feature
+   - Resize functionality type FitToScreen - DONE
+   - Resize functionality type Static - DONE
+- Drag and drop functionality - DONE
+
 
 
 - Filter - String or Function - DONE
-- Selection
+- Selection - DONE
 - Plugin architecture -- DONE
 - Communicate API to controller via event -- DONE
 

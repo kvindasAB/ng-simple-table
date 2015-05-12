@@ -7,6 +7,11 @@ var SimpleTable;
     var SimpleTable = (function () {
         // Methods
         function SimpleTable(scope, element, attrs, $timeout, pluginFactory) {
+            // statics
+            this.RESIZE_TYPE_FIXED = 'fixed';
+            this.RESIZE_TYPE_ADJUSTABLE = 'adjustable';
+            this.WIDTH_PIXELS_TYPE = 'px';
+            this.WIDTH_PERCENTAGE_TYPE = '%';
             this.plugins = [];
             this.initializationComplete = false;
             // base
@@ -26,6 +31,7 @@ var SimpleTable;
             this.addEventListeners();
             this.validateConfig();
             this.initDefaultPlugins();
+            this.initFixedTable();
         };
         SimpleTable.prototype.registerPlugin = function (plugin) {
             console.log("initializing plugins...", plugin);
@@ -51,6 +57,41 @@ var SimpleTable;
         SimpleTable.prototype.initDefaultPlugins = function () {
             this.pluginFactory.newPluginSelection().doRegister(this);
             this.pluginFactory.newPluginSort().doRegister(this);
+        };
+        SimpleTable.prototype.initFixedTable = function () {
+            var tableConfig = this.scope.tableConfig;
+            if (tableConfig.resizeType === this.RESIZE_TYPE_ADJUSTABLE) {
+                return;
+            }
+            var columns = tableConfig.columns;
+            var totalWidth = 0;
+            for (var i = 0; i < columns.length; i++) {
+                var column = columns[i];
+                if (!column.active) {
+                    continue;
+                }
+                totalWidth += this.getWidthInNumber(column.style.width);
+            }
+            tableConfig.tableWidth = totalWidth + 'px';
+        };
+        SimpleTable.prototype.getWidthInNumber = function (width) {
+            var stringWidth = '';
+            var widthType = this.getWidthType(width);
+            if (widthType === this.WIDTH_PIXELS_TYPE) {
+                stringWidth = width.substring(0, width.length - 2);
+            }
+            else {
+                stringWidth = width.substring(0, width.length - 1);
+            }
+            var columnWidth = parseFloat(stringWidth);
+            return columnWidth;
+        };
+        SimpleTable.prototype.getWidthType = function (width) {
+            var widthType = width.substring(width.length - 2, width.length);
+            if (widthType === this.WIDTH_PIXELS_TYPE) {
+                return this.WIDTH_PIXELS_TYPE;
+            }
+            return this.WIDTH_PERCENTAGE_TYPE;
         };
         SimpleTable.prototype.doInitPlugins = function () {
             var self = this;

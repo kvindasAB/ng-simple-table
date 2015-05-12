@@ -15,13 +15,10 @@ angular.module('simpletable.resizable', []).directive('stTableResizable', ['$tim
             return $scope.simpleTableResize;
         },
         link: function ($scope, $element, $attrs, parent) {
-            //$element.on('mousemove', function(event){$scope.simpleTableResize.onMouseMoveHandler(event, $scope, $element);});
-            //$element.on('mouseup', function(event){$scope.simpleTableResize.onMouseUpHandler(event, $scope, $element);});
             if (!$scope.simpleTableResize) {
                 $scope.simpleTableResize = new SimpleTableResize.SimpleTableResize($scope, $element, $attrs, $window);
             }
             $scope.simpleTableResize.parent = parent;
-            //$scope.simpleTableResize.doRegister();
             $scope.simpleTableResize.init();
             return $scope.simpleTableResize;
         }

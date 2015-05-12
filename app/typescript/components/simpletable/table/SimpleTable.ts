@@ -5,6 +5,10 @@
 module SimpleTable {
     export class SimpleTable implements ISimpleTable {
         // statics
+        RESIZE_TYPE_FIXED:string = 'fixed';
+        RESIZE_TYPE_ADJUSTABLE:string = 'adjustable';
+        WIDTH_PIXELS_TYPE:string = 'px';
+        WIDTH_PERCENTAGE_TYPE:string = '%';
 
         // Attributes
         scope:any;
@@ -42,6 +46,7 @@ module SimpleTable {
             this.addEventListeners();
             this.validateConfig();
             this.initDefaultPlugins();
+            this.initFixedTable();
         }
 
         registerPlugin(plugin:SimpleTablePlugin.ISimpleTablePlugin):void{
@@ -72,6 +77,43 @@ module SimpleTable {
         initDefaultPlugins():void{
             this.pluginFactory.newPluginSelection().doRegister(this);
             this.pluginFactory.newPluginSort().doRegister(this);
+        }
+
+        initFixedTable():void{
+            var tableConfig:any = this.scope.tableConfig;
+            if(tableConfig.resizeType === this.RESIZE_TYPE_ADJUSTABLE){
+                return;
+            }
+            var columns:any = tableConfig.columns;
+            var totalWidth:number = 0;
+            for(var i = 0; i < columns.length; i++){
+                var column:any = columns[i];
+                if(!column.active){
+                    continue;
+                }
+                totalWidth += this.getWidthInNumber(column.style.width);
+            }
+            tableConfig.tableWidth = totalWidth + 'px';
+        }
+
+        getWidthInNumber(width):number{
+            var stringWidth:string = '';
+            var widthType:string = this.getWidthType(width);
+            if(widthType === this.WIDTH_PIXELS_TYPE){
+                stringWidth = width.substring(0 , width.length - 2);
+            }else{
+                stringWidth = width.substring(0 , width.length - 1);
+            }
+            var columnWidth:number = parseFloat(stringWidth);
+            return columnWidth;
+        }
+
+        getWidthType(width):string{
+            var widthType:string = width.substring(width.length - 2, width.length);
+            if(widthType === this.WIDTH_PIXELS_TYPE){
+                return this.WIDTH_PIXELS_TYPE;
+            }
+            return this.WIDTH_PERCENTAGE_TYPE;
         }
 
         doInitPlugins():void{

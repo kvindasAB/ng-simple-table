@@ -4,10 +4,12 @@
 angular.module('myApp', [
   'ui.bootstrap',
   'ui.router',
+  'stable.examples.main',
+  'stable.examples.simple',
   'myApp.view1',
   'myApp.view2',
   'myApp.version'
 ]).
 config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise("/view1");
+    $urlRouterProvider.otherwise("/examples");
 }]);

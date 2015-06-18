@@ -4,7 +4,7 @@
 /// <reference path="ISimpleTableResize.ts" />
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 var SimpleTableResize;
-(function (_SimpleTableResize) {
+(function (SimpleTableResize_1) {
     var SimpleTableResize = (function () {
         //************************
         // OVERRIDE METHODS - END
@@ -252,6 +252,6 @@ var SimpleTableResize;
         };
         return SimpleTableResize;
     })();
-    _SimpleTableResize.SimpleTableResize = SimpleTableResize;
+    SimpleTableResize_1.SimpleTableResize = SimpleTableResize;
 })(SimpleTableResize || (SimpleTableResize = {}));
 //# sourceMappingURL=SimpleTableResize.js.map

@@ -3,7 +3,7 @@
 /// <reference path="../factory/SimpleTablePluginFactory.ts" />
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 var SimpleTable;
-(function (_SimpleTable) {
+(function (SimpleTable_1) {
     var SimpleTable = (function () {
         // Methods
         function SimpleTable(scope, element, attrs, $timeout, pluginFactory) {
@@ -161,6 +161,6 @@ var SimpleTable;
         };
         return SimpleTable;
     })();
-    _SimpleTable.SimpleTable = SimpleTable;
+    SimpleTable_1.SimpleTable = SimpleTable;
 })(SimpleTable || (SimpleTable = {}));
 //# sourceMappingURL=SimpleTable.js.map

@@ -87,7 +87,7 @@ module.exports = function ( grunt ) {
     typescript: {
       base: {
           src: ['app/typescript/**/*.ts'],
-          dest: 'app/js/',
+          dest: 'app/js/components/simpletable',
           options: {
               module: 'amd', //or commonjs
               target: 'es5', //or es3

@@ -4,6 +4,7 @@ angular.module('simpletable', [
     'simpletable.reorder',
     'simpletable.resizable',
     'simpletable.uuid.util'
-]).value('version', '0.1');
+])
+    .value('version', '0.1');
 ;
 //# sourceMappingURL=SimpleTableModule.js.map

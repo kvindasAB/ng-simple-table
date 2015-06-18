@@ -91,7 +91,7 @@ module.exports = function ( grunt ) {
           options: {
               module: 'amd', //or commonjs
               target: 'es5', //or es3
-              basePath: 'app/typescript/',
+              rootPath: 'app/typescript/',
               sourceMap: true,
               declaration: true
           }
@@ -102,7 +102,7 @@ module.exports = function ( grunt ) {
         options: {
           module: 'amd', //or commonjs
           target: 'es5', //or es3
-          basePath: 'app/typescript/',
+          rootPath: 'app/typescript/',
           sourceMap: true,
           declaration: true
         }
@@ -113,7 +113,7 @@ module.exports = function ( grunt ) {
         options: {
           module: 'amd', //or commonjs
           target: 'es5', //or es3
-          basePath: 'app/typescript/',
+          rootPath: 'app/typescript/',
           sourceMap: true,
           declaration: true,
           removeComments: true

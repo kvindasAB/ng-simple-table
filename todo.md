@@ -8,7 +8,16 @@ TODO List
 - Responsive columns adapting via resolution and functionality.
 - Responsive functionality ex. on resize or drag.
 - II - Multi Column sort
-- Save state feature 
+- Save state feature
+ 
+-- Issues
+
+Columns should be active by default, and inactive only if specified.
+Columns seems to be added by pieces, which forces the re-rendering of the table
+Resize fixed being applied by default, while should be relative by default.
+Relative resize should be called percentage
+Rendering is very slow
+
 
 ## Completed
 

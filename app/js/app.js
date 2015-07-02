@@ -4,6 +4,7 @@
 angular.module('myApp', [
   'ui.bootstrap',
   'ui.router',
+  'simpletable',
   'stable.examples.main',
   'stable.examples.simple',
   'myApp.view1',

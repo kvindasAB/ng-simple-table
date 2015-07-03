@@ -8,7 +8,7 @@ angular.module('stable.examples.core', ['ui.router'])
 
         service.generateRows = function(qty){
             var data = [];
-            for(var i=0; i < qty; i++){
+            for(var i=1; i <= qty; i++){
                 data.push(this.generateRow(i));
             }
             return data;

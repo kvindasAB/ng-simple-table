@@ -16,7 +16,8 @@ Columns should be active by default, and inactive only if specified.
 Columns seems to be added by pieces, which forces the re-rendering of the table
 Resize fixed being applied by default, while should be relative by default.
 Relative resize should be called percentage
-Rendering is very slow
+Rendering is very slow, seems like adding columns manually
+If no resizable handler is defined, the table generate issues
 
 
 ## Completed

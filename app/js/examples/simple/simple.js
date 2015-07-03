@@ -33,7 +33,4 @@ angular.module('stable.examples.simple', ['ui.router'])
             headerHeight: '30px',
         };
 
-
-
-
     }]);

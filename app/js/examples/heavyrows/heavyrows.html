@@ -1,5 +1,11 @@
-<div >
-
-    This is an examples internal structure.
-
+<div class="well">
+    <form class="form-inline">
+        <div class="form-group">
+            <label for="rowsqty">Rows Quantity</label>
+            <input type="number" class="form-control" id="rowsqty" placeholder="Quantity" ng-model="form.qty">
+        </div>
+        <button type="submit" class="btn btn-default" ng-click="applyQty(form.qty)">Apply</button>
+    </form>
+</div>
+<div st-table table-config="tableConfig" table-data="data" style="overflow-x: auto; width: 700px; ">
 </div>

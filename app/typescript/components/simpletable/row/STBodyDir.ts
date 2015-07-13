@@ -12,6 +12,13 @@
          }
      }
  }
+
+ "<tr ng-click='simpleTable.onRowClicked($event, row)' ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
+ "    ng-dblclick='simpleTable.onRowDoubleClicked($event, row)' " +
+ "    ng-mouseenter='simpleTable.onRowMouseEnter($event, row)' ng-mouseleave='simpleTable.onRowMouseLeave($event, row)' " +
+ "  ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' st-table-row >" +
+ "</tr>";
+
  */
 
 
@@ -19,10 +26,9 @@
 angular.module('simpletable.table.body', [])
     .directive('stTableBody', ['$log', function($log ) {
 
-        var tpl =   "<tr ng-click='simpleTable.onRowClicked($event, row)' ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
-                    "    ng-dblclick='simpleTable.onRowDoubleClicked($event, row)' " +
-                    "    ng-mouseenter='simpleTable.onRowMouseEnter($event, row)' ng-mouseleave='simpleTable.onRowMouseLeave($event, row)' " +
-                    "  ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' st-table-row >" +
+        var tpl =   "<tr ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
+                    "    ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' " +
+                    "    st-table-row >" +
                     "</tr>";
         
         return {

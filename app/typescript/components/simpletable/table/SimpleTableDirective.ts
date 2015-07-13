@@ -11,7 +11,11 @@ angular.module('simpletable.table', [])
                 tableData: '='
             },
             controller: function($scope, $element, $attrs) {
-                return new SimpleTable.SimpleTable($scope, $element, $attrs, $timeout, SimpleTablePluginFactory);
+                var stable = new SimpleTable.SimpleTable($scope, $element, $attrs, $timeout, SimpleTablePluginFactory);
+                // Controller referenced as this in ang 1.3
+                this.getSimpleTable = function(){
+                    return stable;
+                }
             },
             template:
             "<div ng-style='{width:tableConfig.tableWidth}'>" +

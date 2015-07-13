@@ -1,42 +1,58 @@
-/// <reference path="../../../../typings/angularjs/angular.d.ts" />
+/// <reference path="../table/SimpleTable.ts" />
+module STRow {
+    export class Row {
 
-/*
- compile: function(tElem, tAttrs){
-     console.log(name + ': compile');
-     return {
-         pre: function(scope, iElem, iAttrs){
-            console.log(name + ': pre link');
-         },
-         post: function(scope, iElem, iAttrs){
-            console.log(name + ': post link');
-         }
-     }
- }
- */
+        scope:any;
+        element:any;
+        attrs:any;
+        simpleTable:SimpleTable.SimpleTable
 
+        constructor(){
+        }
 
+        link(scope:any, element:any, attrs:any, simpleTable:SimpleTable.SimpleTable){
+            this.scope          = scope;
+            this.element        = element;
+            this.attrs          = attrs;
+            this.simpleTable    = simpleTable;
+        }
 
-angular.module('simpletable.table.row', [])
-    .directive('stTableRow', ['$log', function($log ) {
+        init(){
+            this.addEventListeners();
+        }
 
-        var tpl =   "  <td ng-repeat='col in tableConfig.columns' st-table-cell ng-class='col.cellClass' ng-if='col.active' >" +
-                    "  </td>";
-        
-        return {
-            restrict: 'AE',
-            require: '^stTable',
-            compile: function(tElem, tAttrs){
-                $log.log('Row compile: ', tElem, tAttrs);
-                return {
-                    pre: function(scope, iElem, iAttrs){
-                        $log.log('Row pre: ', iElem, scope);
-                    },
-                    post: function(scope, iElem, iAttrs){
-                        $log.log('Row post: ', iElem, scope);
-                    }
-                }
-            },
-            template: tpl
-        };
+        addEventListeners() {
+            this.element.on('click', angular.bind(this, this.onRowClicked));
+            this.element.on('dblclick', angular.bind(this, this.onRowDoubleClicked));
+            this.element.on('mouseenter', angular.bind(this, this.onRowMouseEnter));
+            this.element.on('mouseleave', angular.bind(this, this.onRowMouseLeave));
+            this.element.on('$destroy', angular.bind(this, this.removeEventListeners));
+        }
 
-    }]);
+        removeEventListeners() {
+            if(!this.element){ return; }
+            this.element.off();
+        }
+
+        onRowClicked(event) {
+            //console.log('onRowClicked: ', event, this);
+            this.simpleTable.onRowClicked(event, this.scope.row);
+        }
+
+        onRowDoubleClicked(event) {
+            //console.log('onRowDoubleClicked');
+            this.simpleTable.onRowDoubleClicked(event, this.scope.row);
+        }
+
+        onRowMouseEnter(event) {
+            //console.log('onRowMouseEnter');
+            this.simpleTable.onRowMouseEnter(event, this.scope.row);
+        }
+
+        onRowMouseLeave(event) {
+            //console.log('onRowMouseLeave');
+            this.simpleTable.onRowMouseLeave(event, this.scope.row);
+        }
+
+    }
+}

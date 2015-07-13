@@ -136,24 +136,28 @@ module SimpleTable {
             //console.log("Row clicked: ", arguments);
             this.scope.$broadcast("onRowClicked", $event, row);
             this.notifyListener('onRowClicked', [$event, row]);
+            this.scope.$digest();
         }
 
         onRowDoubleClicked($event, row):void{
             //console.log("Row Double Clicked: ", arguments);
             this.scope.$broadcast("onRowDoubleClicked", $event, row);
             this.notifyListener('onRowDoubleClicked', [$event, row]);
+            this.scope.$digest();
         }
 
         onRowMouseEnter($event, row):void{
             //console.log("Row mouse enter: ", arguments);
             this.scope.$broadcast("onRowMouseEnter", $event, row);
             this.notifyListener('onRowMouseEnter', [$event, row]);
+            this.scope.$digest();
         }
 
         onRowMouseLeave($event, row):void{
             //console.log("Row mouse leave: ", arguments);
             this.scope.$broadcast("onRowMouseLeave", $event, row);
             this.notifyListener('onRowMouseLeave', [$event, row]);
+            this.scope.$digest();
         }
 
         onHeaderClicked($event, column):void{

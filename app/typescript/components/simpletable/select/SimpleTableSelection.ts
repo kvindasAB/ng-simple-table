@@ -31,7 +31,6 @@ module SimpleTableSelection {
         }
 
         setSelectedRows(rows:Array<any>):void{
-            //console.log("setSelectedRows: ", rows);
             this.selectedRows.length = 0;
             for(var i:number = 0; i < rows.length; i++){
                 this.addSelectedRow(rows[i]);

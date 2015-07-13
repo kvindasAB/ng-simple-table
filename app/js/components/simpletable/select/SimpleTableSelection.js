@@ -34,7 +34,6 @@ var SimpleTableSelection;
             return (this.selectedRows.indexOf(row) > -1);
         };
         SimpleTablePluginSelection.prototype.setSelectedRows = function (rows) {
-            //console.log("setSelectedRows: ", rows);
             this.selectedRows.length = 0;
             for (var i = 0; i < rows.length; i++) {
                 this.addSelectedRow(rows[i]);

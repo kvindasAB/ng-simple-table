@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('stable.examples.simple', ['ui.router'])
+angular.module('stable.examples.heavytpl', ['ui.router'])
 
 .config(['$stateProvider', function($stateProvider) {
-    $stateProvider.state( 'examples.simple', {
-      url: '/simple',
+    $stateProvider.state( 'examples.heavytpl', {
+      url: '/heavytpl',
       views: {
         'innerView': {
-            templateUrl: 'js/examples/simple/simple.html'
+            templateUrl: 'js/examples/heavytpl/heavytpl.html'
         }
       }
     });

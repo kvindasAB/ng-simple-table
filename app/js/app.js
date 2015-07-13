@@ -8,6 +8,8 @@ angular.module('myApp', [
   'stable.examples.core',
   'stable.examples.main',
   'stable.examples.simple',
+  'stable.examples.heavyrows',
+  'stable.examples.heavytpl',
   'myApp.view1',
   'myApp.view2',
   'myApp.version'

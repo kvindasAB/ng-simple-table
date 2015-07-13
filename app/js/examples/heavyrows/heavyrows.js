@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('stable.examples.simple', ['ui.router'])
+angular.module('stable.examples.heavyrows', ['ui.router'])
 
 .config(['$stateProvider', function($stateProvider) {
         $stateProvider.state( 'examples.heavyrows', {

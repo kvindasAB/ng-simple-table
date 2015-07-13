@@ -1,6 +1,7 @@
 TODO List
 ========
 
+- Directive refactoring - Make every piece a different directive, headers, rows, columns.
 - Column refactoring
 - External template functionality refactoring
 - Auto checkbox column
@@ -18,6 +19,8 @@ Resize fixed being applied by default, while should be relative by default.
 Relative resize should be called percentage
 Rendering is very slow, seems like adding columns manually
 If no resizable handler is defined, the table generate issues
+
+
 
 
 ## Completed

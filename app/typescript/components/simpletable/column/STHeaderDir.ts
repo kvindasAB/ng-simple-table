@@ -12,6 +12,8 @@
          }
      }
  }
+ "     ng-click='simpleTable.onHeaderClicked($event, hcol)' " +
+
  */
 
 
@@ -21,7 +23,6 @@ angular.module('simpletable.table.header', [])
 
         var tpl =   "  <tr>" +
                     "    <th id='{{hcol.id}}' class='table-header' " +
-                    "     ng-click='simpleTable.onHeaderClicked($event, hcol)' " +
                     "     ng-repeat='hcol in tableConfig.columns' " +
                     "     ng-class='hcol.headerClass' ng-if='hcol.active' " +
                     "     ng-style='{\"height\":tableConfig.headerHeight, \"min-width\":hcol.style.minWidth, \"width\":hcol.style.width}' " +

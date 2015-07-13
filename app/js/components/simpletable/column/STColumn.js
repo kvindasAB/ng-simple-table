@@ -1,36 +1,33 @@
-/// <reference path="../../../../typings/angularjs/angular.d.ts" />
-/*
- compile: function(tElem, tAttrs){
-     console.log(name + ': compile');
-     return {
-         pre: function(scope, iElem, iAttrs){
-            console.log(name + ': pre link');
-         },
-         post: function(scope, iElem, iAttrs){
-            console.log(name + ': post link');
-         }
-     }
- }
- */
-angular.module('simpletable.table.column', [])
-    .directive('stTableColumn', ['$log', function ($log) {
-        var tpl = "{{hcol.title}}" +
-            "<div st-table-resizable-handler11 class='table-header-cursor-container'></div>";
-        return {
-            restrict: 'AE',
-            require: '^stTable',
-            compile: function (tElem, tAttrs) {
-                $log.log('Col compile: ', tElem, tAttrs);
-                return {
-                    pre: function (scope, iElem, iAttrs) {
-                        $log.log('Col pre: ', iElem, scope);
-                    },
-                    post: function (scope, iElem, iAttrs) {
-                        $log.log('Col post: ', iElem, scope);
-                    }
-                };
-            },
-            template: tpl
+/// <reference path="../table/SimpleTable.ts" />
+var STColumn;
+(function (STColumn) {
+    var Column = (function () {
+        function Column() {
+        }
+        Column.prototype.link = function (scope, element, attrs, simpleTable) {
+            this.scope = scope;
+            this.element = element;
+            this.attrs = attrs;
+            this.simpleTable = simpleTable;
         };
-    }]);
+        Column.prototype.init = function () {
+            this.addEventListeners();
+        };
+        Column.prototype.addEventListeners = function () {
+            this.element.on('click', angular.bind(this, this.onHeaderClicked));
+        };
+        Column.prototype.removeEventListeners = function () {
+            if (!this.element) {
+                return;
+            }
+            this.element.off();
+        };
+        Column.prototype.onHeaderClicked = function (event) {
+            //console.log('onHeaderClicked: ', event, this);
+            this.simpleTable.onHeaderClicked(event, this.scope.hcol);
+        };
+        return Column;
+    })();
+    STColumn.Column = Column;
+})(STColumn || (STColumn = {}));
 //# sourceMappingURL=STColumn.js.map

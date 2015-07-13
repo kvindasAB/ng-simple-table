@@ -1,4 +1,5 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
+/// <reference path="STColumn.ts" />
 
 /*
  compile: function(tElem, tAttrs){
@@ -31,8 +32,11 @@ angular.module('simpletable.table.column', [])
                     pre: function(scope, iElem, iAttrs){
                         $log.log('Col pre: ', iElem, scope);
                     },
-                    post: function(scope, iElem, iAttrs){
-                        $log.log('Col post: ', iElem, scope);
+                    post: function(scope, iElem, iAttrs, parent){
+                        //$log.log('Col post: ', iElem, scope);
+                        var column = new STColumn.Column();
+                        column.link(scope, iElem, iAttrs, parent.getSimpleTable() );
+                        column.init();
                     }
                 }
             },

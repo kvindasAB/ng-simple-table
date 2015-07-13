@@ -2,6 +2,9 @@ TODO List
 ========
 
 - Directive refactoring - Make every piece a different directive, headers, rows, columns.
+    - Columns
+    - Rows
+    - Cells
 - Column refactoring
 - External template functionality refactoring
 - Auto checkbox column

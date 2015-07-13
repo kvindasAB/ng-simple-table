@@ -1,6 +1,8 @@
 angular.module('simpletable',
     [
         'simpletable.table',
+        'simpletable.table.header',
+        'simpletable.table.column',
         'simpletable.table.body',
         'simpletable.table.row',
         'simpletable.table.cell',
@@ -10,5 +12,5 @@ angular.module('simpletable',
         'simpletable.uuid.util'
 
     ])
-    .value('version', '0.1');;
+    .value('version', '0.2');
 

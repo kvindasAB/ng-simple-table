@@ -16,18 +16,7 @@ angular.module('simpletable.table', [])
             template:
             "<div ng-style='{width:tableConfig.tableWidth}'>" +
             "  <table ng-class='tableConfig.classes' ng-style='{width:tableConfig.tableWidth}'>" +
-            "    <thead>" +
-            "      <tr>" +
-            "        <th id='{{hcol.id}}' class='table-header' " +
-            "         ng-click='simpleTable.onHeaderClicked($event, hcol)' " +
-            "         ng-repeat='hcol in tableConfig.columns' " +
-            "         ng-class='hcol.headerClass' ng-if='hcol.active' " +
-            "         ng-style='{\"height\":tableConfig.headerHeight, \"min-width\":hcol.style.minWidth, \"width\":hcol.style.width}' " +
-            "         st-table-drop-target='true' st-table-draggable='true'>" +
-            "          {{hcol.title}}" +
-            "          <div st-table-resizable-handler11 class='table-header-cursor-container'></div>" +
-            "        </th>" +
-            "      </tr>" +
+            "    <thead st-table-header>" +
             "    </thead>" +
             "    <tbody st-table-body ng-if='!tableConfig.rowTemplate'>" +
             "    </tbody>" +

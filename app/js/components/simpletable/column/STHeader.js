@@ -40,4 +40,4 @@ angular.module('simpletable.table.header', [])
             template: tpl
         };
     }]);
-//# sourceMappingURL=SimpleTableHeader.js.map
+//# sourceMappingURL=STHeader.js.map

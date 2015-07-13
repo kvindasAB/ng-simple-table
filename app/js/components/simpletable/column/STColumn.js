@@ -1,6 +1,5 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 /*
-
  compile: function(tElem, tAttrs){
      console.log(name + ': compile');
      return {
@@ -12,25 +11,26 @@
          }
      }
  }
-
  */
-angular.module('simpletable.table.cell', [])
-    .directive('stTableCell', ['$log', function ($log) {
+angular.module('simpletable.table.column', [])
+    .directive('stTableColumn', ['$log', function ($log) {
+        var tpl = "{{hcol.title}}" +
+            "<div st-table-resizable-handler11 class='table-header-cursor-container'></div>";
         return {
             restrict: 'AE',
             require: '^stTable',
             compile: function (tElem, tAttrs) {
-                //$log.log('Cell compile: ', tElem, tAttrs);
+                $log.log('Col compile: ', tElem, tAttrs);
                 return {
                     pre: function (scope, iElem, iAttrs) {
-                        //$log.log('Cell pre: ', iElem, scope);
+                        $log.log('Col pre: ', iElem, scope);
                     },
                     post: function (scope, iElem, iAttrs) {
-                        //$log.log('Cell post: ', iElem, scope);
+                        $log.log('Col post: ', iElem, scope);
                     }
                 };
             },
-            template: "{{row[col.field]}}"
+            template: tpl
         };
     }]);
-//# sourceMappingURL=SimpleTableCell.js.map
+//# sourceMappingURL=STColumn.js.map

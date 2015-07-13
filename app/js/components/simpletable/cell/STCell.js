@@ -1,5 +1,6 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 /*
+
  compile: function(tElem, tAttrs){
      console.log(name + ': compile');
      return {
@@ -11,26 +12,25 @@
          }
      }
  }
+
  */
-angular.module('simpletable.table.row', [])
-    .directive('stTableRow', ['$log', function ($log) {
-        var tpl = "  <td ng-repeat='col in tableConfig.columns' st-table-cell ng-class='col.cellClass' ng-if='col.active' >" +
-            "  </td>";
+angular.module('simpletable.table.cell', [])
+    .directive('stTableCell', ['$log', function ($log) {
         return {
             restrict: 'AE',
             require: '^stTable',
             compile: function (tElem, tAttrs) {
-                $log.log('Row compile: ', tElem, tAttrs);
+                //$log.log('Cell compile: ', tElem, tAttrs);
                 return {
                     pre: function (scope, iElem, iAttrs) {
-                        $log.log('Row pre: ', iElem, scope);
+                        //$log.log('Cell pre: ', iElem, scope);
                     },
                     post: function (scope, iElem, iAttrs) {
-                        $log.log('Row post: ', iElem, scope);
+                        //$log.log('Cell post: ', iElem, scope);
                     }
                 };
             },
-            template: tpl
+            template: "{{row[col.field]}}"
         };
     }]);
-//# sourceMappingURL=SimpleTableRow.js.map
+//# sourceMappingURL=STCell.js.map

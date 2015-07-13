@@ -36,4 +36,4 @@ angular.module('simpletable.table.body', [])
             template: tpl
         };
     }]);
-//# sourceMappingURL=SimpleTableBody.js.map
+//# sourceMappingURL=STBody.js.map

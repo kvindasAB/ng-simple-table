@@ -1,10 +1,8 @@
 TODO List
 ========
 
-- Directive refactoring - Make every piece a different directive, headers, rows, columns.
-    - Columns
-    - Rows
-    - Cells
+- Simplify parts (row, cell, column) templates by adding listeners to code instead of template code.
+- Reenable (row, cell, column) external templates mechanism    
 - Column refactoring
 - External template functionality refactoring
 - Auto checkbox column
@@ -28,6 +26,10 @@ If no resizable handler is defined, the table generate issues
 
 ## Completed
 
+- Directive refactoring - Make every piece a different directive, headers, rows, columns.
+    - Columns - DONE
+    - Rows - DONE
+    - Cells - DONE
 - Sort
    - Create directive per header - NOT REQUIRED 
    - Communicate child directives with parent directive. - NOT REQUIRED

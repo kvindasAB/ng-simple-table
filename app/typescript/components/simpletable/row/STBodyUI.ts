@@ -1,5 +1,5 @@
 /// <reference path="../table/SimpleTable.ts" />
-module STBody {
+module STBodyUI {
     export class Body {
 
         static DEFAULT_TPL:string = "<tr ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +

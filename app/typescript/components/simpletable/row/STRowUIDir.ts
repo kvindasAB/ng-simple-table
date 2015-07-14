@@ -1,5 +1,5 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
-/// <reference path="STRow.ts" />
+/// <reference path="STRowUI.ts" />
 
 angular.module('simpletable.table.row', [])
     .directive('stTableRow', ['$log', function($log ) {
@@ -18,7 +18,7 @@ angular.module('simpletable.table.row', [])
                     },
                     post: function(scope, iElem, iAttrs, parent){
                         //$log.log('Row post: ', scope);
-                        var row = new STRow.Row();
+                        var row = new STRowUI.Row();
                         row.link(scope, iElem, iAttrs, parent.getSimpleTable() );
                         row.init();
                         return row;

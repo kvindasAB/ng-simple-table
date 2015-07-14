@@ -1,5 +1,5 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
-/// <reference path="STCell.ts" />
+/// <reference path="STCellUI.ts" />
 
 angular.module('simpletable.table.cell', [])
     .directive('stTableCell', ['$log', '$compile', function($log, $compile ) {
@@ -14,7 +14,7 @@ angular.module('simpletable.table.cell', [])
                         //$log.log('Cell pre: ', iElem, scope);
                     },
                     post: function(scope, iElem, iAttrs){
-                        var cell = new STCell.Cell();
+                        var cell = new STCellUI.Cell();
                         cell.link(scope, iElem, iAttrs, $compile);
                         cell.init();
                         return cell;

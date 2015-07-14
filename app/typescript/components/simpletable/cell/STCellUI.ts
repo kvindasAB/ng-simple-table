@@ -1,4 +1,4 @@
-module STCell {
+module STCellUI {
     export class Cell {
 
         scope:any;

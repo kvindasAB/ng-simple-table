@@ -1,5 +1,5 @@
 /// <reference path="../table/SimpleTable.ts" />
-module STColumn {
+module STColumnUI {
     export class Column {
 
         scope:any;

@@ -1,5 +1,5 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
-/// <reference path="STBody.ts" />
+/// <reference path="STBodyUI.ts" />
 
 
 // TODO - Integrate templates with templateCache
@@ -35,7 +35,7 @@ angular.module('simpletable.table.body', [])
                     },
                     post: function(scope, iElem, iAttrs, parent){
                         //$log.log('Body post: ', iElem, scope);
-                        var body = new STBody.Body();
+                        var body = new STBodyUI.Body();
                         body.link(scope, iElem, iAttrs, parent.getSimpleTable(), $compile, parent);
                         body.init();
                         return body;

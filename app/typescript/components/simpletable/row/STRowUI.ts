@@ -1,5 +1,5 @@
 /// <reference path="../table/SimpleTable.ts" />
-module STRow {
+module STRowUI {
     export class Row {
 
         scope:any;

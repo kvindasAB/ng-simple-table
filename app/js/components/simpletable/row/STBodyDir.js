@@ -1,4 +1,5 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
+/// <reference path="STBody.ts" />
 // TODO - Integrate templates with templateCache
 /*
 
@@ -10,7 +11,7 @@
 
  */
 angular.module('simpletable.table.body', [])
-    .directive('stTableBody', ['$log', function ($log) {
+    .directive('stTableBody', ['$log', '$compile', function ($log, $compile) {
         var tpl = "<tr ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
             "    ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' " +
             "    st-table-row >" +
@@ -19,17 +20,20 @@ angular.module('simpletable.table.body', [])
             restrict: 'AE',
             require: '^stTable',
             compile: function (tElem, tAttrs) {
-                $log.log('Body compile: ', tElem, tAttrs);
+                //$log.log('Body compile: ', tElem, tAttrs);
                 return {
                     pre: function (scope, iElem, iAttrs) {
-                        $log.log('Body pre: ', iElem, scope);
+                        //$log.log('Body pre: ', iElem, scope);
                     },
-                    post: function (scope, iElem, iAttrs) {
-                        $log.log('Body post: ', iElem, scope);
+                    post: function (scope, iElem, iAttrs, parent) {
+                        //$log.log('Body post: ', iElem, scope);
+                        var body = new STBody.Body();
+                        body.link(scope, iElem, iAttrs, parent.getSimpleTable(), $compile, parent);
+                        body.init();
+                        return body;
                     }
                 };
-            },
-            template: tpl
+            }
         };
     }]);
 //# sourceMappingURL=STBodyDir.js.map

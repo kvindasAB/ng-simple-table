@@ -1,7 +1,7 @@
 TODO List
 ========
 
-- Simplify parts (row, cell, column) templates by adding listeners to code instead of template code.
+
 - Reenable (row, cell, column) external templates mechanism    
 - Column refactoring
 - External template functionality refactoring
@@ -30,6 +30,7 @@ If no resizable handler is defined, the table generate issues
     - Columns - DONE
     - Rows - DONE
     - Cells - DONE
+- Simplify parts (row, cell, column) templates by adding listeners to code instead of template code. - DONE
 - Sort
    - Create directive per header - NOT REQUIRED 
    - Communicate child directives with parent directive. - NOT REQUIRED

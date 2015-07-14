@@ -4,7 +4,6 @@ angular.module('simpletable.table', [])
     .directive('stTable', ['$timeout', 'SimpleTablePluginFactory', function ($timeout, SimpleTablePluginFactory) {
         return {
             restrict: 'AE',
-            transclude: true,
             scope: {
                 tableConfig: '=',
                 tableData: '='

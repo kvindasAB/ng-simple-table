@@ -3,7 +3,11 @@ declare module STCell {
         scope: any;
         element: any;
         attrs: any;
+        $compile: any;
         constructor();
-        link(scope: any, element: any, attrs: any): void;
+        link(scope: any, element: any, attrs: any, $compile: any): void;
+        init(): void;
+        validateCustomTemplate(): void;
+        getCustomTemplate(scope: any): any;
     }
 }

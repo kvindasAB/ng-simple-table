@@ -1,7 +1,7 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 /// <reference path="STCell.ts" />
 angular.module('simpletable.table.cell', [])
-    .directive('stTableCell', ['$log', function ($log) {
+    .directive('stTableCell', ['$log', '$compile', function ($log, $compile) {
         return {
             restrict: 'AE',
             require: '^stTable',
@@ -13,7 +13,8 @@ angular.module('simpletable.table.cell', [])
                     },
                     post: function (scope, iElem, iAttrs) {
                         var cell = new STCell.Cell();
-                        cell.link(scope, iElem, iAttrs);
+                        cell.link(scope, iElem, iAttrs, $compile);
+                        cell.init();
                         return cell;
                     }
                 };

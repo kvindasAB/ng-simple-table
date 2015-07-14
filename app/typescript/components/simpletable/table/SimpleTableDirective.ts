@@ -5,7 +5,6 @@ angular.module('simpletable.table', [])
 
         return {
             restrict: 'AE',
-            transclude: true,
             scope: {
                 tableConfig: '=',
                 tableData: '='

@@ -1,16 +1,6 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
+// TODO - Integrate templates with templateCache
 /*
- compile: function(tElem, tAttrs){
-     console.log(name + ': compile');
-     return {
-         pre: function(scope, iElem, iAttrs){
-            console.log(name + ': pre link');
-         },
-         post: function(scope, iElem, iAttrs){
-            console.log(name + ': post link');
-         }
-     }
- }
 
  "<tr ng-click='simpleTable.onRowClicked($event, row)' ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
  "    ng-dblclick='simpleTable.onRowDoubleClicked($event, row)' " +

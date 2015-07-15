@@ -2,7 +2,8 @@ TODO List
 ========
 
 
-- Reenable (row, cell, column) external templates mechanism    
+- Reenable (row, cell, column) external templates mechanism
+- Integrate templates with templateCache
 - Column refactoring
 - External template functionality refactoring
 - Auto checkbox column

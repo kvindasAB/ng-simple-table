@@ -1,6 +1,5 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 /// <reference path="STColumnUI.ts" />
-
 /*
  compile: function(tElem, tAttrs){
      console.log(name + ': compile');
@@ -14,32 +13,28 @@
      }
  }
  */
-
-
-
 angular.module('simpletable.table.column', [])
-    .directive('stTableColumn', ['$log', '$templateCache', function($log, $templateCache) {
-
+    .directive('stTableColumn', ['$log', '$templateCache', function ($log, $templateCache) {
         return {
             restrict: 'AE',
             require: '^stTable',
-            compile: function(tElem, tAttrs){
+            compile: function (tElem, tAttrs) {
                 $log.log('Col compile: ', tElem, tAttrs);
                 return {
-                    pre: function(scope, iElem, iAttrs){
+                    pre: function (scope, iElem, iAttrs) {
                         $log.log('Col pre: ', iElem, scope);
                     },
-                    post: function(scope, iElem, iAttrs, parent){
+                    post: function (scope, iElem, iAttrs, parent) {
                         //$log.log('Col post: ', iElem, scope);
                         var column = new STColumnUI.Column();
-                        column.link(scope, iElem, iAttrs, parent.getSimpleTable() );
+                        column.link(scope, iElem, iAttrs, parent.getSimpleTable());
                         column.init();
                     }
-                }
+                };
             },
-            template: function(tElem, tAttrs){
+            template: function (tElem, tAttrs) {
                 return $templateCache.get(STTemplates.STTpls.COLUMN_TPL_ID);
             }
         };
-
     }]);
+//# sourceMappingURL=STColumnUIDir.js.map

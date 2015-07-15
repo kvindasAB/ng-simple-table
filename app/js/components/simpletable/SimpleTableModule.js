@@ -1,5 +1,6 @@
 angular.module('simpletable', [
     'simpletable.table',
+    'simpletable.table.tpls',
     'simpletable.table.header',
     'simpletable.table.column',
     'simpletable.table.body',

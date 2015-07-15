@@ -1,7 +1,9 @@
-/// <reference path="SimpleTable.ts" />
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
+/// <reference path="SimpleTable.ts" />
+/// <reference path="../tpl/STTemplates.ts" />
+
 angular.module('simpletable.table', [])
-    .directive('stTable', ['$timeout', 'SimpleTablePluginFactory', function($timeout, SimpleTablePluginFactory) {
+    .directive('stTable', ['$timeout', '$templateCache', 'SimpleTablePluginFactory', function($timeout, $templateCache, SimpleTablePluginFactory) {
 
         return {
             restrict: 'AE',
@@ -16,25 +18,9 @@ angular.module('simpletable.table', [])
                     return stable;
                 }
             },
-            template:
-            "<div ng-style='{width:tableConfig.tableWidth}'>" +
-            "  <table ng-class='tableConfig.classes' ng-style='{width:tableConfig.tableWidth}'>" +
-            "    <thead st-table-header>" +
-            "    </thead>" +
-            "    <tbody st-table-body ng-if='!tableConfig.rowTemplate'>" +
-            "    </tbody>" +
-            "    <tbody ng-if='tableConfig.rowTemplate' ng-include='tableConfig.rowTemplate'>" +
-            "    </tbody>" +
-            "  </table>" +
-            "</div>"
-            /*
-
-             "        <td ng-repeat='col in tableConfig.columns' ng-class='col.cellClass' ng-if='col.active' >" +
-             "          <span ng-if='!col.template'>{{row[col.field]}}</span> " +
-             "          <span ng-if='!!col.template' ng-include='col.template'></span> " +
-             "        </td>" +
-
-             */
+            template: function(tElem, tAttrs){
+                return $templateCache.get(STTemplates.STTpls.TABLE_TPL_ID);
+            }
         };
 
 

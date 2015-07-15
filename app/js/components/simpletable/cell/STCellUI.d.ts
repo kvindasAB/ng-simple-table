@@ -1,13 +1,9 @@
+/// <reference path="../core/BaseComponentUI.d.ts" />
+/// <reference path="../tpl/STTemplates.d.ts" />
 declare module STCellUI {
-    class Cell {
-        scope: any;
-        element: any;
-        attrs: any;
-        $compile: any;
-        constructor();
-        link(scope: any, element: any, attrs: any, $compile: any): void;
+    class Cell extends STCore.BaseComponentUI {
         init(): void;
-        validateCustomTemplate(): void;
-        getCustomTemplate(scope: any): any;
+        shouldUseCustomTemplate(): boolean;
+        getCustomTemplate(scope: angular.IScope): string;
     }
 }

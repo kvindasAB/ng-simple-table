@@ -2,8 +2,10 @@ TODO List
 ========
 
 
-- Reenable (row, cell, column) external templates mechanism
-- Integrate templates with templateCache
+- Reenable (row, cell, column) external templates mechanism - DONE
+- Centralize UI Objects and template management
+- Integrate templates and externalTemplates with templateCache
+- Allow custom templates to be either internal or external files. 
 - Column refactoring
 - External template functionality refactoring
 - Auto checkbox column

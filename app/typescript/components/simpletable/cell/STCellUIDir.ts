@@ -2,7 +2,7 @@
 /// <reference path="STCellUI.ts" />
 
 angular.module('simpletable.table.cell', [])
-    .directive('stTableCell', ['$log', '$compile', '$templateCache', function($log, $compile, $templateCache) {
+    .directive('stTableCell', ['$log', '$compile', '$templateCache', '$templateRequest', function($log, $compile, $templateCache, $templateRequest) {
 
         return {
             restrict: 'AE',
@@ -15,7 +15,8 @@ angular.module('simpletable.table.cell', [])
                     },
                     post: function(scope, iElem, iAttrs){
                         var cell = new STCellUI.Cell();
-                        cell.link(scope, iElem, iAttrs, $compile);
+                        cell.setServices($compile, $templateCache, $templateRequest);
+                        cell.link(scope, iElem, iAttrs);
                         cell.init();
                         return cell;
                     }

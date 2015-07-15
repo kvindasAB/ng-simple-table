@@ -7,9 +7,8 @@ declare module STBodyUI {
         attrs: any;
         simpleTable: SimpleTable.SimpleTable;
         $compile: any;
-        parentCtrl: any;
         constructor();
-        link(scope: any, element: any, attrs: any, simpleTable: SimpleTable.SimpleTable, $compile: any, parentCtrl: any): void;
+        link(scope: any, element: any, attrs: any, simpleTable: SimpleTable.SimpleTable, $compile: any): void;
         init(): void;
         validateCustomTemplate(): void;
         applyTemplate(tpl: string, scope: any): void;

@@ -4,13 +4,12 @@ var STBodyUI;
     var Body = (function () {
         function Body() {
         }
-        Body.prototype.link = function (scope, element, attrs, simpleTable, $compile, parentCtrl) {
+        Body.prototype.link = function (scope, element, attrs, simpleTable, $compile) {
             this.scope = scope;
             this.element = element;
             this.attrs = attrs;
             this.simpleTable = simpleTable;
             this.$compile = $compile;
-            this.parentCtrl = parentCtrl;
         };
         Body.prototype.init = function () {
             this.validateCustomTemplate();

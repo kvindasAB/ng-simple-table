@@ -1,3 +1,4 @@
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../table/SimpleTable.ts" />
 module STRowUI {
     export class Row {

@@ -36,7 +36,7 @@ angular.module('simpletable.table.body', [])
                     post: function(scope, iElem, iAttrs, parent){
                         //$log.log('Body post: ', iElem, scope);
                         var body = new STBodyUI.Body();
-                        body.link(scope, iElem, iAttrs, parent.getSimpleTable(), $compile, parent);
+                        body.link(scope, iElem, iAttrs, parent.getSimpleTable(), $compile);
                         body.init();
                         return body;
                     }

@@ -11,18 +11,16 @@ module STBodyUI {
         attrs:any;
         simpleTable:SimpleTable.SimpleTable;
         $compile:any;
-        parentCtrl:any;
 
         constructor(){
         }
 
-        link(scope:any, element:any, attrs:any, simpleTable:SimpleTable.SimpleTable, $compile:any, parentCtrl:any){
+        link(scope:any, element:any, attrs:any, simpleTable:SimpleTable.SimpleTable, $compile:any){
             this.scope          = scope;
             this.element        = element;
             this.attrs          = attrs;
             this.simpleTable    = simpleTable;
             this.$compile       = $compile;
-            this.parentCtrl     = parentCtrl;
         }
 
         init(){

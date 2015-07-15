@@ -1,36 +1,20 @@
+/// <reference path="../core/BaseComponentUI.ts" />
+/// <reference path="../tpl/STTemplates.ts" />
 module STCellUI {
-    export class Cell {
-
-        scope:any;
-        element:any;
-        attrs:any;
-        $compile:any;
-
-        constructor(){
-        }
-
-        link(scope:any, element:any, attrs:any, $compile:any){
-            this.scope      = scope;
-            this.element    = element;
-            this.attrs      = attrs;
-            this.$compile   = $compile;
-        }
+    export class Cell extends STCore.BaseComponentUI {
 
         init(){
             this.validateCustomTemplate();
         }
 
-        validateCustomTemplate(){
-            if(!this.scope || !this.scope.col || (!this.scope.col.template && !this.scope.col.templateId)){
-                return;
-            }
-            var tpl:string = this.getCustomTemplate(this.scope);
-            this.element.html(tpl);
-            this.$compile(this.element.contents())(this.scope);
+        shouldUseCustomTemplate():boolean{
+            var col:any = (<any>this.scope).col;
+            return col && (col.template || col.templateId);
         }
 
-        getCustomTemplate(scope:any){
-            return scope.col.template;
+        /* To be implemented by subclasses */
+        getCustomTemplate(scope:angular.IScope):string{
+            return (<any>scope).col.template;
         }
 
     }

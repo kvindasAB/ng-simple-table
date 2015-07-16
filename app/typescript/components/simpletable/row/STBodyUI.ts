@@ -1,38 +1,24 @@
 /// <reference path="../table/SimpleTable.ts" />
+/// <reference path="../core/BaseComponentUI.ts" />
+/// <reference path="../tpl/STTemplates.ts" />
 module STBodyUI {
-    export class Body {
-
-        static DEFAULT_TPL:string = "<tr ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
-                                    "    ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' " +
-                                    "    st-table-row ></tr>";
-
-        scope:any;
-        element:any;
-        attrs:any;
-        simpleTable:SimpleTable.SimpleTable;
-        $compile:any;
-
-        constructor(){
-        }
-
-        link(scope:any, element:any, attrs:any, simpleTable:SimpleTable.SimpleTable, $compile:any){
-            this.scope          = scope;
-            this.element        = element;
-            this.attrs          = attrs;
-            this.simpleTable    = simpleTable;
-            this.$compile       = $compile;
-        }
+    export class Body extends STCore.BaseComponentUI {
 
         init(){
             this.validateCustomTemplate();
         }
 
+
+        shouldUseCustomTemplate():boolean{
+            var tableConfig:any = (<any>this.scope).tableConfig;
+            return tableConfig && tableConfig.rowTemplate;
+        }
+
         validateCustomTemplate(){
-            if(!this.scope || !this.scope.tableConfig || !this.scope.tableConfig.rowTemplate1){
-                this.applyTemplate(Body.DEFAULT_TPL, this.scope);
+            if(!this.shouldUseCustomTemplate()){
+                this.applyTemplate(this.getTemplateByCacheId(STTemplates.STTpls.BODY_TPL_ID), this.scope);
                 return;
             }
-            console.log('STBody Tpl: ', this.getCustomTemplate(this.scope) );
             this.applyTemplate(this.getCustomTemplate(this.scope), this.scope);
         }
 
@@ -43,8 +29,8 @@ module STBodyUI {
             link(scope);
         }
 
-        getCustomTemplate(scope:any){
-            return scope.tableConfig.rowTemplate1;
+        getCustomTemplate(scope:angular.IScope):any{
+            return (<any>scope).tableConfig.rowTemplate;
         }
 
     }

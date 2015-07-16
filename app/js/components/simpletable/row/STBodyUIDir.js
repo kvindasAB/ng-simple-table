@@ -11,11 +11,7 @@
 
  */
 angular.module('simpletable.table.body', [])
-    .directive('stTableBody', ['$log', '$compile', function ($log, $compile) {
-        var tpl = "<tr ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
-            "    ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' " +
-            "    st-table-row >" +
-            "</tr>";
+    .directive('stTableBody', ['$log', '$compile', '$templateCache', '$templateRequest', function ($log, $compile, $templateCache, $templateRequest) {
         return {
             restrict: 'AE',
             require: '^stTable',
@@ -28,7 +24,8 @@ angular.module('simpletable.table.body', [])
                     post: function (scope, iElem, iAttrs, parent) {
                         //$log.log('Body post: ', iElem, scope);
                         var body = new STBodyUI.Body();
-                        body.link(scope, iElem, iAttrs, parent.getSimpleTable(), $compile);
+                        body.setServices($compile, $templateCache, $templateRequest);
+                        body.link(scope, iElem, iAttrs, parent.getSimpleTable());
                         body.init();
                         return body;
                     }

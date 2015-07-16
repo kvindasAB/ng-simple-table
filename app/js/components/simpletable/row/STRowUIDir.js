@@ -1,7 +1,7 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 /// <reference path="STRowUI.ts" />
 angular.module('simpletable.table.row', [])
-    .directive('stTableRow', ['$log', '$templateCache', function ($log, $templateCache) {
+    .directive('stTableRow', ['$log', '$compile', '$templateCache', '$templateRequest', function ($log, $compile, $templateCache, $templateRequest) {
         return {
             restrict: 'AE',
             require: '^stTable',
@@ -14,6 +14,7 @@ angular.module('simpletable.table.row', [])
                     post: function (scope, iElem, iAttrs, parent) {
                         //$log.log('Row post: ', scope);
                         var row = new STRowUI.Row();
+                        row.setServices($compile, $templateCache, $templateRequest);
                         row.link(scope, iElem, iAttrs, parent.getSimpleTable());
                         row.init();
                         return row;

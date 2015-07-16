@@ -12,10 +12,10 @@ angular.module('simpletable.table.cell', [])
                     pre: function (scope, iElem, iAttrs) {
                         //$log.log('Cell pre: ', iElem, scope);
                     },
-                    post: function (scope, iElem, iAttrs) {
+                    post: function (scope, iElem, iAttrs, parent) {
                         var cell = new STCellUI.Cell();
                         cell.setServices($compile, $templateCache, $templateRequest);
-                        cell.link(scope, iElem, iAttrs);
+                        cell.link(scope, iElem, iAttrs, parent.getSimpleTable());
                         cell.init();
                         return cell;
                     }

@@ -1,25 +1,31 @@
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
 /// <reference path="../table/SimpleTable.ts" />
+/// <reference path="../core/BaseComponentUI.ts" />
+/// <reference path="../tpl/STTemplates.ts" />
 var STBodyUI;
 (function (STBodyUI) {
-    var Body = (function () {
+    var Body = (function (_super) {
+        __extends(Body, _super);
         function Body() {
+            _super.apply(this, arguments);
         }
-        Body.prototype.link = function (scope, element, attrs, simpleTable, $compile) {
-            this.scope = scope;
-            this.element = element;
-            this.attrs = attrs;
-            this.simpleTable = simpleTable;
-            this.$compile = $compile;
-        };
         Body.prototype.init = function () {
             this.validateCustomTemplate();
         };
+        Body.prototype.shouldUseCustomTemplate = function () {
+            var tableConfig = this.scope.tableConfig;
+            return tableConfig && tableConfig.rowTemplate;
+        };
         Body.prototype.validateCustomTemplate = function () {
-            if (!this.scope || !this.scope.tableConfig || !this.scope.tableConfig.rowTemplate1) {
-                this.applyTemplate(Body.DEFAULT_TPL, this.scope);
+            if (!this.shouldUseCustomTemplate()) {
+                this.applyTemplate(this.getTemplateByCacheId(STTemplates.STTpls.BODY_TPL_ID), this.scope);
                 return;
             }
-            console.log('STBody Tpl: ', this.getCustomTemplate(this.scope));
             this.applyTemplate(this.getCustomTemplate(this.scope), this.scope);
         };
         Body.prototype.applyTemplate = function (tpl, scope) {
@@ -29,13 +35,10 @@ var STBodyUI;
             link(scope);
         };
         Body.prototype.getCustomTemplate = function (scope) {
-            return scope.tableConfig.rowTemplate1;
+            return scope.tableConfig.rowTemplate;
         };
-        Body.DEFAULT_TPL = "<tr ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
-            "    ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' " +
-            "    st-table-row ></tr>";
         return Body;
-    })();
+    })(STCore.BaseComponentUI);
     STBodyUI.Body = Body;
 })(STBodyUI || (STBodyUI = {}));
 //# sourceMappingURL=STBodyUI.js.map

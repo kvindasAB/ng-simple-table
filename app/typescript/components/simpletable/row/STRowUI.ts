@@ -1,22 +1,8 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../table/SimpleTable.ts" />
+/// <reference path="../core/BaseComponentUI.ts" />
 module STRowUI {
-    export class Row {
-
-        scope:any;
-        element:any;
-        attrs:any;
-        simpleTable:SimpleTable.SimpleTable
-
-        constructor(){
-        }
-
-        link(scope:any, element:any, attrs:any, simpleTable:SimpleTable.SimpleTable){
-            this.scope          = scope;
-            this.element        = element;
-            this.attrs          = attrs;
-            this.simpleTable    = simpleTable;
-        }
+    export class Row extends STCore.BaseComponentUI {
 
         init(){
             this.addEventListeners();
@@ -37,22 +23,22 @@ module STRowUI {
 
         onRowClicked(event) {
             //console.log('onRowClicked: ', event, this);
-            this.simpleTable.onRowClicked(event, this.scope.row);
+            this.simpleTable.onRowClicked(event, (<any>this.scope).row);
         }
 
         onRowDoubleClicked(event) {
             //console.log('onRowDoubleClicked');
-            this.simpleTable.onRowDoubleClicked(event, this.scope.row);
+            this.simpleTable.onRowDoubleClicked(event, (<any>this.scope).row);
         }
 
         onRowMouseEnter(event) {
             //console.log('onRowMouseEnter');
-            this.simpleTable.onRowMouseEnter(event, this.scope.row);
+            this.simpleTable.onRowMouseEnter(event, (<any>this.scope).row);
         }
 
         onRowMouseLeave(event) {
             //console.log('onRowMouseLeave');
-            this.simpleTable.onRowMouseLeave(event, this.scope.row);
+            this.simpleTable.onRowMouseLeave(event, (<any>this.scope).row);
         }
 
     }

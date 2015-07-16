@@ -1,13 +1,8 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../table/SimpleTable.d.ts" />
+/// <reference path="../core/BaseComponentUI.d.ts" />
 declare module STRowUI {
-    class Row {
-        scope: any;
-        element: any;
-        attrs: any;
-        simpleTable: SimpleTable.SimpleTable;
-        constructor();
-        link(scope: any, element: any, attrs: any, simpleTable: SimpleTable.SimpleTable): void;
+    class Row extends STCore.BaseComponentUI {
         init(): void;
         addEventListeners(): void;
         removeEventListeners(): void;

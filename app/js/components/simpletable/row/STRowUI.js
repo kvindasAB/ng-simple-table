@@ -1,16 +1,19 @@
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../table/SimpleTable.ts" />
+/// <reference path="../core/BaseComponentUI.ts" />
 var STRowUI;
 (function (STRowUI) {
-    var Row = (function () {
+    var Row = (function (_super) {
+        __extends(Row, _super);
         function Row() {
+            _super.apply(this, arguments);
         }
-        Row.prototype.link = function (scope, element, attrs, simpleTable) {
-            this.scope = scope;
-            this.element = element;
-            this.attrs = attrs;
-            this.simpleTable = simpleTable;
-        };
         Row.prototype.init = function () {
             this.addEventListeners();
         };
@@ -44,7 +47,7 @@ var STRowUI;
             this.simpleTable.onRowMouseLeave(event, this.scope.row);
         };
         return Row;
-    })();
+    })(STCore.BaseComponentUI);
     STRowUI.Row = Row;
 })(STRowUI || (STRowUI = {}));
 //# sourceMappingURL=STRowUI.js.map

@@ -1,5 +1,6 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 /// <reference path="ISimpleTablePlugin.ts" />
+/// <reference path="../table/SimpleTable.ts" />
 module STCore {
     export class BaseComponentUI {
 
@@ -7,6 +8,7 @@ module STCore {
         scope:angular.IScope;
         element:any;
         attrs:angular.IAttributes;
+        simpleTable:SimpleTable.SimpleTable;
 
         $compile:angular.ICompileService;
         $templateCache:angular.ITemplateCacheService;
@@ -19,10 +21,11 @@ module STCore {
             this.$templateRequest   = $templateRequest;
         }
 
-        link(scope:angular.IScope, element:any, attrs:angular.IAttributes):void{
-            this.scope      = scope;
-            this.element    = element;
-            this.attrs      = attrs;
+        link(scope:angular.IScope, element:any, attrs:angular.IAttributes, simpleTable:SimpleTable.SimpleTable):void{
+            this.scope          = scope;
+            this.element        = element;
+            this.attrs          = attrs;
+            this.simpleTable    = simpleTable;
         }
 
         validateCustomTemplate():void{

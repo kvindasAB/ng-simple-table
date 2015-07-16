@@ -1,17 +1,12 @@
 /// <reference path="../table/SimpleTable.d.ts" />
+/// <reference path="../core/BaseComponentUI.d.ts" />
+/// <reference path="../tpl/STTemplates.d.ts" />
 declare module STBodyUI {
-    class Body {
-        static DEFAULT_TPL: string;
-        scope: any;
-        element: any;
-        attrs: any;
-        simpleTable: SimpleTable.SimpleTable;
-        $compile: any;
-        constructor();
-        link(scope: any, element: any, attrs: any, simpleTable: SimpleTable.SimpleTable, $compile: any): void;
+    class Body extends STCore.BaseComponentUI {
         init(): void;
+        shouldUseCustomTemplate(): boolean;
         validateCustomTemplate(): void;
         applyTemplate(tpl: string, scope: any): void;
-        getCustomTemplate(scope: any): any;
+        getCustomTemplate(scope: angular.IScope): any;
     }
 }

@@ -8,7 +8,7 @@ module STTemplates {
         static CELL_TPL:string      = "{{row[col.field]}}";
         static ROW_TPL:string       = "<td ng-repeat='col in tableConfig.columns' st-table-cell ng-class='col.cellClass' ng-if='col.active' ></td>";
         static BODY_TPL:string      = "<tr ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
-                                      "  ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' " +
+                                      "  ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse track by $index ' " +
                                       "  st-table-row >" +
                                       "</tr>";
         static COLUMN_TPL:string    = "{{hcol.title}}<div st-table-resizable-handler11 class='table-header-cursor-container'></div>";

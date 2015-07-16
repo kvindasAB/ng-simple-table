@@ -12,7 +12,7 @@ var STTemplates;
         STTpls.CELL_TPL = "{{row[col.field]}}";
         STTpls.ROW_TPL = "<td ng-repeat='col in tableConfig.columns' st-table-cell ng-class='col.cellClass' ng-if='col.active' ></td>";
         STTpls.BODY_TPL = "<tr ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
-            "  ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' " +
+            "  ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse track by $index ' " +
             "  st-table-row >" +
             "</tr>";
         STTpls.COLUMN_TPL = "{{hcol.title}}<div st-table-resizable-handler11 class='table-header-cursor-container'></div>";

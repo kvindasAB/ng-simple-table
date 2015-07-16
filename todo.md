@@ -25,6 +25,7 @@ If no resizable handler is defined, the table generate issues
 
 ## Completed
 
+- Dispose ComponentUI objects on scope destroy. - DONE
 - Reenable (row, cell, column) external templates mechanism - DONE
 - Centralize UI Objects and template management - DONE
 - Integrate templates templateCache - DONE

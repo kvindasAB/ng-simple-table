@@ -1,8 +1,9 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
-/// <reference path="ISimpleTablePlugin.ts" />
 /// <reference path="../table/SimpleTable.ts" />
+/// <reference path="ISimpleTablePlugin.ts" />
+/// <reference path="IDisposable.ts" />
 module STCore {
-    export class BaseComponentUI {
+    export class BaseComponentUI implements STCore.IDisposable {
 
         // Attributes
         scope:angular.IScope;
@@ -26,6 +27,8 @@ module STCore {
             this.element        = element;
             this.attrs          = attrs;
             this.simpleTable    = simpleTable;
+
+            this.scope.$on('$destroy', this.dispose);
         }
 
         validateCustomTemplate():void{
@@ -74,6 +77,17 @@ module STCore {
             var tpl:string = this.getCustomTemplate(this.scope);
             this.element.html(tpl);
             this.$compile(this.element.contents())(this.scope);
+        }
+
+        dispose():void {
+            delete this.scope;
+            delete this.element;
+            delete this.attrs;
+            delete this.simpleTable;
+
+            delete this.$compile;
+            delete this.$templateCache;
+            delete this.$templateRequest;
         }
 
     }

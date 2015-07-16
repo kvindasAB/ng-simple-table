@@ -1,6 +1,7 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
-/// <reference path="ISimpleTablePlugin.ts" />
 /// <reference path="../table/SimpleTable.ts" />
+/// <reference path="ISimpleTablePlugin.ts" />
+/// <reference path="IDisposable.ts" />
 var STCore;
 (function (STCore) {
     var BaseComponentUI = (function () {
@@ -17,6 +18,7 @@ var STCore;
             this.element = element;
             this.attrs = attrs;
             this.simpleTable = simpleTable;
+            this.scope.$on('$destroy', this.dispose);
         };
         BaseComponentUI.prototype.validateCustomTemplate = function () {
             if (!this.shouldUseCustomTemplate()) {
@@ -63,6 +65,15 @@ var STCore;
             var tpl = this.getCustomTemplate(this.scope);
             this.element.html(tpl);
             this.$compile(this.element.contents())(this.scope);
+        };
+        BaseComponentUI.prototype.dispose = function () {
+            delete this.scope;
+            delete this.element;
+            delete this.attrs;
+            delete this.simpleTable;
+            delete this.$compile;
+            delete this.$templateCache;
+            delete this.$templateRequest;
         };
         return BaseComponentUI;
     })();

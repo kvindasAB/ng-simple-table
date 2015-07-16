@@ -1,29 +1,7 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
-/*
- compile: function(tElem, tAttrs){
-     console.log(name + ': compile');
-     return {
-         pre: function(scope, iElem, iAttrs){
-            console.log(name + ': pre link');
-         },
-         post: function(scope, iElem, iAttrs){
-            console.log(name + ': post link');
-         }
-     }
- }
- "     ng-click='simpleTable.onHeaderClicked($event, hcol)' " +
-
- */
+/// <reference path="../tpl/STTemplates.ts" />
 angular.module('simpletable.table.header', [])
-    .directive('stTableHeader', ['$log', function ($log) {
-        var tpl = "  <tr>" +
-            "    <th id='{{hcol.id}}' class='table-header' " +
-            "     ng-repeat='hcol in tableConfig.columns' " +
-            "     ng-class='hcol.headerClass' ng-if='hcol.active' " +
-            "     ng-style='{\"height\":tableConfig.headerHeight, \"min-width\":hcol.style.minWidth, \"width\":hcol.style.width}' " +
-            "     st-table-drop-target='true' st-table-draggable='true' st-table-column>" +
-            "    </th>" +
-            "  </tr>";
+    .directive('stTableHeader', ['$log', '$templateCache', function ($log, $templateCache) {
         return {
             restrict: 'AE',
             require: '^stTable',
@@ -38,7 +16,9 @@ angular.module('simpletable.table.header', [])
                     }
                 };
             },
-            template: tpl
+            template: function (tElem, tAttr) {
+                return $templateCache.get(STTemplates.STTpls.HEADER_TPL_ID);
+            }
         };
     }]);
 //# sourceMappingURL=STHeaderUIDir.js.map

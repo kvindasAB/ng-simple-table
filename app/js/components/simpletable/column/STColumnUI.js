@@ -1,15 +1,18 @@
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
 /// <reference path="../table/SimpleTable.ts" />
+/// <reference path="../core/BaseComponentUI.ts" />
 var STColumnUI;
 (function (STColumnUI) {
-    var Column = (function () {
+    var Column = (function (_super) {
+        __extends(Column, _super);
         function Column() {
+            _super.apply(this, arguments);
         }
-        Column.prototype.link = function (scope, element, attrs, simpleTable) {
-            this.scope = scope;
-            this.element = element;
-            this.attrs = attrs;
-            this.simpleTable = simpleTable;
-        };
         Column.prototype.init = function () {
             this.addEventListeners();
         };
@@ -23,11 +26,10 @@ var STColumnUI;
             this.element.off();
         };
         Column.prototype.onHeaderClicked = function (event) {
-            //console.log('onHeaderClicked: ', event, this);
             this.simpleTable.onHeaderClicked(event, this.scope.hcol);
         };
         return Column;
-    })();
+    })(STCore.BaseComponentUI);
     STColumnUI.Column = Column;
 })(STColumnUI || (STColumnUI = {}));
 //# sourceMappingURL=STColumnUI.js.map

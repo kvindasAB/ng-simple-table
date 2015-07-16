@@ -1,12 +1,7 @@
 /// <reference path="../table/SimpleTable.d.ts" />
+/// <reference path="../core/BaseComponentUI.d.ts" />
 declare module STColumnUI {
-    class Column {
-        scope: any;
-        element: any;
-        attrs: any;
-        simpleTable: SimpleTable.SimpleTable;
-        constructor();
-        link(scope: any, element: any, attrs: any, simpleTable: SimpleTable.SimpleTable): void;
+    class Column extends STCore.BaseComponentUI {
         init(): void;
         addEventListeners(): void;
         removeEventListeners(): void;

@@ -1,21 +1,7 @@
 /// <reference path="../table/SimpleTable.ts" />
+/// <reference path="../core/BaseComponentUI.ts" />
 module STColumnUI {
-    export class Column {
-
-        scope:any;
-        element:any;
-        attrs:any;
-        simpleTable:SimpleTable.SimpleTable
-
-        constructor(){
-        }
-
-        link(scope:any, element:any, attrs:any, simpleTable:SimpleTable.SimpleTable){
-            this.scope          = scope;
-            this.element        = element;
-            this.attrs          = attrs;
-            this.simpleTable    = simpleTable;
-        }
+    export class Column extends STCore.BaseComponentUI {
 
         init(){
             this.addEventListeners();
@@ -31,8 +17,7 @@ module STColumnUI {
         }
 
         onHeaderClicked(event) {
-            //console.log('onHeaderClicked: ', event, this);
-            this.simpleTable.onHeaderClicked(event, this.scope.hcol);
+            this.simpleTable.onHeaderClicked(event, (<any>this.scope).hcol);
         }
 
     }

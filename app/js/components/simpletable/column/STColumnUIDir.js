@@ -14,7 +14,7 @@
  }
  */
 angular.module('simpletable.table.column', [])
-    .directive('stTableColumn', ['$log', '$templateCache', function ($log, $templateCache) {
+    .directive('stTableColumn', ['$log', '$compile', '$templateCache', '$templateRequest', function ($log, $compile, $templateCache, $templateRequest) {
         return {
             restrict: 'AE',
             require: '^stTable',
@@ -27,6 +27,7 @@ angular.module('simpletable.table.column', [])
                     post: function (scope, iElem, iAttrs, parent) {
                         //$log.log('Col post: ', iElem, scope);
                         var column = new STColumnUI.Column();
+                        column.setServices($compile, $templateCache, $templateRequest);
                         column.link(scope, iElem, iAttrs, parent.getSimpleTable());
                         column.init();
                     }

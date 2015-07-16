@@ -4,6 +4,6 @@ declare module STCellUI {
     class Cell extends STCore.BaseComponentUI {
         init(): void;
         shouldUseCustomTemplate(): boolean;
-        getCustomTemplate(scope: angular.IScope): string;
+        getCustomTemplate(scope: angular.IScope): any;
     }
 }

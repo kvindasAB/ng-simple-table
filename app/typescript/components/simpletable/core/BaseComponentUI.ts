@@ -27,7 +27,6 @@ module STCore {
 
         validateCustomTemplate():void{
             if(!this.shouldUseCustomTemplate() ){
-                this.applyTemplate(this.getDefaultTemplate(this.scope), this.scope);
                 return;
             }
             this.applyTemplate(this.getCustomTemplate(this.scope), this.scope);
@@ -39,12 +38,7 @@ module STCore {
         }
 
         /* To be implemented by subclasses */
-        getDefaultTemplate(scope:angular.IScope):string{
-            return null;
-        }
-
-        /* To be implemented by subclasses */
-        getCustomTemplate(scope:angular.IScope):string{
+        getCustomTemplate(scope:angular.IScope):any{
             return null;
         }
 
@@ -53,12 +47,21 @@ module STCore {
         }
 
         getTemplateByUrl(tplUrl):any{
+            var tpl = this.$templateCache.get(tplUrl);
+            if(tpl){ return tpl; }
             return this.$templateRequest(tplUrl);
+            /*
+            this.$templateRequest(tplUrl).then(function(response){
+                console.log('tplRq:', response);
+                //this.$templateCache.put(tplUrl, response);
+                //return response;
+            });
+            */
         }
 
         applyTemplate(tpl:string, scope:angular.IScope):void{
             if(!tpl){return;}
-            console.log('BaseComponent.applyTpl:', tpl);
+            //console.log('BaseComponent.applyTpl:', tpl);
             /*
             var dom:any = angular.element(tpl);
             var link:Function = this.$compile(dom);

@@ -18,10 +18,16 @@ var STCellUI;
         };
         Cell.prototype.shouldUseCustomTemplate = function () {
             var col = this.scope.col;
-            return col && (col.template || col.templateId);
+            return col && (col.template || col.templateId || col.templateUrl);
         };
-        /* To be implemented by subclasses */
         Cell.prototype.getCustomTemplate = function (scope) {
+            var col = scope.col;
+            if (col.templateId) {
+                return this.getTemplateByCacheId(col.templateId);
+            }
+            if (col.templateUrl) {
+                return this.getTemplateByUrl(col.templateUrl);
+            }
             return scope.col.template;
         };
         return Cell;

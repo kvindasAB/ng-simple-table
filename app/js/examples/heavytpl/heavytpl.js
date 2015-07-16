@@ -13,13 +13,16 @@ angular.module('stable.examples.heavytpl', ['ui.router'])
           }
         });
     }])
-    .controller('ExHeavyTplsCtrl', ['$scope','DataGenerator', function($scope, DataGenerator){
+    .controller('ExHeavyTplsCtrl', ['$scope', '$templateCache', 'DataGenerator', function($scope, $templateCache, DataGenerator){
+
+        $templateCache.put('customCellTpl2.html', 'CachedTPL: {{row[col.field]}}');
+
 
         $scope.columns = [
             {id:"id", title: "Id", field: 'id', active: true, style: {width: "20%"}, template: 'CT: {{row[col.field]}}'},
             {id:"name", title: "Name", field: 'name', active: true, style: {width: "20%"}, template: 'CT: {{row[col.field]}}'},
-            {id:"phone", title: "Phone", field: 'phone', active: true, style: {width: "20%"}},
-            {id:"age", title: "Age", field: 'age', active: true, style: {width: "20%"}},
+            {id:"phone", title: "Phone", field: 'phone', active: true, style: {width: "20%"}, templateId: 'customCellTpl2.html'},
+            {id:"age", title: "Age", field: 'age', active: true, style: {width: "20%"}, templateUrl: 'js/examples/heavytpl/cellTpl.html'},
             {id:"address", title: "Address", field: 'address', active: true, style: {width: "20%"}}
         ];
 

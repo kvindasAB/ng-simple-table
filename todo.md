@@ -2,18 +2,15 @@ TODO List
 ========
 
 
-- Reenable (row, cell, column) external templates mechanism - DONE
-- Centralize UI Objects and template management
-- Integrate templates and externalTemplates with templateCache
-- Allow custom templates to be either internal or external files. 
+- Allow custom templates to be external files. 
 - Column refactoring
 - External template functionality refactoring
-- Auto checkbox column
-- Inline edition
 - Responsive columns adapting via resolution and functionality.
 - Responsive functionality ex. on resize or drag.
 - II - Multi Column sort
-- Save state feature
+- II - Inline edition
+- II - Save state feature
+- Auto checkbox column
  
 -- Issues
 
@@ -26,9 +23,11 @@ If no resizable handler is defined, the table generate issues
 
 
 
-
 ## Completed
 
+- Reenable (row, cell, column) external templates mechanism - DONE
+- Centralize UI Objects and template management - DONE
+- Integrate templates templateCache - DONE
 - Directive refactoring - Make every piece a different directive, headers, rows, columns.
     - Columns - DONE
     - Rows - DONE

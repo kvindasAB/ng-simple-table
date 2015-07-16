@@ -9,7 +9,7 @@ module STCellUI {
 
         shouldUseCustomTemplate():boolean{
             var col:any = (<any>this.scope).col;
-            return col && (col.template || col.templateId || col.templateUrl);
+            return col && (col.template || col.templateId);
         }
 
         getCustomTemplate(scope:angular.IScope):any{

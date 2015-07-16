@@ -18,7 +18,7 @@ var STCellUI;
         };
         Cell.prototype.shouldUseCustomTemplate = function () {
             var col = this.scope.col;
-            return col && (col.template || col.templateId || col.templateUrl);
+            return col && (col.template || col.templateId);
         };
         Cell.prototype.getCustomTemplate = function (scope) {
             var col = scope.col;

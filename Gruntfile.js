@@ -10,8 +10,8 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-protractor-runner');
-  grunt.loadNpmTasks('grunt-typescript');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks("grunt-ts");
 
 
   /**
@@ -84,38 +84,25 @@ module.exports = function ( grunt ) {
       }
     },
 
-    typescript: {
+    ts: {
+      options: {
+        module: 'amd', //or commonjs
+        target: 'es5', //or es3
+        sourceMap: true,
+        declaration: true
+      },
       base: {
-          src: ['app/typescript/**/*.ts'],
-          dest: 'app/js/components/simpletable',
-          options: {
-              module: 'amd', //or commonjs
-              target: 'es5', //or es3
-              rootPath: 'app/typescript/',
-              sourceMap: true,
-              declaration: true
-          }
+        src   : ['app/typescript/**/*.ts'],
+        outDir: 'app/js/components/simpletable'
       },
       distdebug: {
         src: ['app/typescript/**/*.ts'],
-        dest: 'dist/simple-table-debug.js',
-        options: {
-          module: 'amd', //or commonjs
-          target: 'es5', //or es3
-          rootPath: 'app/typescript/',
-          sourceMap: true,
-          declaration: true
-        }
+        out: 'dist/simple-table-debug.js',
       },
       dist: {
         src: ['app/typescript/**/*.ts'],
-        dest: 'dist/simple-table.js',
+        out: 'dist/simple-table.js',
         options: {
-          module: 'amd', //or commonjs
-          target: 'es5', //or es3
-          rootPath: 'app/typescript/',
-          sourceMap: true,
-          declaration: true,
           removeComments: true
         }
       }
@@ -230,7 +217,7 @@ module.exports = function ( grunt ) {
       },
       srcts: {
         files: 'app/typescript/**/*.ts',
-        tasks: ['typescript:base']//, 'karma:continuous'
+        tasks: ['ts:base']//, 'karma:continuous'
       },
       less: {
         files: 'app/less/**/*.less',
@@ -275,7 +262,7 @@ module.exports = function ( grunt ) {
   ]);
 
   grunt.registerTask( 'dist', [
-    'typescript:distdebug', 'typescript:dist', 'uglify:dist'
+    'ts:distdebug', 'ts:dist', 'uglify:dist'
   ]);
 
 

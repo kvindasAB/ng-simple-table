@@ -7,3 +7,4 @@ app/vendor
 app/typings
 .DS_Store
 .idea
+.baseDir.ts

@@ -24,7 +24,7 @@ module STTemplates {
                                       "  <table ng-class='tableConfig.classes' ng-style='{width:tableConfig.tableWidth}'>" +
                                       "    <thead st-table-header>" +
                                       "    </thead>" +
-                                      "    <tbody vs-repeat st-table-body style='height: 400px'>" +
+                                      "    <tbody st-table-body style='height: 400px'>" +
                                       "    </tbody>" +
                                       "  </table>" +
                                       "</div>";

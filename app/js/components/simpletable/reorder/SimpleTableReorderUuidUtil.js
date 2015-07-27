@@ -1,17 +1,8 @@
 var SimpleTableReorder;
 (function (SimpleTableReorder) {
     var SimpleTableReorderUuidUtil = (function () {
-        //***************
-        // METHODS - END
-        //***************
-        //*********************
-        // CONSTRUCTOR - START
-        //*********************
         function SimpleTableReorderUuidUtil() {
         }
-        //*****************
-        // METHODS - START
-        //*****************
         SimpleTableReorderUuidUtil.prototype.new = function () {
             function _p8(s) {
                 var p = (Math.random().toString(16) + "000000000").substr(2, 8);

@@ -1,7 +1,4 @@
 declare module STTemplates {
-    /**
-     * SimpleTable default templates
-     */
     class STTpls {
         static CELL_TPL: string;
         static ROW_TPL: string;

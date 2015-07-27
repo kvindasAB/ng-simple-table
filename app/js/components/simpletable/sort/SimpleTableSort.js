@@ -1,4 +1,4 @@
-var __extends = this.__extends || function (d, b) {
+var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
@@ -17,7 +17,6 @@ var SimpleTableSort;
             this.currentSort = null;
             this.currentSortReverse = false;
         }
-        // Overrides
         SimpleTablePluginSort.prototype.init = function () {
             this.scope = this.simpleTable.scope;
             _super.prototype.init.call(this);
@@ -27,7 +26,6 @@ var SimpleTableSort;
             _super.prototype.addEventListeners.call(this);
             this.scope.$on("onHeaderClicked", angular.bind(this, this.onHeaderClicked));
         };
-        // Methods
         SimpleTablePluginSort.prototype.removePreviousSortFromColumns = function (columns) {
             for (var i = 0; i < columns.length; i++) {
                 var column = columns[i];
@@ -84,8 +82,6 @@ var SimpleTableSort;
             column.sortType = sortType;
             this.sortByColumn(column);
         };
-        // Utility methods
-        // TODO: Move to utility class
         SimpleTablePluginSort.prototype.addToArray = function (array, values) {
             for (var i = 0; i < values.length; i++) {
                 var value = values[i];

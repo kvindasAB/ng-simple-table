@@ -1,4 +1,4 @@
-var __extends = this.__extends || function (d, b) {
+var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
@@ -31,19 +31,15 @@ var STRowUI;
             this.element.off();
         };
         Row.prototype.onRowClicked = function (event) {
-            //console.log('onRowClicked: ', event, this);
             this.simpleTable.onRowClicked(event, this.scope.row);
         };
         Row.prototype.onRowDoubleClicked = function (event) {
-            //console.log('onRowDoubleClicked');
             this.simpleTable.onRowDoubleClicked(event, this.scope.row);
         };
         Row.prototype.onRowMouseEnter = function (event) {
-            //console.log('onRowMouseEnter');
             this.simpleTable.onRowMouseEnter(event, this.scope.row);
         };
         Row.prototype.onRowMouseLeave = function (event) {
-            //console.log('onRowMouseLeave');
             this.simpleTable.onRowMouseLeave(event, this.scope.row);
         };
         return Row;

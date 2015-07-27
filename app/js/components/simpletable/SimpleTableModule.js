@@ -9,7 +9,8 @@ angular.module('simpletable', [
     'simpletable.factory',
     'simpletable.reorder',
     'simpletable.resizable',
-    'simpletable.uuid.util'
+    'simpletable.uuid.util',
+    'vs-repeat'
 ])
     .value('version', '0.2');
 //# sourceMappingURL=SimpleTableModule.js.map

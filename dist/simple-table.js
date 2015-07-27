@@ -1,11 +1,19 @@
 angular.module('simpletable', [
     'simpletable.table',
+    'simpletable.table.tpls',
+    'simpletable.table.header',
+    'simpletable.table.column',
+    'simpletable.table.body',
+    'simpletable.table.row',
+    'simpletable.table.cell',
     'simpletable.factory',
     'simpletable.reorder',
     'simpletable.resizable',
-    'simpletable.uuid.util'
-]).value('version', '0.1');
-;
+    'simpletable.uuid.util',
+    'vs-repeat'
+])
+    .value('version', '0.2');
+/// <reference path="ISimpleTablePlugin.ts" />
 var SimpleTablePlugin;
 (function (SimpleTablePlugin) {
     var BaseSimpleTablePlugin = (function () {
@@ -41,12 +49,16 @@ var SimpleTablePlugin;
     })();
     SimpleTablePlugin.BaseSimpleTablePlugin = BaseSimpleTablePlugin;
 })(SimpleTablePlugin || (SimpleTablePlugin = {}));
-var __extends = this.__extends || function (d, b) {
+var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
 };
+/// <reference path="../core/BaseSimpleTablePlugin.ts" />
+/// <reference path="../core/ISimpleTablePluginDataAware.ts" />
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
+/// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 var SimpleTableSelection;
 (function (SimpleTableSelection) {
     var SimpleTablePluginSelection = (function (_super) {
@@ -116,6 +128,9 @@ var SimpleTableSelection;
     })(SimpleTablePlugin.BaseSimpleTablePlugin);
     SimpleTableSelection.SimpleTablePluginSelection = SimpleTablePluginSelection;
 })(SimpleTableSelection || (SimpleTableSelection = {}));
+/// <reference path="../core/BaseSimpleTablePlugin.ts" />
+/// <reference path="../core/ISimpleTablePluginDataAware.ts" />
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
 var SimpleTableSort;
 (function (SimpleTableSort) {
     var SimpleTablePluginSort = (function (_super) {
@@ -220,8 +235,11 @@ var SimpleTableSort;
     })(SimpleTablePlugin.BaseSimpleTablePlugin);
     SimpleTableSort.SimpleTablePluginSort = SimpleTablePluginSort;
 })(SimpleTableSort || (SimpleTableSort = {}));
+/// <reference path="../select/SimpleTableSelection.ts" />
+/// <reference path="../sort/SimpleTableSort.ts" />
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
 var SimpleTablePluginFactory;
-(function (_SimpleTablePluginFactory) {
+(function (SimpleTablePluginFactory_1) {
     var SimpleTablePluginFactory = (function () {
         function SimpleTablePluginFactory() {
         }
@@ -235,13 +253,416 @@ var SimpleTablePluginFactory;
         };
         return SimpleTablePluginFactory;
     })();
-    _SimpleTablePluginFactory.SimpleTablePluginFactory = SimpleTablePluginFactory;
+    SimpleTablePluginFactory_1.SimpleTablePluginFactory = SimpleTablePluginFactory;
 })(SimpleTablePluginFactory || (SimpleTablePluginFactory = {}));
 console.log("Creating angular module...: " + "simpletable.factory");
-angular.module('simpletable.factory', []).service('SimpleTablePluginFactory', [function () {
-    console.log("instantiating service...");
-    return new SimpleTablePluginFactory.SimpleTablePluginFactory();
-}]);
+angular.module('simpletable.factory', [])
+    .service('SimpleTablePluginFactory', [function () {
+        console.log("instantiating service...");
+        return new SimpleTablePluginFactory.SimpleTablePluginFactory();
+    }]);
+/// <reference path="ISimpleTable.ts" />
+/// <reference path="../core/ISimpleTablePlugin.ts" />
+/// <reference path="../factory/SimpleTablePluginFactory.ts" />
+/// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
+var SimpleTable;
+(function (SimpleTable_1) {
+    var SimpleTable = (function () {
+        function SimpleTable(scope, element, attrs, $timeout, pluginFactory) {
+            this.RESIZE_TYPE_FIXED = 'fixed';
+            this.RESIZE_TYPE_ADJUSTABLE = 'adjustable';
+            this.WIDTH_PIXELS_TYPE = 'px';
+            this.WIDTH_PERCENTAGE_TYPE = '%';
+            this.plugins = [];
+            this.initializationComplete = false;
+            this.scope = scope;
+            this.element = element;
+            this.attrs = attrs;
+            this.$timeout = $timeout;
+            this.pluginFactory = pluginFactory;
+            this.scope.simpleTable = this;
+            this.init();
+            console.log("SimpleTable created: ", this.scope);
+        }
+        SimpleTable.prototype.init = function () {
+            this.notifyPreInitialization();
+            this.addEventListeners();
+            this.validateConfig();
+            this.initDefaultPlugins();
+            this.initFixedTable();
+        };
+        SimpleTable.prototype.registerPlugin = function (plugin) {
+            console.log("initializing plugins...", plugin);
+            this.plugins.push(plugin);
+            this.initPlugins();
+        };
+        SimpleTable.prototype.initPlugins = function () {
+            if (this.initPluginTimeout) {
+                this.$timeout.cancel(this.initPluginTimeout);
+                this.initPluginTimeout = null;
+            }
+            this.initPluginTimeout = this.$timeout(angular.bind(this, this.doInitPlugins), 0);
+        };
+        SimpleTable.prototype.addEventListeners = function () {
+            this.scope.$on("$destroy", this.removeEventListeners);
+            this.scope.$watch("tableData", angular.bind(this, this.onDataChanged));
+        };
+        SimpleTable.prototype.removeEventListeners = function () {
+            console.log("removing listeners...", this);
+        };
+        SimpleTable.prototype.validateConfig = function () {
+        };
+        SimpleTable.prototype.initDefaultPlugins = function () {
+            this.pluginFactory.newPluginSelection().doRegister(this);
+            this.pluginFactory.newPluginSort().doRegister(this);
+        };
+        SimpleTable.prototype.initFixedTable = function () {
+            var tableConfig = this.scope.tableConfig;
+            if (tableConfig.resizeType === this.RESIZE_TYPE_ADJUSTABLE) {
+                return;
+            }
+            var columns = tableConfig.columns;
+            var totalWidth = 0;
+            for (var i = 0; i < columns.length; i++) {
+                var column = columns[i];
+                if (!column.active) {
+                    continue;
+                }
+                totalWidth += this.getWidthInNumber(column.style.width);
+            }
+            tableConfig.tableWidth = totalWidth + 'px';
+        };
+        SimpleTable.prototype.getWidthInNumber = function (width) {
+            var stringWidth = '';
+            var widthType = this.getWidthType(width);
+            if (widthType === this.WIDTH_PIXELS_TYPE) {
+                stringWidth = width.substring(0, width.length - 2);
+            }
+            else {
+                stringWidth = width.substring(0, width.length - 1);
+            }
+            var columnWidth = parseFloat(stringWidth);
+            return columnWidth;
+        };
+        SimpleTable.prototype.getWidthType = function (width) {
+            var widthType = width.substring(width.length - 2, width.length);
+            if (widthType === this.WIDTH_PIXELS_TYPE) {
+                return this.WIDTH_PIXELS_TYPE;
+            }
+            return this.WIDTH_PERCENTAGE_TYPE;
+        };
+        SimpleTable.prototype.doInitPlugins = function () {
+            var self = this;
+            angular.forEach(this.plugins, function (plugin) {
+                if (plugin.isInitialized()) {
+                    return;
+                }
+                plugin.onRegistered(self);
+            });
+            this.notifyInitializationComplete();
+        };
+        SimpleTable.prototype.onDataChanged = function (newValue, oldValue) {
+            console.log("SimpleTable.onDataChanged...: ", this.initializationComplete);
+            if (this.initializationComplete) {
+                this.notifyPluginsDataChanged(newValue, oldValue);
+            }
+        };
+        SimpleTable.prototype.onRowClicked = function ($event, row) {
+            this.scope.$broadcast("onRowClicked", $event, row);
+            this.notifyListener('onRowClicked', [$event, row]);
+            this.scope.$apply();
+        };
+        SimpleTable.prototype.onRowDoubleClicked = function ($event, row) {
+            this.scope.$broadcast("onRowDoubleClicked", $event, row);
+            this.notifyListener('onRowDoubleClicked', [$event, row]);
+            this.scope.$apply();
+        };
+        SimpleTable.prototype.onRowMouseEnter = function ($event, row) {
+            this.scope.$broadcast("onRowMouseEnter", $event, row);
+            this.notifyListener('onRowMouseEnter', [$event, row]);
+            this.scope.$apply();
+        };
+        SimpleTable.prototype.onRowMouseLeave = function ($event, row) {
+            this.scope.$broadcast("onRowMouseLeave", $event, row);
+            this.notifyListener('onRowMouseLeave', [$event, row]);
+            this.scope.$apply();
+        };
+        SimpleTable.prototype.onHeaderClicked = function ($event, column) {
+            this.scope.$broadcast("onHeaderClicked", $event, column);
+            this.scope.$apply();
+        };
+        SimpleTable.prototype.notifyPreInitialization = function () {
+            this.notifyListener("onPreInitialization", this);
+        };
+        SimpleTable.prototype.notifyInitializationComplete = function () {
+            if (this.initializationComplete) {
+                return;
+            }
+            this.initializationComplete = true;
+            this.notifyListener("onInitializationComplete", this);
+        };
+        SimpleTable.prototype.notifyListener = function (eventName, params) {
+            if (!this.scope.tableConfig.listeners || !this.scope.tableConfig.listeners[eventName]) {
+                return;
+            }
+            this.scope.tableConfig.listeners[eventName](params);
+        };
+        SimpleTable.prototype.notifyPluginsDataChanged = function (newValue, oldValue) {
+            for (var i = 0; i < this.plugins.length; i++) {
+                var plugin = this.plugins[i];
+                if (!plugin.onDataChanged) {
+                    continue;
+                }
+                plugin.onDataChanged(newValue, oldValue);
+            }
+        };
+        return SimpleTable;
+    })();
+    SimpleTable_1.SimpleTable = SimpleTable;
+})(SimpleTable || (SimpleTable = {}));
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
+/// <reference path="../table/SimpleTable.ts" />
+/// <reference path="ISimpleTablePlugin.ts" />
+/// <reference path="IDisposable.ts" />
+var STCore;
+(function (STCore) {
+    var BaseComponentUI = (function () {
+        function BaseComponentUI() {
+        }
+        BaseComponentUI.prototype.setServices = function ($compile, $templateCache, $templateRequest) {
+            this.$compile = $compile;
+            this.$templateCache = $templateCache;
+            this.$templateRequest = $templateRequest;
+        };
+        BaseComponentUI.prototype.link = function (scope, element, attrs, simpleTable) {
+            this.scope = scope;
+            this.element = element;
+            this.attrs = attrs;
+            this.simpleTable = simpleTable;
+            this.scope.$on('$destroy', this.dispose);
+        };
+        BaseComponentUI.prototype.validateCustomTemplate = function () {
+            if (!this.shouldUseCustomTemplate()) {
+                return;
+            }
+            this.applyTemplate(this.getCustomTemplate(this.scope), this.scope);
+        };
+        BaseComponentUI.prototype.shouldUseCustomTemplate = function () {
+            return false;
+        };
+        BaseComponentUI.prototype.getCustomTemplate = function (scope) {
+            return null;
+        };
+        BaseComponentUI.prototype.getTemplateByCacheId = function (tplId) {
+            return this.$templateCache.get(tplId);
+        };
+        BaseComponentUI.prototype.getTemplateByUrl = function (tplUrl) {
+            var tpl = this.$templateCache.get(tplUrl);
+            if (tpl) {
+                return tpl;
+            }
+            return this.$templateRequest(tplUrl);
+        };
+        BaseComponentUI.prototype.applyTemplate = function (tpl, scope) {
+            if (!tpl) {
+                return;
+            }
+            var tpl = this.getCustomTemplate(this.scope);
+            this.element.html(tpl);
+            this.$compile(this.element.contents())(this.scope);
+        };
+        BaseComponentUI.prototype.dispose = function () {
+            delete this.scope;
+            delete this.element;
+            delete this.attrs;
+            delete this.simpleTable;
+            delete this.$compile;
+            delete this.$templateCache;
+            delete this.$templateRequest;
+        };
+        return BaseComponentUI;
+    })();
+    STCore.BaseComponentUI = BaseComponentUI;
+})(STCore || (STCore = {}));
+var STTemplates;
+(function (STTemplates) {
+    var STTpls = (function () {
+        function STTpls() {
+        }
+        STTpls.prototype.getTemplates = function () {
+            return [STTpls.TABLE_TPL_PAIR, STTpls.HEADER_TPL_PAIR, STTpls.COLUMN_TPL_PAIR, STTpls.BODY_TPL_PAIR, STTpls.ROW_TPL_PAIR, STTpls.CELL_TPL_PAIR];
+        };
+        STTpls.CELL_TPL = "{{row[col.field]}}";
+        STTpls.ROW_TPL = "<td ng-repeat='col in tableConfig.columns' st-table-cell ng-class='col.cellClass' ng-if='col.active' ></td>";
+        STTpls.BODY_TPL = "<tr ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
+            "  ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse track by $index ' " +
+            "  st-table-row >" +
+            "</tr>";
+        STTpls.COLUMN_TPL = "{{hcol.title}}<div st-table-resizable-handler11 class='table-header-cursor-container'></div>";
+        STTpls.HEADER_TPL = "<tr>" +
+            "  <th id='{{hcol.id}}' class='table-header' " +
+            "   ng-repeat='hcol in tableConfig.columns' " +
+            "   ng-class='hcol.headerClass' ng-if='hcol.active' " +
+            "   ng-style='{\"height\":tableConfig.headerHeight, \"min-width\":hcol.style.minWidth, \"width\":hcol.style.width}' " +
+            "   st-table-drop-target='true' st-table-draggable='true' st-table-column>" +
+            "  </th>" +
+            "</tr>";
+        STTpls.TABLE_TPL = "<div ng-style='{width:tableConfig.tableWidth}'>" +
+            "  <table ng-class='tableConfig.classes' ng-style='{width:tableConfig.tableWidth}'>" +
+            "    <thead st-table-header>" +
+            "    </thead>" +
+            "    <tbody vs-repeat st-table-body style='height: 400px'>" +
+            "    </tbody>" +
+            "  </table>" +
+            "</div>";
+        STTpls.CELL_TPL_ID = 'stTableCellTpl.html';
+        STTpls.ROW_TPL_ID = 'stTableRowTpl.html';
+        STTpls.BODY_TPL_ID = 'stTableBodyTpl.html';
+        STTpls.COLUMN_TPL_ID = 'stTableColumnTpl.html';
+        STTpls.HEADER_TPL_ID = 'stTableHeaderTpl.html';
+        STTpls.TABLE_TPL_ID = 'stTableTpl.html';
+        STTpls.CELL_TPL_PAIR = { id: STTpls.CELL_TPL_ID, tpl: STTpls.CELL_TPL };
+        STTpls.ROW_TPL_PAIR = { id: STTpls.ROW_TPL_ID, tpl: STTpls.ROW_TPL };
+        STTpls.BODY_TPL_PAIR = { id: STTpls.BODY_TPL_ID, tpl: STTpls.BODY_TPL };
+        STTpls.COLUMN_TPL_PAIR = { id: STTpls.COLUMN_TPL_ID, tpl: STTpls.COLUMN_TPL };
+        STTpls.HEADER_TPL_PAIR = { id: STTpls.HEADER_TPL_ID, tpl: STTpls.HEADER_TPL };
+        STTpls.TABLE_TPL_PAIR = { id: STTpls.TABLE_TPL_ID, tpl: STTpls.TABLE_TPL };
+        return STTpls;
+    })();
+    STTemplates.STTpls = STTpls;
+})(STTemplates || (STTemplates = {}));
+/// <reference path="../core/BaseComponentUI.ts" />
+/// <reference path="../tpl/STTemplates.ts" />
+var STCellUI;
+(function (STCellUI) {
+    var Cell = (function (_super) {
+        __extends(Cell, _super);
+        function Cell() {
+            _super.apply(this, arguments);
+        }
+        Cell.prototype.init = function () {
+            this.validateCustomTemplate();
+        };
+        Cell.prototype.shouldUseCustomTemplate = function () {
+            var col = this.scope.col;
+            return col && (col.template || col.templateId);
+        };
+        Cell.prototype.getCustomTemplate = function (scope) {
+            var col = scope.col;
+            if (col.templateId) {
+                return this.getTemplateByCacheId(col.templateId);
+            }
+            if (col.templateUrl) {
+                return this.getTemplateByUrl(col.templateUrl);
+            }
+            return scope.col.template;
+        };
+        return Cell;
+    })(STCore.BaseComponentUI);
+    STCellUI.Cell = Cell;
+})(STCellUI || (STCellUI = {}));
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
+/// <reference path="STCellUI.ts" />
+angular.module('simpletable.table.cell', [])
+    .directive('stTableCell', ['$log', '$compile', '$templateCache', '$templateRequest', function ($log, $compile, $templateCache, $templateRequest) {
+        return {
+            restrict: 'AE',
+            require: '^stTable',
+            compile: function (tElem, tAttrs) {
+                return {
+                    pre: function (scope, iElem, iAttrs) {
+                    },
+                    post: function (scope, iElem, iAttrs, parent) {
+                        var cell = new STCellUI.Cell();
+                        cell.setServices($compile, $templateCache, $templateRequest);
+                        cell.link(scope, iElem, iAttrs, parent.getSimpleTable());
+                        cell.init();
+                        return cell;
+                    }
+                };
+            },
+            template: function (tElem, tAttrs) {
+                return $templateCache.get(STTemplates.STTpls.CELL_TPL_ID);
+            }
+        };
+    }]);
+/// <reference path="../table/SimpleTable.ts" />
+/// <reference path="../core/BaseComponentUI.ts" />
+var STColumnUI;
+(function (STColumnUI) {
+    var Column = (function (_super) {
+        __extends(Column, _super);
+        function Column() {
+            _super.apply(this, arguments);
+        }
+        Column.prototype.init = function () {
+            this.addEventListeners();
+        };
+        Column.prototype.addEventListeners = function () {
+            this.element.on('click', angular.bind(this, this.onHeaderClicked));
+        };
+        Column.prototype.removeEventListeners = function () {
+            if (!this.element) {
+                return;
+            }
+            this.element.off();
+        };
+        Column.prototype.onHeaderClicked = function (event) {
+            this.simpleTable.onHeaderClicked(event, this.scope.hcol);
+        };
+        return Column;
+    })(STCore.BaseComponentUI);
+    STColumnUI.Column = Column;
+})(STColumnUI || (STColumnUI = {}));
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
+/// <reference path="STColumnUI.ts" />
+angular.module('simpletable.table.column', [])
+    .directive('stTableColumn', ['$log', '$compile', '$templateCache', '$templateRequest', function ($log, $compile, $templateCache, $templateRequest) {
+        return {
+            restrict: 'AE',
+            require: '^stTable',
+            compile: function (tElem, tAttrs) {
+                $log.log('Col compile: ', tElem, tAttrs);
+                return {
+                    pre: function (scope, iElem, iAttrs) {
+                        $log.log('Col pre: ', iElem, scope);
+                    },
+                    post: function (scope, iElem, iAttrs, parent) {
+                        var column = new STColumnUI.Column();
+                        column.setServices($compile, $templateCache, $templateRequest);
+                        column.link(scope, iElem, iAttrs, parent.getSimpleTable());
+                        column.init();
+                    }
+                };
+            },
+            template: function (tElem, tAttrs) {
+                return $templateCache.get(STTemplates.STTpls.COLUMN_TPL_ID);
+            }
+        };
+    }]);
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
+/// <reference path="../tpl/STTemplates.ts" />
+angular.module('simpletable.table.header', [])
+    .directive('stTableHeader', ['$log', '$templateCache', function ($log, $templateCache) {
+        return {
+            restrict: 'AE',
+            require: '^stTable',
+            compile: function (tElem, tAttrs) {
+                $log.log('Header compile: ', tElem, tAttrs);
+                return {
+                    pre: function (scope, iElem, iAttrs) {
+                        $log.log('Header pre: ', iElem, scope);
+                    },
+                    post: function (scope, iElem, iAttrs) {
+                        $log.log('Header post: ', iElem, scope);
+                    }
+                };
+            },
+            template: function (tElem, tAttr) {
+                return $templateCache.get(STTemplates.STTpls.HEADER_TPL_ID);
+            }
+        };
+    }]);
 var SimpleTableReorder;
 (function (SimpleTableReorder) {
     var SimpleTableReorderUuidUtil = (function () {
@@ -261,6 +682,10 @@ var SimpleTableReorder;
     })();
     SimpleTableReorder.SimpleTableReorderUuidUtil = SimpleTableReorderUuidUtil;
 })(SimpleTableReorder || (SimpleTableReorder = {}));
+/// <reference path="../core/BaseSimpleTablePlugin.ts" />
+/// <reference path="ISimpleTableReorderDrag.ts" />
+/// <reference path="SimpleTableReorderUuidUtil.ts" />
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
 var SimpleTableReorder;
 (function (SimpleTableReorder) {
     var SimpleTableReorderDrag = (function (_super) {
@@ -313,6 +738,10 @@ var SimpleTableReorder;
     })(SimpleTablePlugin.BaseSimpleTablePlugin);
     SimpleTableReorder.SimpleTableReorderDrag = SimpleTableReorderDrag;
 })(SimpleTableReorder || (SimpleTableReorder = {}));
+/// <reference path="../core/BaseSimpleTablePlugin.ts" />
+/// <reference path="ISimpleTableReorderDrop.ts" />
+/// <reference path="SimpleTableReorderUuidUtil.ts" />
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
 var SimpleTableReorder;
 (function (SimpleTableReorder) {
     var SimpleTableReorderDrop = (function (_super) {
@@ -422,25 +851,35 @@ var SimpleTableReorder;
     })(SimpleTablePlugin.BaseSimpleTablePlugin);
     SimpleTableReorder.SimpleTableReorderDrop = SimpleTableReorderDrop;
 })(SimpleTableReorder || (SimpleTableReorder = {}));
-angular.module('simpletable.reorder', ['simpletable.uuid.util']).directive('stTableDraggable', ['$timeout', '$rootScope', 'simpletableuuid', function ($timeout, $rootScope, uuid) {
-    return {
-        require: '^stTable',
-        link: function (scope, element, attrs, parentCtrl) {
-            return new SimpleTableReorder.SimpleTableReorderDrag($rootScope, scope, element, attrs);
-        }
-    };
-}]).directive('stTableDropTarget', ['$timeout', '$rootScope', 'simpletableuuid', function ($timeout, $rootScope, uuid) {
-    return {
-        require: '^stTable',
-        restrict: 'A',
-        scope: {
-            onSymbolDrop: '&'
-        },
-        link: function (scope, element, attrs, controller) {
-            return new SimpleTableReorder.SimpleTableReorderDrop($rootScope, scope, element, attrs);
-        }
-    };
-}]);
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
+/// <reference path="../../../../typings/lodash/lodash.d.ts" />
+/// <reference path="SimpleTableReorderDrag.ts" />
+/// <reference path="SimpleTableReorderDrop.ts" />
+angular.module('simpletable.reorder', ['simpletable.uuid.util'])
+    .directive('stTableDraggable', ['$timeout', '$rootScope', 'simpletableuuid',
+    function ($timeout, $rootScope, uuid) {
+        return {
+            require: '^stTable',
+            link: function (scope, element, attrs, parentCtrl) {
+                return new SimpleTableReorder.SimpleTableReorderDrag($rootScope, scope, element, attrs);
+            }
+        };
+    }
+])
+    .directive('stTableDropTarget', ['$timeout', '$rootScope', 'simpletableuuid',
+    function ($timeout, $rootScope, uuid) {
+        return {
+            require: '^stTable',
+            restrict: 'A',
+            scope: {
+                onSymbolDrop: '&'
+            },
+            link: function (scope, element, attrs, controller) {
+                return new SimpleTableReorder.SimpleTableReorderDrop($rootScope, scope, element, attrs);
+            }
+        };
+    }
+]);
 angular.module('simpletable.uuid.util', []).factory('simpletableuuid', function () {
     var svc = {
         new: function () {
@@ -456,8 +895,13 @@ angular.module('simpletable.uuid.util', []).factory('simpletableuuid', function 
     };
     return svc;
 });
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
+/// <reference path="../core/ISimpleTablePlugin.ts" />
+/// <reference path="../factory/SimpleTablePluginFactory.ts" />
+/// <reference path="ISimpleTableResize.ts" />
+/// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 var SimpleTableResize;
-(function (_SimpleTableResize) {
+(function (SimpleTableResize_1) {
     var SimpleTableResize = (function () {
         function SimpleTableResize(scope, element, attrs, $window) {
             this.RESIZE_TYPE_FIXED = 'fixed';
@@ -690,204 +1134,199 @@ var SimpleTableResize;
         };
         return SimpleTableResize;
     })();
-    _SimpleTableResize.SimpleTableResize = SimpleTableResize;
+    SimpleTableResize_1.SimpleTableResize = SimpleTableResize;
 })(SimpleTableResize || (SimpleTableResize = {}));
-angular.module('simpletable.resizable', []).directive('stTableResizable', ['$timeout', '$window', function ($timeout, $window) {
-    return {
-        require: '^stTable',
-        restrict: 'A',
-        controller: function ($scope, $element, $attrs) {
-            if (!$scope.simpleTableResize) {
-                $scope.simpleTableResize = new SimpleTableResize.SimpleTableResize($scope, $element, $attrs, $window);
-            }
-            this.getParent = function () {
+/// <reference path="SimpleTableResize.ts" />
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
+angular.module('simpletable.resizable', [])
+    .directive('stTableResizable', ['$timeout', '$window',
+    function ($timeout, $window) {
+        return {
+            require: '^stTable',
+            restrict: 'A',
+            controller: function ($scope, $element, $attrs) {
+                if (!$scope.simpleTableResize) {
+                    $scope.simpleTableResize = new SimpleTableResize.SimpleTableResize($scope, $element, $attrs, $window);
+                }
+                this.getParent = function () {
+                    return $scope.simpleTableResize;
+                };
                 return $scope.simpleTableResize;
-            };
-            return $scope.simpleTableResize;
-        },
-        link: function ($scope, $element, $attrs, parent) {
-            if (!$scope.simpleTableResize) {
-                $scope.simpleTableResize = new SimpleTableResize.SimpleTableResize($scope, $element, $attrs, $window);
+            },
+            link: function ($scope, $element, $attrs, parent) {
+                if (!$scope.simpleTableResize) {
+                    $scope.simpleTableResize = new SimpleTableResize.SimpleTableResize($scope, $element, $attrs, $window);
+                }
+                $scope.simpleTableResize.parent = parent;
+                $scope.simpleTableResize.init();
+                return $scope.simpleTableResize;
             }
-            $scope.simpleTableResize.parent = parent;
-            $scope.simpleTableResize.init();
-            return $scope.simpleTableResize;
-        }
-    };
-}]).directive('stTableResizableHandler', ['$timeout', function ($timeout) {
-    return {
-        require: '^stTableResizable',
-        restrict: 'A',
-        link: function (scope, element, attrs, parentCtrl) {
-            element.on('mousedown', function (event) {
-                parentCtrl.getParent().onMouseDownHandler(event, scope, element);
-            });
-        }
-    };
-}]);
-var SimpleTable;
-(function (_SimpleTable) {
-    var SimpleTable = (function () {
-        function SimpleTable(scope, element, attrs, $timeout, pluginFactory) {
-            this.RESIZE_TYPE_FIXED = 'fixed';
-            this.RESIZE_TYPE_ADJUSTABLE = 'adjustable';
-            this.WIDTH_PIXELS_TYPE = 'px';
-            this.WIDTH_PERCENTAGE_TYPE = '%';
-            this.plugins = [];
-            this.initializationComplete = false;
-            this.scope = scope;
-            this.element = element;
-            this.attrs = attrs;
-            this.$timeout = $timeout;
-            this.pluginFactory = pluginFactory;
-            this.scope.simpleTable = this;
-            this.init();
-            console.log("SimpleTable created: ", this.scope);
-        }
-        SimpleTable.prototype.init = function () {
-            this.notifyPreInitialization();
-            this.addEventListeners();
-            this.validateConfig();
-            this.initDefaultPlugins();
-            this.initFixedTable();
         };
-        SimpleTable.prototype.registerPlugin = function (plugin) {
-            console.log("initializing plugins...", plugin);
-            this.plugins.push(plugin);
-            this.initPlugins();
-        };
-        SimpleTable.prototype.initPlugins = function () {
-            if (this.initPluginTimeout) {
-                this.$timeout.cancel(this.initPluginTimeout);
-                this.initPluginTimeout = null;
+    }])
+    .directive('stTableResizableHandler', ['$timeout', function ($timeout) {
+        return {
+            require: '^stTableResizable',
+            restrict: 'A',
+            link: function (scope, element, attrs, parentCtrl) {
+                element.on('mousedown', function (event) { parentCtrl.getParent().onMouseDownHandler(event, scope, element); });
             }
-            this.initPluginTimeout = this.$timeout(angular.bind(this, this.doInitPlugins), 0);
         };
-        SimpleTable.prototype.addEventListeners = function () {
-            this.scope.$on("$destroy", this.removeEventListeners);
-            this.scope.$watch("tableData", angular.bind(this, this.onDataChanged));
+    }]);
+/// <reference path="../table/SimpleTable.ts" />
+/// <reference path="../core/BaseComponentUI.ts" />
+/// <reference path="../tpl/STTemplates.ts" />
+var STBodyUI;
+(function (STBodyUI) {
+    var Body = (function (_super) {
+        __extends(Body, _super);
+        function Body() {
+            _super.apply(this, arguments);
+        }
+        Body.prototype.init = function () {
+            this.validateCustomTemplate();
         };
-        SimpleTable.prototype.removeEventListeners = function () {
-            console.log("removing listeners...", this);
-        };
-        SimpleTable.prototype.validateConfig = function () {
-        };
-        SimpleTable.prototype.initDefaultPlugins = function () {
-            this.pluginFactory.newPluginSelection().doRegister(this);
-            this.pluginFactory.newPluginSort().doRegister(this);
-        };
-        SimpleTable.prototype.initFixedTable = function () {
+        Body.prototype.shouldUseCustomTemplate = function () {
             var tableConfig = this.scope.tableConfig;
-            if (tableConfig.resizeType === this.RESIZE_TYPE_ADJUSTABLE) {
+            return tableConfig && tableConfig.rowTemplate;
+        };
+        Body.prototype.validateCustomTemplate = function () {
+            if (!this.shouldUseCustomTemplate()) {
+                this.applyTemplate(this.getTemplateByCacheId(STTemplates.STTpls.BODY_TPL_ID), this.scope);
                 return;
             }
-            var columns = tableConfig.columns;
-            var totalWidth = 0;
-            for (var i = 0; i < columns.length; i++) {
-                var column = columns[i];
-                if (!column.active) {
-                    continue;
-                }
-                totalWidth += this.getWidthInNumber(column.style.width);
-            }
-            tableConfig.tableWidth = totalWidth + 'px';
+            this.applyTemplate(this.getCustomTemplate(this.scope), this.scope);
         };
-        SimpleTable.prototype.getWidthInNumber = function (width) {
-            var stringWidth = '';
-            var widthType = this.getWidthType(width);
-            if (widthType === this.WIDTH_PIXELS_TYPE) {
-                stringWidth = width.substring(0, width.length - 2);
-            }
-            else {
-                stringWidth = width.substring(0, width.length - 1);
-            }
-            var columnWidth = parseFloat(stringWidth);
-            return columnWidth;
+        Body.prototype.applyTemplate = function (tpl, scope) {
+            var dom = angular.element(tpl);
+            var link = this.$compile(dom);
+            this.element.append(dom);
+            link(scope);
         };
-        SimpleTable.prototype.getWidthType = function (width) {
-            var widthType = width.substring(width.length - 2, width.length);
-            if (widthType === this.WIDTH_PIXELS_TYPE) {
-                return this.WIDTH_PIXELS_TYPE;
-            }
-            return this.WIDTH_PERCENTAGE_TYPE;
+        Body.prototype.getCustomTemplate = function (scope) {
+            return scope.tableConfig.rowTemplate;
         };
-        SimpleTable.prototype.doInitPlugins = function () {
-            var self = this;
-            angular.forEach(this.plugins, function (plugin) {
-                if (plugin.isInitialized()) {
-                    return;
-                }
-                plugin.onRegistered(self);
-            });
-            this.notifyInitializationComplete();
-        };
-        SimpleTable.prototype.onDataChanged = function (newValue, oldValue) {
-            console.log("SimpleTable.onDataChanged...: ", this.initializationComplete);
-            if (this.initializationComplete) {
-                this.notifyPluginsDataChanged(newValue, oldValue);
+        return Body;
+    })(STCore.BaseComponentUI);
+    STBodyUI.Body = Body;
+})(STBodyUI || (STBodyUI = {}));
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
+/// <reference path="STBodyUI.ts" />
+angular.module('simpletable.table.body', [])
+    .directive('stTableBody', ['$log', '$compile', '$templateCache', '$templateRequest', function ($log, $compile, $templateCache, $templateRequest) {
+        return {
+            restrict: 'AE',
+            require: '^stTable',
+            compile: function (tElem, tAttrs) {
+                return {
+                    pre: function (scope, iElem, iAttrs) {
+                    },
+                    post: function (scope, iElem, iAttrs, parent) {
+                        var body = new STBodyUI.Body();
+                        body.setServices($compile, $templateCache, $templateRequest);
+                        body.link(scope, iElem, iAttrs, parent.getSimpleTable());
+                        body.init();
+                        return body;
+                    }
+                };
             }
         };
-        SimpleTable.prototype.onRowClicked = function ($event, row) {
-            this.scope.$broadcast("onRowClicked", $event, row);
-            this.notifyListener('onRowClicked', [$event, row]);
+    }]);
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
+/// <reference path="../table/SimpleTable.ts" />
+/// <reference path="../core/BaseComponentUI.ts" />
+var STRowUI;
+(function (STRowUI) {
+    var Row = (function (_super) {
+        __extends(Row, _super);
+        function Row() {
+            _super.apply(this, arguments);
+        }
+        Row.prototype.init = function () {
+            this.addEventListeners();
         };
-        SimpleTable.prototype.onRowDoubleClicked = function ($event, row) {
-            this.scope.$broadcast("onRowDoubleClicked", $event, row);
-            this.notifyListener('onRowDoubleClicked', [$event, row]);
+        Row.prototype.addEventListeners = function () {
+            this.element.on('click', angular.bind(this, this.onRowClicked));
+            this.element.on('dblclick', angular.bind(this, this.onRowDoubleClicked));
+            this.element.on('mouseenter', angular.bind(this, this.onRowMouseEnter));
+            this.element.on('mouseleave', angular.bind(this, this.onRowMouseLeave));
+            this.element.on('$destroy', angular.bind(this, this.removeEventListeners));
         };
-        SimpleTable.prototype.onRowMouseEnter = function ($event, row) {
-            this.scope.$broadcast("onRowMouseEnter", $event, row);
-            this.notifyListener('onRowMouseEnter', [$event, row]);
-        };
-        SimpleTable.prototype.onRowMouseLeave = function ($event, row) {
-            this.scope.$broadcast("onRowMouseLeave", $event, row);
-            this.notifyListener('onRowMouseLeave', [$event, row]);
-        };
-        SimpleTable.prototype.onHeaderClicked = function ($event, column) {
-            console.log("Header clicked: ", arguments);
-            this.scope.$broadcast("onHeaderClicked", $event, column);
-        };
-        SimpleTable.prototype.notifyPreInitialization = function () {
-            this.notifyListener("onPreInitialization", this);
-        };
-        SimpleTable.prototype.notifyInitializationComplete = function () {
-            if (this.initializationComplete) {
+        Row.prototype.removeEventListeners = function () {
+            if (!this.element) {
                 return;
             }
-            this.initializationComplete = true;
-            this.notifyListener("onInitializationComplete", this);
+            this.element.off();
         };
-        SimpleTable.prototype.notifyListener = function (eventName, params) {
-            if (!this.scope.tableConfig.listeners || !this.scope.tableConfig.listeners[eventName]) {
-                return;
+        Row.prototype.onRowClicked = function (event) {
+            this.simpleTable.onRowClicked(event, this.scope.row);
+        };
+        Row.prototype.onRowDoubleClicked = function (event) {
+            this.simpleTable.onRowDoubleClicked(event, this.scope.row);
+        };
+        Row.prototype.onRowMouseEnter = function (event) {
+            this.simpleTable.onRowMouseEnter(event, this.scope.row);
+        };
+        Row.prototype.onRowMouseLeave = function (event) {
+            this.simpleTable.onRowMouseLeave(event, this.scope.row);
+        };
+        return Row;
+    })(STCore.BaseComponentUI);
+    STRowUI.Row = Row;
+})(STRowUI || (STRowUI = {}));
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
+/// <reference path="STRowUI.ts" />
+angular.module('simpletable.table.row', [])
+    .directive('stTableRow', ['$log', '$compile', '$templateCache', '$templateRequest', function ($log, $compile, $templateCache, $templateRequest) {
+        return {
+            restrict: 'AE',
+            require: '^stTable',
+            compile: function (tElem, tAttrs) {
+                return {
+                    pre: function (scope, iElem, iAttrs) {
+                    },
+                    post: function (scope, iElem, iAttrs, parent) {
+                        var row = new STRowUI.Row();
+                        row.setServices($compile, $templateCache, $templateRequest);
+                        row.link(scope, iElem, iAttrs, parent.getSimpleTable());
+                        row.init();
+                        return row;
+                    }
+                };
+            },
+            template: function (tElem, tAttrs) {
+                return $templateCache.get(STTemplates.STTpls.ROW_TPL_ID);
             }
-            this.scope.tableConfig.listeners[eventName](params);
         };
-        SimpleTable.prototype.notifyPluginsDataChanged = function (newValue, oldValue) {
-            for (var i = 0; i < this.plugins.length; i++) {
-                var plugin = this.plugins[i];
-                if (!plugin.onDataChanged) {
-                    continue;
-                }
-                plugin.onDataChanged(newValue, oldValue);
+    }]);
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
+/// <reference path="SimpleTable.ts" />
+/// <reference path="../tpl/STTemplates.ts" />
+angular.module('simpletable.table', [])
+    .directive('stTable', ['$timeout', '$templateCache', 'SimpleTablePluginFactory', function ($timeout, $templateCache, SimpleTablePluginFactory) {
+        return {
+            restrict: 'AE',
+            scope: {
+                tableConfig: '=',
+                tableData: '='
+            },
+            controller: function ($scope, $element, $attrs) {
+                var stable = new SimpleTable.SimpleTable($scope, $element, $attrs, $timeout, SimpleTablePluginFactory);
+                this.getSimpleTable = function () {
+                    return stable;
+                };
+            },
+            template: function (tElem, tAttrs) {
+                return $templateCache.get(STTemplates.STTpls.TABLE_TPL_ID);
             }
         };
-        return SimpleTable;
-    })();
-    _SimpleTable.SimpleTable = SimpleTable;
-})(SimpleTable || (SimpleTable = {}));
-angular.module('simpletable.table', []).directive('stTable', ['$timeout', 'SimpleTablePluginFactory', function ($timeout, SimpleTablePluginFactory) {
-    return {
-        restrict: 'AE',
-        transclude: true,
-        scope: {
-            tableConfig: '=',
-            tableData: '='
-        },
-        controller: function ($scope, $element, $attrs) {
-            return new SimpleTable.SimpleTable($scope, $element, $attrs, $timeout, SimpleTablePluginFactory);
-        },
-        template: "<div ng-style='{width:tableConfig.tableWidth}'>" + "  <table ng-class='tableConfig.classes' ng-style='{width:tableConfig.tableWidth}'>" + "    <thead>" + "      <tr>" + "        <th id='{{hcol.id}}' class='table-header' " + "         ng-click='simpleTable.onHeaderClicked($event, hcol)' " + "         ng-repeat='hcol in tableConfig.columns' " + "         ng-class='hcol.headerClass' ng-if='hcol.active' " + "         ng-style='{\"height\":tableConfig.headerHeight, \"min-width\":hcol.style.minWidth, \"width\":hcol.style.width}' " + "         st-table-drop-target='true' st-table-draggable='true'>" + "          {{hcol.title}}" + "          <div st-table-resizable-handler class='table-header-cursor-container'></div>" + "        </th>" + "      </tr>" + "    </thead>" + "    <tbody ng-if='!tableConfig.rowTemplate'>" + "      <tr ng-click='simpleTable.onRowClicked($event, row)' ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " + "          ng-dblclick='simpleTable.onRowDoubleClicked($event, row)' " + "          ng-mouseenter='simpleTable.onRowMouseEnter($event, row)' ng-mouseleave='simpleTable.onRowMouseLeave($event, row)' " + "        ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' >" + "        <td ng-repeat='col in tableConfig.columns' ng-class='col.cellClass' ng-if='col.active' >" + "          <span ng-if='!col.template'>{{row[col.field]}}</span> " + "          <span ng-if='!!col.template' ng-include='col.template'></span> " + "        </td>" + "      </tr>" + "    </tbody>" + "    <tbody ng-if='tableConfig.rowTemplate' ng-include='tableConfig.rowTemplate'>" + "    </tbody>" + "  </table>" + "</div>"
-    };
-}]);
+    }]);
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
+/// <reference path="STTemplates.ts" />
+angular.module('simpletable.table.tpls', [])
+    .run(['$templateCache', function ($templateCache) {
+        var tpls = new STTemplates.STTpls().getTemplates();
+        _.forEach(tpls, function (pair) {
+            $templateCache.put(pair.id, pair.tpl);
+        });
+    }]);
 //# sourceMappingURL=simple-table.js.map

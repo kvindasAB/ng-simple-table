@@ -3,10 +3,8 @@ var SimpleTablePlugin;
 (function (SimpleTablePlugin) {
     var BaseSimpleTablePlugin = (function () {
         function BaseSimpleTablePlugin() {
-            // Attributes
             this.isInitializationComplete = false;
         }
-        // Methods
         BaseSimpleTablePlugin.prototype.init = function () {
             this.addEventListeners();
         };

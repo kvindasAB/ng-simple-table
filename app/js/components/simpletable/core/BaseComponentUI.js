@@ -7,7 +7,6 @@ var STCore;
     var BaseComponentUI = (function () {
         function BaseComponentUI() {
         }
-        // Methods
         BaseComponentUI.prototype.setServices = function ($compile, $templateCache, $templateRequest) {
             this.$compile = $compile;
             this.$templateCache = $templateCache;
@@ -26,11 +25,9 @@ var STCore;
             }
             this.applyTemplate(this.getCustomTemplate(this.scope), this.scope);
         };
-        /* To be implemented by subclasses */
         BaseComponentUI.prototype.shouldUseCustomTemplate = function () {
             return false;
         };
-        /* To be implemented by subclasses */
         BaseComponentUI.prototype.getCustomTemplate = function (scope) {
             return null;
         };
@@ -43,25 +40,11 @@ var STCore;
                 return tpl;
             }
             return this.$templateRequest(tplUrl);
-            /*
-            this.$templateRequest(tplUrl).then(function(response){
-                console.log('tplRq:', response);
-                //this.$templateCache.put(tplUrl, response);
-                //return response;
-            });
-            */
         };
         BaseComponentUI.prototype.applyTemplate = function (tpl, scope) {
             if (!tpl) {
                 return;
             }
-            //console.log('BaseComponent.applyTpl:', tpl);
-            /*
-            var dom:any = angular.element(tpl);
-            var link:Function = this.$compile(dom);
-            this.element.append(dom);
-            link(scope);
-            */
             var tpl = this.getCustomTemplate(this.scope);
             this.element.html(tpl);
             this.$compile(this.element.contents())(this.scope);

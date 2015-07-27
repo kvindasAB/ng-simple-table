@@ -5,23 +5,18 @@
 var SimpleTable;
 (function (SimpleTable_1) {
     var SimpleTable = (function () {
-        // Methods
         function SimpleTable(scope, element, attrs, $timeout, pluginFactory) {
-            // statics
             this.RESIZE_TYPE_FIXED = 'fixed';
             this.RESIZE_TYPE_ADJUSTABLE = 'adjustable';
             this.WIDTH_PIXELS_TYPE = 'px';
             this.WIDTH_PERCENTAGE_TYPE = '%';
             this.plugins = [];
             this.initializationComplete = false;
-            // base
             this.scope = scope;
             this.element = element;
             this.attrs = attrs;
-            // services
             this.$timeout = $timeout;
             this.pluginFactory = pluginFactory;
-            // variables
             this.scope.simpleTable = this;
             this.init();
             console.log("SimpleTable created: ", this.scope);
@@ -110,31 +105,26 @@ var SimpleTable;
             }
         };
         SimpleTable.prototype.onRowClicked = function ($event, row) {
-            //console.log("Row clicked: ", arguments);
             this.scope.$broadcast("onRowClicked", $event, row);
             this.notifyListener('onRowClicked', [$event, row]);
             this.scope.$apply();
         };
         SimpleTable.prototype.onRowDoubleClicked = function ($event, row) {
-            //console.log("Row Double Clicked: ", arguments);
             this.scope.$broadcast("onRowDoubleClicked", $event, row);
             this.notifyListener('onRowDoubleClicked', [$event, row]);
             this.scope.$apply();
         };
         SimpleTable.prototype.onRowMouseEnter = function ($event, row) {
-            //console.log("Row mouse enter: ", arguments);
             this.scope.$broadcast("onRowMouseEnter", $event, row);
             this.notifyListener('onRowMouseEnter', [$event, row]);
             this.scope.$apply();
         };
         SimpleTable.prototype.onRowMouseLeave = function ($event, row) {
-            //console.log("Row mouse leave: ", arguments);
             this.scope.$broadcast("onRowMouseLeave", $event, row);
             this.notifyListener('onRowMouseLeave', [$event, row]);
             this.scope.$apply();
         };
         SimpleTable.prototype.onHeaderClicked = function ($event, column) {
-            //console.log("Header clicked: ", arguments);
             this.scope.$broadcast("onHeaderClicked", $event, column);
             this.scope.$apply();
         };
@@ -152,7 +142,6 @@ var SimpleTable;
             if (!this.scope.tableConfig.listeners || !this.scope.tableConfig.listeners[eventName]) {
                 return;
             }
-            //this.scope.tableConfig.listeners[eventName].apply(this.scope.tableConfig.listeners, params);
             this.scope.tableConfig.listeners[eventName](params);
         };
         SimpleTable.prototype.notifyPluginsDataChanged = function (newValue, oldValue) {

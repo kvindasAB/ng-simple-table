@@ -1,18 +1,5 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 /// <reference path="STColumnUI.ts" />
-/*
- compile: function(tElem, tAttrs){
-     console.log(name + ': compile');
-     return {
-         pre: function(scope, iElem, iAttrs){
-            console.log(name + ': pre link');
-         },
-         post: function(scope, iElem, iAttrs){
-            console.log(name + ': post link');
-         }
-     }
- }
- */
 angular.module('simpletable.table.column', [])
     .directive('stTableColumn', ['$log', '$compile', '$templateCache', '$templateRequest', function ($log, $compile, $templateCache, $templateRequest) {
         return {
@@ -25,7 +12,6 @@ angular.module('simpletable.table.column', [])
                         $log.log('Col pre: ', iElem, scope);
                     },
                     post: function (scope, iElem, iAttrs, parent) {
-                        //$log.log('Col post: ', iElem, scope);
                         var column = new STColumnUI.Column();
                         column.setServices($compile, $templateCache, $templateRequest);
                         column.link(scope, iElem, iAttrs, parent.getSimpleTable());

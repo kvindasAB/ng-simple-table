@@ -1,6 +1,19 @@
 /// <reference path="../app/typings/angularjs/angular.d.ts" />
 /// <reference path="../app/typings/log4javascript/log4javascript.d.ts" />
 /// <reference path="../app/typings/lodash/lodash.d.ts" />
+declare module SimpleTable {
+    interface ISimpleTable {
+        scope: any;
+        element: any;
+        attrs: any;
+        plugins: any;
+        init(): any;
+        initPlugins(): any;
+        registerPlugin(plugin: any): any;
+        addEventListeners(): any;
+        removeEventListeners(): any;
+    }
+}
 declare module SimpleTablePlugin {
     interface ISimpleTablePlugin {
         isInitializationComplete: boolean;
@@ -24,11 +37,6 @@ declare module SimpleTablePlugin {
         addEventListeners(): void;
         removeEventListeners(): void;
         notifyListener(eventName: string, params: any): void;
-    }
-}
-declare module SimpleTablePlugin {
-    interface ISimpleTablePluginConfigAware {
-        onConfigChanged(): void;
     }
 }
 declare module SimpleTablePlugin {
@@ -80,6 +88,112 @@ declare module SimpleTablePluginFactory {
     class SimpleTablePluginFactory {
         newPluginSelection(): SimpleTableSelection.SimpleTablePluginSelection;
         newPluginSort(): SimpleTableSort.SimpleTablePluginSort;
+    }
+}
+declare module SimpleTable {
+    class SimpleTable implements ISimpleTable {
+        RESIZE_TYPE_FIXED: string;
+        RESIZE_TYPE_ADJUSTABLE: string;
+        WIDTH_PIXELS_TYPE: string;
+        WIDTH_PERCENTAGE_TYPE: string;
+        scope: any;
+        element: any;
+        attrs: any;
+        plugins: Array<SimpleTablePlugin.ISimpleTablePlugin>;
+        initPluginTimeout: Number;
+        initializationComplete: boolean;
+        $timeout: any;
+        pluginFactory: SimpleTablePluginFactory.SimpleTablePluginFactory;
+        constructor(scope: any, element: any, attrs: any, $timeout: any, pluginFactory: SimpleTablePluginFactory.SimpleTablePluginFactory);
+        init(): void;
+        registerPlugin(plugin: SimpleTablePlugin.ISimpleTablePlugin): void;
+        initPlugins(): void;
+        addEventListeners(): void;
+        removeEventListeners(): void;
+        validateConfig(): void;
+        initDefaultPlugins(): void;
+        initFixedTable(): void;
+        getWidthInNumber(width: any): number;
+        getWidthType(width: any): string;
+        doInitPlugins(): void;
+        onDataChanged(newValue: any, oldValue: any): void;
+        onRowClicked($event: any, row: any): void;
+        onRowDoubleClicked($event: any, row: any): void;
+        onRowMouseEnter($event: any, row: any): void;
+        onRowMouseLeave($event: any, row: any): void;
+        onHeaderClicked($event: any, column: any): void;
+        notifyPreInitialization(): void;
+        notifyInitializationComplete(): void;
+        notifyListener(eventName: string, params: any): void;
+        notifyPluginsDataChanged(newValue: any, oldValue: any): void;
+    }
+}
+declare module STCore {
+    interface IDisposable {
+        dispose(): void;
+    }
+}
+declare module STCore {
+    class BaseComponentUI implements STCore.IDisposable {
+        scope: angular.IScope;
+        element: any;
+        attrs: angular.IAttributes;
+        simpleTable: SimpleTable.SimpleTable;
+        $compile: angular.ICompileService;
+        $templateCache: angular.ITemplateCacheService;
+        $templateRequest: angular.ITemplateRequestService;
+        setServices($compile: angular.ICompileService, $templateCache: angular.ITemplateCacheService, $templateRequest: angular.ITemplateRequestService): void;
+        link(scope: angular.IScope, element: any, attrs: angular.IAttributes, simpleTable: SimpleTable.SimpleTable): void;
+        validateCustomTemplate(): void;
+        shouldUseCustomTemplate(): boolean;
+        getCustomTemplate(scope: angular.IScope): any;
+        getTemplateByCacheId(tplId: any): string;
+        getTemplateByUrl(tplUrl: any): any;
+        applyTemplate(tpl: string, scope: angular.IScope): void;
+        dispose(): void;
+    }
+}
+declare module STTemplates {
+    class STTpls {
+        static CELL_TPL: string;
+        static ROW_TPL: string;
+        static BODY_TPL: string;
+        static COLUMN_TPL: string;
+        static HEADER_TPL: string;
+        static TABLE_TPL: string;
+        static CELL_TPL_ID: string;
+        static ROW_TPL_ID: string;
+        static BODY_TPL_ID: string;
+        static COLUMN_TPL_ID: string;
+        static HEADER_TPL_ID: string;
+        static TABLE_TPL_ID: string;
+        static CELL_TPL_PAIR: any;
+        static ROW_TPL_PAIR: any;
+        static BODY_TPL_PAIR: any;
+        static COLUMN_TPL_PAIR: any;
+        static HEADER_TPL_PAIR: any;
+        static TABLE_TPL_PAIR: any;
+        getTemplates(): any[];
+    }
+}
+declare module STCellUI {
+    class Cell extends STCore.BaseComponentUI {
+        init(): void;
+        shouldUseCustomTemplate(): boolean;
+        getCustomTemplate(scope: angular.IScope): any;
+    }
+}
+declare module STColumnUI {
+    class Column extends STCore.BaseComponentUI {
+        init(): void;
+        addEventListeners(): void;
+        removeEventListeners(): void;
+        onHeaderClicked(event: any): void;
+    }
+}
+declare module SimpleTablePlugin {
+    interface ISimpleTablePluginConfigAware {
+        onConfigChanged(): void;
     }
 }
 declare module SimpleTableReorder {
@@ -230,54 +344,23 @@ declare module SimpleTableResize {
         getWidthType(width: any): string;
     }
 }
-declare module SimpleTable {
-    interface ISimpleTable {
-        scope: any;
-        element: any;
-        attrs: any;
-        plugins: any;
-        init(): any;
-        initPlugins(): any;
-        registerPlugin(plugin: any): any;
-        addEventListeners(): any;
-        removeEventListeners(): any;
+declare module STBodyUI {
+    class Body extends STCore.BaseComponentUI {
+        init(): void;
+        shouldUseCustomTemplate(): boolean;
+        validateCustomTemplate(): void;
+        applyTemplate(tpl: string, scope: any): void;
+        getCustomTemplate(scope: angular.IScope): any;
     }
 }
-declare module SimpleTable {
-    class SimpleTable implements ISimpleTable {
-        RESIZE_TYPE_FIXED: string;
-        RESIZE_TYPE_ADJUSTABLE: string;
-        WIDTH_PIXELS_TYPE: string;
-        WIDTH_PERCENTAGE_TYPE: string;
-        scope: any;
-        element: any;
-        attrs: any;
-        plugins: Array<SimpleTablePlugin.ISimpleTablePlugin>;
-        initPluginTimeout: Number;
-        initializationComplete: boolean;
-        $timeout: any;
-        pluginFactory: SimpleTablePluginFactory.SimpleTablePluginFactory;
-        constructor(scope: any, element: any, attrs: any, $timeout: any, pluginFactory: SimpleTablePluginFactory.SimpleTablePluginFactory);
+declare module STRowUI {
+    class Row extends STCore.BaseComponentUI {
         init(): void;
-        registerPlugin(plugin: SimpleTablePlugin.ISimpleTablePlugin): void;
-        initPlugins(): void;
         addEventListeners(): void;
         removeEventListeners(): void;
-        validateConfig(): void;
-        initDefaultPlugins(): void;
-        initFixedTable(): void;
-        getWidthInNumber(width: any): number;
-        getWidthType(width: any): string;
-        doInitPlugins(): void;
-        onDataChanged(newValue: any, oldValue: any): void;
-        onRowClicked($event: any, row: any): void;
-        onRowDoubleClicked($event: any, row: any): void;
-        onRowMouseEnter($event: any, row: any): void;
-        onRowMouseLeave($event: any, row: any): void;
-        onHeaderClicked($event: any, column: any): void;
-        notifyPreInitialization(): void;
-        notifyInitializationComplete(): void;
-        notifyListener(eventName: string, params: any): void;
-        notifyPluginsDataChanged(newValue: any, oldValue: any): void;
+        onRowClicked(event: any): void;
+        onRowDoubleClicked(event: any): void;
+        onRowMouseEnter(event: any): void;
+        onRowMouseLeave(event: any): void;
     }
 }

@@ -1,4 +1,4 @@
-var __extends = this.__extends || function (d, b) {
+var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
@@ -12,36 +12,20 @@ var SimpleTableReorder;
 (function (SimpleTableReorder) {
     var SimpleTableReorderDrop = (function (_super) {
         __extends(SimpleTableReorderDrop, _super);
-        //***************
-        // METHODS - END
-        //***************
-        //*********************
-        // CONSTRUCTOR - START
-        //*********************
         function SimpleTableReorderDrop(rootScope, scope, element, attrs) {
             _super.call(this);
-            //*******************
-            // CONSTANTS - START
-            //*******************
             this.DRAG_OVER_EVENT = 'dragover';
             this.DRAG_ENTER_EVENT = 'dragenter';
             this.DRAG_LEAVE_EVENT = 'dragleave';
             this.DROP_EVENT = 'drop';
             this.SIMPLE_TABLE_DRAG_START_EVENT = 'simpleTableDragStartEvent';
             this.SIMPLE_TABLE_DRAG_END_EVENT = 'simpleTableDragEndEvent';
-            // base
             this.rootScope = rootScope;
             this.scope = scope;
             this.element = element;
             this.attrs = attrs;
             this.init();
         }
-        //******************
-        // ATTRIBUTES - END
-        //******************
-        //**************************
-        // OVERRIDE METHODS - START
-        //**************************
         SimpleTableReorderDrop.prototype.init = function () {
             this.initUuid();
             _super.prototype.init.call(this);
@@ -62,12 +46,6 @@ var SimpleTableReorder;
                 return self.onDragEndHandler();
             });
         };
-        //************************
-        // OVERRIDE METHODS - END
-        //************************
-        //*****************
-        // METHODS - START
-        //*****************
         SimpleTableReorderDrop.prototype.initUuid = function () {
             this.uuid = new SimpleTableReorder.SimpleTableReorderUuidUtil();
             var id = angular.element(this.element).attr("id");
@@ -101,12 +79,11 @@ var SimpleTableReorder;
             var tableConfig = parent.tableConfig;
             var columns = tableConfig.columns;
             var data = event.dataTransfer.getData("text");
-            //var src = document.getElementById(data);
             var src = angular.element('#' + data);
             var srcData = angular.element(src)[0];
-            var oldIndex = this.getIndexById(columns, srcData.id); //srcData.cellIndex;
+            var oldIndex = this.getIndexById(columns, srcData.id);
             var dest = angular.element(event.target)[0];
-            var newIndex = this.getIndexById(columns, dest.id); //dest.cellIndex;
+            var newIndex = this.getIndexById(columns, dest.id);
             var dataColumn = columns[oldIndex];
             columns.splice(oldIndex, 1);
             if (newIndex === columns.length) {

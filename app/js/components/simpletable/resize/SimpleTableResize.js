@@ -6,16 +6,7 @@
 var SimpleTableResize;
 (function (SimpleTableResize_1) {
     var SimpleTableResize = (function () {
-        //************************
-        // OVERRIDE METHODS - END
-        //************************
-        //*****************
-        // METHODS - START
-        //*****************
         function SimpleTableResize(scope, element, attrs, $window) {
-            //*******************
-            // CONSTANTS - START
-            //*******************
             this.RESIZE_TYPE_FIXED = 'fixed';
             this.RESIZE_TYPE_ADJUSTABLE = 'adjustable';
             this.WIDTH_PIXELS_TYPE = 'px';
@@ -35,12 +26,6 @@ var SimpleTableResize;
             this.attrs = attrs;
             this.$window = $window;
         }
-        //******************
-        // ATTRIBUTES - END
-        //******************
-        //**************************
-        // OVERRIDE METHODS - START
-        //**************************
         SimpleTableResize.prototype.init = function () {
             this.initializationComplete = true;
             this.addEventListeners();

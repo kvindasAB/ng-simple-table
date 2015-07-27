@@ -10,7 +10,6 @@ angular.module('simpletable.resizable', [])
                 if (!$scope.simpleTableResize) {
                     $scope.simpleTableResize = new SimpleTableResize.SimpleTableResize($scope, $element, $attrs, $window);
                 }
-                // Controller referenced as this in ang 1.3
                 this.getParent = function () {
                     return $scope.simpleTableResize;
                 };

@@ -1,8 +1,5 @@
 var STTemplates;
 (function (STTemplates) {
-    /**
-     * SimpleTable default templates
-     */
     var STTpls = (function () {
         function STTpls() {
         }
@@ -28,7 +25,7 @@ var STTemplates;
             "  <table ng-class='tableConfig.classes' ng-style='{width:tableConfig.tableWidth}'>" +
             "    <thead st-table-header>" +
             "    </thead>" +
-            "    <tbody st-table-body>" +
+            "    <tbody vs-repeat st-table-body style='height: 400px'>" +
             "    </tbody>" +
             "  </table>" +
             "</div>";

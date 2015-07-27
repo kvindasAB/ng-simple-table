@@ -1,4 +1,4 @@
-var __extends = this.__extends || function (d, b) {
+var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
@@ -16,7 +16,6 @@ var SimpleTableSelection;
             _super.apply(this, arguments);
             this.selectedRows = [];
         }
-        // Overrides
         SimpleTablePluginSelection.prototype.init = function () {
             this.scope = this.simpleTable.scope;
             _super.prototype.init.call(this);
@@ -29,7 +28,6 @@ var SimpleTableSelection;
         };
         SimpleTablePluginSelection.prototype.removeEventListeners = function () {
         };
-        // Methods
         SimpleTablePluginSelection.prototype.isRowSelected = function (row) {
             return (this.selectedRows.indexOf(row) > -1);
         };
@@ -43,7 +41,6 @@ var SimpleTableSelection;
             this.addSelectedRow(row);
         };
         SimpleTablePluginSelection.prototype.addSelectedRow = function (row) {
-            //console.log("SimpleTableSelection.addSelectedRow:", arguments);
             if (!this.isRowValid(row)) {
                 return;
             }
@@ -59,7 +56,6 @@ var SimpleTableSelection;
                 return;
             }
             this.selectedRows.push(row);
-            //console.log("selectedRows: ", this.selectedRows);
         };
         SimpleTablePluginSelection.prototype.doMultipleSelection = function (row) {
             var index = this.selectedRows.indexOf(row);

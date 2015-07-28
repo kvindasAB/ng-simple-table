@@ -1,4 +1,5 @@
 /// <reference path="../table/SimpleTable.ts" />
+/// <reference path="../util/STUtil.ts" />
 var STColumn;
 (function (STColumn) {
     var Column = (function () {
@@ -8,7 +9,7 @@ var STColumn;
         }
         Column.prototype.syncFromData = function (data) {
             data = data ? data : this._data;
-            this.id = data.id;
+            this.id = data.id ? data.id : STUtil.Util.generateToken();
             this.field = data.field;
             this.title = data.title ? data.title : data.field;
             this.active = _.isUndefined(data.active) ? true : data.active;

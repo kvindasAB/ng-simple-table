@@ -1,4 +1,5 @@
 /// <reference path="../table/SimpleTable.d.ts" />
+/// <reference path="../util/STUtil.d.ts" />
 declare module STColumn {
     class Column {
         id: string;

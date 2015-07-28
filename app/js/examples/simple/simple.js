@@ -17,11 +17,11 @@ angular.module('stable.examples.simple', ['ui.router'])
 .controller('ExSimpleCtrl', ['$scope','DataGenerator', function($scope, DataGenerator){
 
         $scope.columns = [
-            {id:"id", title: "Id", field: 'id', active: true, style: {width: "20%"}},
-            {id:"name", title: "Name", field: 'name', active: true, style: {width: "20%"}},
-            {id:"phone", title: "Phone", field: 'phone', active: true, style: {width: "20%"}},
-            {id:"age", title: "Age", field: 'age', active: true, style: {width: "20%"}},
-            {id:"address", title: "Address", field: 'address', active: true, style: {width: "20%"}}
+            {field: 'id', style: {width: "20%"}},
+            {field: 'name', style: {width: "20%"}},
+            {field: 'phone', style: {width: "20%"}},
+            {field: 'age', style: {width: "20%"}},
+            {field: 'address', style: {width: "20%"}}
         ];
 
         $scope.data = DataGenerator.generateRows(50);

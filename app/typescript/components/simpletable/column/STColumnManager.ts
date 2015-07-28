@@ -6,12 +6,10 @@ module STColumn {
         columns:STColumn.Column[];
 
         processConfig(tableConfig:any):void {
-            console.log('Processing columns - start');
             if(!tableConfig && !tableConfig.columns){ return; }
             this.createColumns(tableConfig);
             // Replace json columns with object columns
             tableConfig.columns = this.columns;
-            console.log('Processing columns - end', tableConfig.columns);
         }
 
         createColumns(tableConfig:any):void {

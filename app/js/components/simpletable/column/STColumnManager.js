@@ -6,13 +6,11 @@ var STColumn;
         function ColumnManager() {
         }
         ColumnManager.prototype.processConfig = function (tableConfig) {
-            console.log('Processing columns - start');
             if (!tableConfig && !tableConfig.columns) {
                 return;
             }
             this.createColumns(tableConfig);
             tableConfig.columns = this.columns;
-            console.log('Processing columns - end', tableConfig.columns);
         };
         ColumnManager.prototype.createColumns = function (tableConfig) {
             var len = tableConfig && tableConfig.columns ? tableConfig.columns.length : 0;

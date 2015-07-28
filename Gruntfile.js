@@ -208,7 +208,8 @@ module.exports = function ( grunt ) {
      */
     watch: {
       options: {
-        atBegin: true
+        atBegin: true,
+        livereload: true
       },
       src: {
         files: ['app/**/*.js', '!app/js/components/simpletable/**/*.js'],

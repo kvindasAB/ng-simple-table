@@ -20,14 +20,13 @@ angular.module('stable.examples.simple', ['ui.router'])
 
         $scope.tableConfig = {
             tableClasses: ["table", "table-bordered", 'table-padding'],
-            tableWidth: '500px',
             headerHeight: '30px',
             columns: [
-                        {field: 'id', style: {width: "20%"}},
-                        {field: 'name', style: {width: "20%"}},
-                        {field: 'phone', style: {width: "20%"}},
-                        {field: 'age', style: {width: "20%"}},
-                        {field: 'address', style: {width: "20%"}}
+                        {field: 'id'},
+                        {field: 'name'},
+                        {field: 'phone'},
+                        {field: 'age'},
+                        {field: 'address'}
                      ],
         };
 

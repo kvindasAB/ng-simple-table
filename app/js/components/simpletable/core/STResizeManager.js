@@ -9,8 +9,7 @@ var STCore;
             this.config = config;
         }
         ResizeManager.prototype.resizeTable = function () {
-            debugger;
-            if (this.resizeTableFixed()) {
+            if (this.isResizeFixed()) {
                 this.resizeTableFixed();
                 return;
             }

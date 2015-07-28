@@ -15,8 +15,7 @@ module STCore {
         }
 
         resizeTable():void{
-            debugger;
-            if(this.resizeTableFixed() ){
+            if(this.isResizeFixed() ){
                 this.resizeTableFixed();
                 return;
             }

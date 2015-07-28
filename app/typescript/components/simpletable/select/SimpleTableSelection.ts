@@ -53,14 +53,6 @@ module SimpleTableSelection {
             return this.doSingleSelection(row);
         }
 
-        isSingleSelection():boolean {
-            return this.scope.tableConfig.selectionType === STCore.Constants.SELECTION_SINGLE;
-        }
-
-        isMultipleSelection():boolean {
-            return !this.isSingleSelection();
-        }
-
         doSingleSelection(row:any):void{
             var index = this.selectedRows.indexOf(row);
             this.selectedRows.length = 0;
@@ -90,6 +82,16 @@ module SimpleTableSelection {
         onDataChanged(newValue, oldValue):void {
             this.revalidateSelection();
         }
+
+        isSingleSelection():boolean {
+            return this.scope.tableConfig.selectionType === STCore.Constants.SELECTION_SINGLE;
+        }
+
+        isMultipleSelection():boolean {
+            return !this.isSingleSelection();
+        }
+
+
 
     }
 }

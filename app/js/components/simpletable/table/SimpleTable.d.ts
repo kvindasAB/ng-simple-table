@@ -2,17 +2,15 @@
 /// <reference path="../column/STColumnManager.d.ts" />
 /// <reference path="../core/ISimpleTablePlugin.d.ts" />
 /// <reference path="../core/STConfig.d.ts" />
+/// <reference path="../core/STResizeManager.d.ts" />
 /// <reference path="../factory/SimpleTablePluginFactory.d.ts" />
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 declare module SimpleTable {
     class SimpleTable implements ISimpleTable {
-        RESIZE_TYPE_FIXED: string;
-        RESIZE_TYPE_ADJUSTABLE: string;
-        WIDTH_PIXELS_TYPE: string;
-        WIDTH_PERCENTAGE_TYPE: string;
         scope: any;
         element: any;
         attrs: any;
+        managers: any;
         plugins: Array<SimpleTablePlugin.ISimpleTablePlugin>;
         initPluginTimeout: Number;
         initializationComplete: boolean;
@@ -25,10 +23,9 @@ declare module SimpleTable {
         addEventListeners(): void;
         removeEventListeners(): void;
         processConfig(): void;
+        initManagers(): void;
         initDefaultPlugins(): void;
-        initFixedTable(): void;
-        getWidthInNumber(width: any): number;
-        getWidthType(width: any): string;
+        resizeTable(): void;
         doInitPlugins(): void;
         onDataChanged(newValue: any, oldValue: any): void;
         onRowClicked($event: any, row: any): void;

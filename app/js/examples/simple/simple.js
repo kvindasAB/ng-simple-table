@@ -20,7 +20,7 @@ angular.module('stable.examples.simple', ['ui.router'])
 
         $scope.tableConfig = {
             tableClasses: ["table", "table-bordered", 'table-padding'],
-            tableWidth: '100%',
+            tableWidth: '500px',
             headerHeight: '30px',
             columns: [
                         {field: 'id', style: {width: "20%"}},

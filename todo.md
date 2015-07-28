@@ -4,10 +4,11 @@ TODO List
 
 V1.0
 
-TableConfig refactoring and modeling on proper object.
-TableConfig defaults as resize management, headerHeight, etc.
-Improve listening to resize via code listener instead of additional directive.
+Fix issue where table rendering do not grab the whole area
+TableConfig refactoring and modeling on proper object. - DONE
+TableConfig defaults as resize management, headerHeight, etc. - 50%
 Virtualization.
+Improve listening to resize via code listener instead of additional directive.
 Save state feature.
 
 -- Issues

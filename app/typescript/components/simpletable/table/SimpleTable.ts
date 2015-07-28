@@ -2,20 +2,17 @@
 /// <reference path="../column/STColumnManager.ts" />
 /// <reference path="../core/ISimpleTablePlugin.ts" />
 /// <reference path="../core/STConfig.ts" />
+/// <reference path="../core/STResizeManager.ts" />
 /// <reference path="../factory/SimpleTablePluginFactory.ts" />
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 module SimpleTable {
     export class SimpleTable implements ISimpleTable {
-        // statics
-        RESIZE_TYPE_FIXED:string = 'fixed';
-        RESIZE_TYPE_ADJUSTABLE:string = 'adjustable';
-        WIDTH_PIXELS_TYPE:string = 'px';
-        WIDTH_PERCENTAGE_TYPE:string = '%';
 
         // Attributes
         scope:any;
         element:any;
         attrs:any;
+        managers:any = {};
         plugins:Array<SimpleTablePlugin.ISimpleTablePlugin> = [];
         initPluginTimeout:Number;
         initializationComplete:boolean = false;
@@ -47,8 +44,9 @@ module SimpleTable {
             this.notifyPreInitialization();
             this.addEventListeners();
             this.processConfig();
+            this.initManagers();
             this.initDefaultPlugins();
-            this.initFixedTable();
+            this.resizeTable();
         }
 
         registerPlugin(plugin:SimpleTablePlugin.ISimpleTablePlugin):void{
@@ -78,9 +76,15 @@ module SimpleTable {
             config.syncFromData();
             // replace config
             this.scope.tableConfig = config;
+        }
 
-            var colManager:STColumn.ColumnManager = new STColumn.ColumnManager();
-            colManager.processConfig(this.scope.tableConfig);
+        initManagers():void {
+            // Column Manager
+            this.managers.columnManager = new STColumn.ColumnManager();
+            this.managers.columnManager.processConfig(this.scope.tableConfig);
+
+            // Resize Manager
+            this.managers.resizeManager = new STCore.ResizeManager(this.scope.tableConfig);
         }
 
         initDefaultPlugins():void{
@@ -88,41 +92,8 @@ module SimpleTable {
             this.pluginFactory.newPluginSort().doRegister(this);
         }
 
-        initFixedTable():void{
-            var tableConfig:any = this.scope.tableConfig;
-            if(tableConfig.resizeType === this.RESIZE_TYPE_ADJUSTABLE){
-                return;
-            }
-            var columns:any = tableConfig.columns;
-            var totalWidth:number = 0;
-            for(var i = 0; i < columns.length; i++){
-                var column:any = columns[i];
-                if(!column.active){
-                    continue;
-                }
-                totalWidth += this.getWidthInNumber(column.style.width);
-            }
-            tableConfig.tableWidth = totalWidth + 'px';
-        }
-
-        getWidthInNumber(width):number{
-            var stringWidth:string = '';
-            var widthType:string = this.getWidthType(width);
-            if(widthType === this.WIDTH_PIXELS_TYPE){
-                stringWidth = width.substring(0 , width.length - 2);
-            }else{
-                stringWidth = width.substring(0 , width.length - 1);
-            }
-            var columnWidth:number = parseFloat(stringWidth);
-            return columnWidth;
-        }
-
-        getWidthType(width):string{
-            var widthType:string = width.substring(width.length - 2, width.length);
-            if(widthType === this.WIDTH_PIXELS_TYPE){
-                return this.WIDTH_PIXELS_TYPE;
-            }
-            return this.WIDTH_PERCENTAGE_TYPE;
+        resizeTable():void{
+            this.managers.resizeManager.resizeTable();
         }
 
         doInitPlugins():void{

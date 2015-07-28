@@ -50,12 +50,6 @@ var SimpleTableSelection;
             }
             return this.doSingleSelection(row);
         };
-        SimpleTablePluginSelection.prototype.isSingleSelection = function () {
-            return this.scope.tableConfig.selectionType === STCore.Constants.SELECTION_SINGLE;
-        };
-        SimpleTablePluginSelection.prototype.isMultipleSelection = function () {
-            return !this.isSingleSelection();
-        };
         SimpleTablePluginSelection.prototype.doSingleSelection = function (row) {
             var index = this.selectedRows.indexOf(row);
             this.selectedRows.length = 0;
@@ -79,6 +73,12 @@ var SimpleTableSelection;
         };
         SimpleTablePluginSelection.prototype.onDataChanged = function (newValue, oldValue) {
             this.revalidateSelection();
+        };
+        SimpleTablePluginSelection.prototype.isSingleSelection = function () {
+            return this.scope.tableConfig.selectionType === STCore.Constants.SELECTION_SINGLE;
+        };
+        SimpleTablePluginSelection.prototype.isMultipleSelection = function () {
+            return !this.isSingleSelection();
         };
         return SimpleTablePluginSelection;
     })(SimpleTablePlugin.BaseSimpleTablePlugin);

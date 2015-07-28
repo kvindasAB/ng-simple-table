@@ -6,6 +6,12 @@ module STCore {
         static SELECTION_SINGLE:string      = 'single';
         static SELECTION_MULTIPLE:string    = 'multiple';
 
+        static RESIZE_RELATIVE:string       = 'relative';
+        static RESIZE_FIXED:string          = 'fixed';
+
+        static UNIT_PIXELS:string           = 'px';
+        static UNIT_PERCENTAGE:string       = '%';
+
 
     }
 }

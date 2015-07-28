@@ -14,12 +14,12 @@ declare module SimpleTableSelection {
         setSelectedRows(rows: Array<any>): void;
         onRowClicked(scopeEvent: any, $event: any, row: any): any;
         addSelectedRow(row: any): any;
-        isSingleSelection(): boolean;
-        isMultipleSelection(): boolean;
         doSingleSelection(row: any): void;
         doMultipleSelection(row: any): any[];
         isRowValid(row: any): boolean;
         revalidateSelection(): void;
         onDataChanged(newValue: any, oldValue: any): void;
+        isSingleSelection(): boolean;
+        isMultipleSelection(): boolean;
     }
 }

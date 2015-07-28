@@ -2,16 +2,14 @@
 /// <reference path="../column/STColumnManager.ts" />
 /// <reference path="../core/ISimpleTablePlugin.ts" />
 /// <reference path="../core/STConfig.ts" />
+/// <reference path="../core/STResizeManager.ts" />
 /// <reference path="../factory/SimpleTablePluginFactory.ts" />
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 var SimpleTable;
 (function (SimpleTable_1) {
     var SimpleTable = (function () {
         function SimpleTable(scope, element, attrs, $timeout, pluginFactory) {
-            this.RESIZE_TYPE_FIXED = 'fixed';
-            this.RESIZE_TYPE_ADJUSTABLE = 'adjustable';
-            this.WIDTH_PIXELS_TYPE = 'px';
-            this.WIDTH_PERCENTAGE_TYPE = '%';
+            this.managers = {};
             this.plugins = [];
             this.initializationComplete = false;
             this.scope = scope;
@@ -27,8 +25,9 @@ var SimpleTable;
             this.notifyPreInitialization();
             this.addEventListeners();
             this.processConfig();
+            this.initManagers();
             this.initDefaultPlugins();
-            this.initFixedTable();
+            this.resizeTable();
         };
         SimpleTable.prototype.registerPlugin = function (plugin) {
             console.log("initializing plugins...", plugin);
@@ -53,47 +52,18 @@ var SimpleTable;
             var config = new STCore.Config(this.scope.tableConfig);
             config.syncFromData();
             this.scope.tableConfig = config;
-            var colManager = new STColumn.ColumnManager();
-            colManager.processConfig(this.scope.tableConfig);
+        };
+        SimpleTable.prototype.initManagers = function () {
+            this.managers.columnManager = new STColumn.ColumnManager();
+            this.managers.columnManager.processConfig(this.scope.tableConfig);
+            this.managers.resizeManager = new STCore.ResizeManager(this.scope.tableConfig);
         };
         SimpleTable.prototype.initDefaultPlugins = function () {
             this.pluginFactory.newPluginSelection().doRegister(this);
             this.pluginFactory.newPluginSort().doRegister(this);
         };
-        SimpleTable.prototype.initFixedTable = function () {
-            var tableConfig = this.scope.tableConfig;
-            if (tableConfig.resizeType === this.RESIZE_TYPE_ADJUSTABLE) {
-                return;
-            }
-            var columns = tableConfig.columns;
-            var totalWidth = 0;
-            for (var i = 0; i < columns.length; i++) {
-                var column = columns[i];
-                if (!column.active) {
-                    continue;
-                }
-                totalWidth += this.getWidthInNumber(column.style.width);
-            }
-            tableConfig.tableWidth = totalWidth + 'px';
-        };
-        SimpleTable.prototype.getWidthInNumber = function (width) {
-            var stringWidth = '';
-            var widthType = this.getWidthType(width);
-            if (widthType === this.WIDTH_PIXELS_TYPE) {
-                stringWidth = width.substring(0, width.length - 2);
-            }
-            else {
-                stringWidth = width.substring(0, width.length - 1);
-            }
-            var columnWidth = parseFloat(stringWidth);
-            return columnWidth;
-        };
-        SimpleTable.prototype.getWidthType = function (width) {
-            var widthType = width.substring(width.length - 2, width.length);
-            if (widthType === this.WIDTH_PIXELS_TYPE) {
-                return this.WIDTH_PIXELS_TYPE;
-            }
-            return this.WIDTH_PERCENTAGE_TYPE;
+        SimpleTable.prototype.resizeTable = function () {
+            this.managers.resizeManager.resizeTable();
         };
         SimpleTable.prototype.doInitPlugins = function () {
             var self = this;

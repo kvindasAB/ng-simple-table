@@ -17,7 +17,6 @@ Component lifecycle is the following.
     - Apply sizing/resizing
     - Process data
     - Rendering
-      
 
 ## Columns
 

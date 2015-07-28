@@ -1,4 +1,5 @@
 /// <reference path="ISimpleTable.ts" />
+/// <reference path="../column/STColumnManager.ts" />
 /// <reference path="../core/ISimpleTablePlugin.ts" />
 /// <reference path="../factory/SimpleTablePluginFactory.ts" />
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
@@ -24,7 +25,7 @@ var SimpleTable;
         SimpleTable.prototype.init = function () {
             this.notifyPreInitialization();
             this.addEventListeners();
-            this.validateConfig();
+            this.processConfig();
             this.initDefaultPlugins();
             this.initFixedTable();
         };
@@ -47,7 +48,9 @@ var SimpleTable;
         SimpleTable.prototype.removeEventListeners = function () {
             console.log("removing listeners...", this);
         };
-        SimpleTable.prototype.validateConfig = function () {
+        SimpleTable.prototype.processConfig = function () {
+            var colManager = new STColumn.ColumnManager();
+            colManager.processConfig(this.scope.tableConfig);
         };
         SimpleTable.prototype.initDefaultPlugins = function () {
             this.pluginFactory.newPluginSelection().doRegister(this);

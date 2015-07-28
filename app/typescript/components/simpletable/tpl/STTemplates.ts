@@ -14,7 +14,7 @@ module STTemplates {
         static COLUMN_TPL:string    = "{{hcol.title}}<div st-table-resizable-handler11 class='table-header-cursor-container'></div>";
         static HEADER_TPL:string    = "<tr>" +
                                       "  <th id='{{hcol.id}}' class='table-header' " +
-                                      "   ng-repeat='hcol in tableConfig.columns' " +
+                                      "   ng-repeat='hcol in tableConfig.columns track by hcol.id' " +
                                       "   ng-class='hcol.headerClass' ng-if='hcol.active' " +
                                       "   ng-style='{\"height\":tableConfig.headerHeight, \"min-width\":hcol.style.minWidth, \"width\":hcol.style.width}' " +
                                       "   st-table-drop-target='true' st-table-draggable='true' st-table-column>" +

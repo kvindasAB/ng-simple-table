@@ -12,7 +12,7 @@ var STColumn;
             this.id = data.id ? data.id : STUtil.Util.generateToken();
             this.field = data.field;
             this.title = data.title ? data.title : data.field;
-            this.active = _.isUndefined(data.active) ? true : data.active;
+            this.active = angular.isUndefined(data.active) ? true : data.active;
             this.style = data.style;
             this.headerClass = data.headerClass;
             this.cellClass = data.cellClass;

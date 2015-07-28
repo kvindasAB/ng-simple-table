@@ -2,29 +2,45 @@ TODO List
 ========
 
 
-- Allow custom templates to be external files. 
-- Column refactoring
-- External template functionality refactoring
-- Responsive columns adapting via resolution and functionality.
-- Responsive functionality ex. on resize or drag.
+V1.0
+
+TableConfig refactoring and modeling on proper object.
+TableConfig defaults as resize management, headerHeight, etc.
+Improve listening to resize via code listener instead of additional directive.
+Virtualization.
+Save state feature.
+
+-- Issues
+
+Columns seems to be added by pieces, which forces the re-rendering of the table, occurs when drag-drop plugin not initialized
+Rendering is very slow, seems like adding columns manually - Occurs when drag-drop plugin not initialized
+If no resizable handler is defined, the table generate issues.
+Resize fixed being applied by default, while should be relative by default.
+Relative resize should be called percentage.
+
+
+V2.0
+
+Cell selection.
+Cell getValue and getValue functions.
+One time binding for columns - Review this with virtualization.
 - II - Multi Column sort
 - II - Inline edition
 - II - Save state feature
 - Auto checkbox column
- 
--- Issues
-
-Columns should be active by default, and inactive only if specified.
-Columns seems to be added by pieces, which forces the re-rendering of the table
-Resize fixed being applied by default, while should be relative by default.
-Relative resize should be called percentage
-Rendering is very slow, seems like adding columns manually
-If no resizable handler is defined, the table generate issues
 
 
+V3.0
+
+- Allow custom templates to be external files. 
+- External template functionality refactoring
+- Responsive columns adapting via resolution and functionality.
+- Responsive functionality ex. on resize or drag.
 
 ## Completed
 
+- Column refactoring - DONE
+- Columns should be active by default, and inactive only if specified. - DONE
 - Dispose ComponentUI objects on scope destroy. - DONE
 - Reenable (row, cell, column) external templates mechanism - DONE
 - Centralize UI Objects and template management - DONE

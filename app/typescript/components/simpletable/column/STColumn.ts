@@ -3,6 +3,9 @@
 module STColumn {
     export class Column {
 
+        // FIXME - Simplify style management in template
+        // FIXME - Simplify drag and drop in template
+
         id:string;
         title:string;
         field:string;
@@ -11,6 +14,7 @@ module STColumn {
         headerClass:any;
         cellClass:any;
         cellTemplate:any;
+        // TODO: Integrate mutable property to do one time binding
 
         //json base object
         _data:any;
@@ -24,7 +28,7 @@ module STColumn {
             this.id             = data.id ? data.id : STUtil.Util.generateToken();
             this.field          = data.field;
             this.title          = data.title ? data.title : data.field;
-            this.active         = _.isUndefined(data.active) ? true : data.active;
+            this.active         = angular.isUndefined(data.active) ? true : data.active;
             this.style          = data.style;
             this.headerClass    = data.headerClass;
             this.cellClass      = data.cellClass;

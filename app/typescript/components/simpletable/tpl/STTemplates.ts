@@ -21,7 +21,7 @@ module STTemplates {
                                       "  </th>" +
                                       "</tr>";
         static TABLE_TPL:string     = "<div ng-style='{width:tableConfig.tableWidth}'>" +
-                                      "  <table ng-class='tableConfig.classes' ng-style='{width:tableConfig.tableWidth}'>" +
+                                      "  <table ng-class='tableConfig.tableClasses' ng-style='{width:tableConfig.tableWidth}'>" +
                                       "    <thead st-table-header>" +
                                       "    </thead>" +
                                       "    <tbody st-table-body style='height: 400px'>" +

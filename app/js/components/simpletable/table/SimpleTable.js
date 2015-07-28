@@ -1,6 +1,7 @@
 /// <reference path="ISimpleTable.ts" />
 /// <reference path="../column/STColumnManager.ts" />
 /// <reference path="../core/ISimpleTablePlugin.ts" />
+/// <reference path="../core/STConfig.ts" />
 /// <reference path="../factory/SimpleTablePluginFactory.ts" />
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 var SimpleTable;
@@ -49,6 +50,9 @@ var SimpleTable;
             console.log("removing listeners...", this);
         };
         SimpleTable.prototype.processConfig = function () {
+            var config = new STCore.Config(this.scope.tableConfig);
+            config.syncFromData();
+            this.scope.tableConfig = config;
             var colManager = new STColumn.ColumnManager();
             colManager.processConfig(this.scope.tableConfig);
         };

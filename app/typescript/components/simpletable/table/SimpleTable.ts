@@ -1,6 +1,7 @@
 /// <reference path="ISimpleTable.ts" />
 /// <reference path="../column/STColumnManager.ts" />
 /// <reference path="../core/ISimpleTablePlugin.ts" />
+/// <reference path="../core/STConfig.ts" />
 /// <reference path="../factory/SimpleTablePluginFactory.ts" />
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 module SimpleTable {
@@ -73,6 +74,11 @@ module SimpleTable {
         }
 
         processConfig():void {
+            var config:STCore.Config = new STCore.Config(this.scope.tableConfig);
+            config.syncFromData();
+            // replace config
+            this.scope.tableConfig = config;
+
             var colManager:STColumn.ColumnManager = new STColumn.ColumnManager();
             colManager.processConfig(this.scope.tableConfig);
         }

@@ -1,6 +1,7 @@
 /// <reference path="ISimpleTable.d.ts" />
 /// <reference path="../column/STColumnManager.d.ts" />
 /// <reference path="../core/ISimpleTablePlugin.d.ts" />
+/// <reference path="../core/STConfig.d.ts" />
 /// <reference path="../factory/SimpleTablePluginFactory.d.ts" />
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 declare module SimpleTable {

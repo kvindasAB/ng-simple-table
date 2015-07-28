@@ -19,7 +19,9 @@ angular.module('stable.examples.simple', ['ui.router'])
         $scope.data = DataGenerator.generateRows(50);
 
         $scope.tableConfig = {
-            classes: ["table", "table-bordered", 'table-padding'],
+            tableClasses: ["table", "table-bordered", 'table-padding'],
+            tableWidth: '100%',
+            headerHeight: '30px',
             columns: [
                         {field: 'id', style: {width: "20%"}},
                         {field: 'name', style: {width: "20%"}},
@@ -27,8 +29,6 @@ angular.module('stable.examples.simple', ['ui.router'])
                         {field: 'age', style: {width: "20%"}},
                         {field: 'address', style: {width: "20%"}}
                      ],
-            tableWidth: '100%',
-            headerHeight: '30px',
         };
 
     }]);

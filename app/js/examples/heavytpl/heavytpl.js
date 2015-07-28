@@ -32,7 +32,7 @@ angular.module('stable.examples.heavytpl', ['ui.router'])
         $scope.data = DataGenerator.generateRows($scope.form.qty);
 
         $scope.tableConfig = {
-            classes: ["table", "table-bordered", 'table-padding'],
+            tableClasses: ["table", "table-bordered", 'table-padding'],
             columns: $scope.columns,
             tableWidth: '100%',
             headerHeight: '30px',

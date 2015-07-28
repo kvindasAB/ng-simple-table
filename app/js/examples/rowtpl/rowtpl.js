@@ -36,7 +36,7 @@ angular.module('stable.examples.rowtpl', ['ui.router'])
             "    st-table-row ></tr>";
 
         $scope.tableConfig = {
-            classes: ["table", "table-bordered", 'table-padding'],
+            tableClasses: ["table", "table-bordered", 'table-padding'],
             columns: $scope.columns,
             rowTemplate1: rowTpl,
             tableWidth: '100%',

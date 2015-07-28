@@ -22,7 +22,7 @@ var STTemplates;
             "  </th>" +
             "</tr>";
         STTpls.TABLE_TPL = "<div ng-style='{width:tableConfig.tableWidth}'>" +
-            "  <table ng-class='tableConfig.classes' ng-style='{width:tableConfig.tableWidth}'>" +
+            "  <table ng-class='tableConfig.tableClasses' ng-style='{width:tableConfig.tableWidth}'>" +
             "    <thead st-table-header>" +
             "    </thead>" +
             "    <tbody st-table-body style='height: 400px'>" +

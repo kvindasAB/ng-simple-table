@@ -2,6 +2,7 @@
 /// <reference path="../table/SimpleTable.ts" />
 /// <reference path="ISimpleTablePlugin.ts" />
 /// <reference path="IDisposable.ts" />
+/// <reference path="STConstants.ts" />
 module STCore {
     export class Config {
 
@@ -32,7 +33,7 @@ module STCore {
             this.headerHeight   = angular.isUndefined(data.headerHeight) ? '30px' : data.headerHeight;
             this.columns        = data.columns;
             this.rowTemplate    = data.rowTemplate;
-            this.selectionType  = angular.isUndefined(data.selectionType) ? 'single' : data.selectionType;
+            this.selectionType  = angular.isUndefined(data.selectionType) ? STCore.Constants.SELECTION_SINGLE : data.selectionType;
             this.listeners      = data.listeners;
             this.methods        = data.methods;
         }

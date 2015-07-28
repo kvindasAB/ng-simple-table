@@ -1,5 +1,6 @@
 /// <reference path="../core/BaseSimpleTablePlugin.d.ts" />
 /// <reference path="../core/ISimpleTablePluginDataAware.d.ts" />
+/// <reference path="../core/STConstants.d.ts" />
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 declare module SimpleTableSelection {
@@ -13,6 +14,8 @@ declare module SimpleTableSelection {
         setSelectedRows(rows: Array<any>): void;
         onRowClicked(scopeEvent: any, $event: any, row: any): any;
         addSelectedRow(row: any): any;
+        isSingleSelection(): boolean;
+        isMultipleSelection(): boolean;
         doSingleSelection(row: any): void;
         doMultipleSelection(row: any): any[];
         isRowValid(row: any): boolean;

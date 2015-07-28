@@ -2,6 +2,7 @@
 /// <reference path="../table/SimpleTable.d.ts" />
 /// <reference path="ISimpleTablePlugin.d.ts" />
 /// <reference path="IDisposable.d.ts" />
+/// <reference path="STConstants.d.ts" />
 declare module STCore {
     class Config {
         tableClasses: any;

@@ -1,5 +1,6 @@
 /// <reference path="../core/BaseSimpleTablePlugin.ts" />
 /// <reference path="../core/ISimpleTablePluginDataAware.ts" />
+/// <reference path="../core/STConstants.ts" />
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 module SimpleTableSelection {
@@ -46,10 +47,18 @@ module SimpleTableSelection {
             if(!this.isRowValid(row)){
                 return;
             }
-            if(this.scope.tableConfig.selectionMultiple){
+            if(this.isMultipleSelection()){
                 return this.doMultipleSelection(row);
             }
             return this.doSingleSelection(row);
+        }
+
+        isSingleSelection():boolean {
+            return this.scope.tableConfig.selectionType === STCore.Constants.SELECTION_SINGLE;
+        }
+
+        isMultipleSelection():boolean {
+            return !this.isSingleSelection();
         }
 
         doSingleSelection(row:any):void{

@@ -13,7 +13,8 @@ module STColumn {
         style:any;
         headerClass:any;
         cellClass:any;
-        cellTemplate:any;
+        cellTemplate:string;
+        cellTemplateId:string;
         // TODO: Integrate mutable property to do one time binding
 
         //json base object
@@ -33,6 +34,7 @@ module STColumn {
             this.headerClass    = data.headerClass;
             this.cellClass      = data.cellClass;
             this.cellTemplate   = data.cellTemplate;
+            this.cellTemplateId = data.cellTemplateId;
         }
 
     }

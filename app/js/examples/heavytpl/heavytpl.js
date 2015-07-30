@@ -19,10 +19,10 @@ angular.module('stable.examples.heavytpl', ['ui.router'])
 
 
         $scope.columns = [
-            {id:"id", title: "Id", field: 'id', active: true, style: {width: "20%"}, template: 'CT: {{row[col.field]}}'},
-            {id:"name", title: "Name", field: 'name', active: true, style: {width: "20%"}, template: 'CT: {{row[col.field]}}'},
-            {id:"phone", title: "Phone", field: 'phone', active: true, style: {width: "20%"}, templateId: 'customCellTpl2.html'},
-            {id:"age", title: "Age", field: 'age', active: true, style: {width: "20%"}, templateUrl: 'js/examples/heavytpl/cellTpl.html'},
+            {id:"id", title: "Id", field: 'id', active: true, style: {width: "20%"}, cellTemplate: 'CT: {{row[col.field]}}'},
+            {id:"name", title: "Name", field: 'name', active: true, style: {width: "20%"}, cellTemplate: 'CT: {{row[col.field]}}'},
+            {id:"phone", title: "Phone", field: 'phone', active: true, style: {width: "20%"}, cellTemplateId: 'customCellTpl2.html'},
+            {id:"age", title: "Age", field: 'age', active: true, style: {width: "20%"} },
             {id:"address", title: "Address", field: 'address', active: true, style: {width: "20%"}}
         ];
 

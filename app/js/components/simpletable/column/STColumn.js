@@ -17,6 +17,7 @@ var STColumn;
             this.headerClass = data.headerClass;
             this.cellClass = data.cellClass;
             this.cellTemplate = data.cellTemplate;
+            this.cellTemplateId = data.cellTemplateId;
         };
         return Column;
     })();

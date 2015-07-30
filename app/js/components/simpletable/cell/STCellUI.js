@@ -6,6 +6,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 /// <reference path="../core/BaseComponentUI.ts" />
 /// <reference path="../tpl/STTemplates.ts" />
+/// <reference path="../column/STColumn.ts" />
 var STCellUI;
 (function (STCellUI) {
     var Cell = (function (_super) {
@@ -18,17 +19,14 @@ var STCellUI;
         };
         Cell.prototype.shouldUseCustomTemplate = function () {
             var col = this.scope.col;
-            return col && (col.template || col.templateId);
+            return col && (col.cellTemplate || col.cellTemplateId);
         };
         Cell.prototype.getCustomTemplate = function (scope) {
             var col = scope.col;
-            if (col.templateId) {
-                return this.getTemplateByCacheId(col.templateId);
+            if (col.cellTemplateId) {
+                return this.getTemplateByCacheId(col.cellTemplateId);
             }
-            if (col.templateUrl) {
-                return this.getTemplateByUrl(col.templateUrl);
-            }
-            return scope.col.template;
+            return col.cellTemplate;
         };
         return Cell;
     })(STCore.BaseComponentUI);

@@ -9,7 +9,8 @@ declare module STColumn {
         style: any;
         headerClass: any;
         cellClass: any;
-        cellTemplate: any;
+        cellTemplate: string;
+        cellTemplateId: string;
         _data: any;
         constructor(data?: any);
         syncFromData(data?: any): void;

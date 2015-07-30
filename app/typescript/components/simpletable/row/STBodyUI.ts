@@ -16,10 +16,17 @@ module STBodyUI {
 
         validateCustomTemplate(){
             if(!this.shouldUseCustomTemplate()){
-                this.applyTemplate(this.getTemplateByCacheId(STTemplates.STTpls.BODY_TPL_ID), this.scope);
+                this.applyTemplate(this.getDefaultTemplate(this.isVirtualScrollEnabled()), this.scope);
                 return;
             }
             this.applyTemplate(this.getCustomTemplate(this.scope), this.scope);
+        }
+
+        getDefaultTemplate(virtualScroll:boolean) {
+            if(virtualScroll){
+                return this.getTemplateByCacheId(STTemplates.STTpls.BODY_VS_TPL_ID);
+            }
+            return this.getTemplateByCacheId(STTemplates.STTpls.BODY_TPL_ID);
         }
 
         applyTemplate(tpl:string, scope:any){
@@ -31,6 +38,10 @@ module STBodyUI {
 
         getCustomTemplate(scope:angular.IScope):any{
             return (<any>scope).tableConfig.rowTemplate;
+        }
+
+        isVirtualScrollEnabled():boolean {
+            return !((<any>this.attrs).virtualScroll === 'false');
         }
 
     }

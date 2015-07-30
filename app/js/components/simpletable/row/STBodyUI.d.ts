@@ -6,7 +6,9 @@ declare module STBodyUI {
         init(): void;
         shouldUseCustomTemplate(): boolean;
         validateCustomTemplate(): void;
+        getDefaultTemplate(virtualScroll: boolean): string;
         applyTemplate(tpl: string, scope: any): void;
         getCustomTemplate(scope: angular.IScope): any;
+        isVirtualScrollEnabled(): boolean;
     }
 }

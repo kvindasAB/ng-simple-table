@@ -6,7 +6,6 @@ angular.module('simpletable.table.row', [])
 
         return {
             restrict: 'AE',
-            require: '^stTable',
             compile: function(tElem, tAttrs){
                 //$log.log('Row compile: ', tElem, tAttrs);
                 return {
@@ -14,10 +13,10 @@ angular.module('simpletable.table.row', [])
                         //$log.log('Row pre: ', iElem, scope);
                     },
                     post: function(scope, iElem, iAttrs, parent){
-                        //$log.log('Row post: ', scope);
+                        $log.log('Row post: ', scope);
                         var row = new STRowUI.Row();
                         row.setServices($compile, $templateCache, $templateRequest);
-                        row.link(scope, iElem, iAttrs, parent.getSimpleTable() );
+                        row.link(scope, iElem, iAttrs, scope.simpleTable );
                         row.init();
                         return row;
                     }

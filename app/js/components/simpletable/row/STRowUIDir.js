@@ -4,15 +4,15 @@ angular.module('simpletable.table.row', [])
     .directive('stTableRow', ['$log', '$compile', '$templateCache', '$templateRequest', function ($log, $compile, $templateCache, $templateRequest) {
         return {
             restrict: 'AE',
-            require: '^stTable',
             compile: function (tElem, tAttrs) {
                 return {
                     pre: function (scope, iElem, iAttrs) {
                     },
                     post: function (scope, iElem, iAttrs, parent) {
+                        $log.log('Row post: ', scope);
                         var row = new STRowUI.Row();
                         row.setServices($compile, $templateCache, $templateRequest);
-                        row.link(scope, iElem, iAttrs, parent.getSimpleTable());
+                        row.link(scope, iElem, iAttrs, scope.simpleTable);
                         row.init();
                         return row;
                     }

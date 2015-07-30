@@ -23,10 +23,16 @@ var STBodyUI;
         };
         Body.prototype.validateCustomTemplate = function () {
             if (!this.shouldUseCustomTemplate()) {
-                this.applyTemplate(this.getTemplateByCacheId(STTemplates.STTpls.BODY_TPL_ID), this.scope);
+                this.applyTemplate(this.getDefaultTemplate(this.isVirtualScrollEnabled()), this.scope);
                 return;
             }
             this.applyTemplate(this.getCustomTemplate(this.scope), this.scope);
+        };
+        Body.prototype.getDefaultTemplate = function (virtualScroll) {
+            if (virtualScroll) {
+                return this.getTemplateByCacheId(STTemplates.STTpls.BODY_VS_TPL_ID);
+            }
+            return this.getTemplateByCacheId(STTemplates.STTpls.BODY_TPL_ID);
         };
         Body.prototype.applyTemplate = function (tpl, scope) {
             var dom = angular.element(tpl);
@@ -36,6 +42,9 @@ var STBodyUI;
         };
         Body.prototype.getCustomTemplate = function (scope) {
             return scope.tableConfig.rowTemplate;
+        };
+        Body.prototype.isVirtualScrollEnabled = function () {
+            return !(this.attrs.virtualScroll === 'false');
         };
         return Body;
     })(STCore.BaseComponentUI);

@@ -32,13 +32,13 @@ angular.module('stable.examples.rowtpl', ['ui.router'])
                         */
 
         var rowTpl =    "<tr class='customClass' ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
-            "    ng-repeat='row in tableData' " +
-            "    st-table-row ></tr>";
+                        "    ng-repeat='row in tableData' " +
+                        "    st-table-row ></tr>";
 
         $scope.tableConfig = {
             tableClasses: ["table", "table-bordered", 'table-padding'],
             columns: $scope.columns,
-            rowTemplate1: rowTpl,
+            rowTemplate: rowTpl,
             tableWidth: '100%',
             headerHeight: '30px',
         };

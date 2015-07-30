@@ -16,6 +16,7 @@ var STCore;
             this.headerHeight = angular.isUndefined(data.headerHeight) ? '30px' : data.headerHeight;
             this.columns = data.columns;
             this.rowTemplate = data.rowTemplate;
+            this.rowTemplateId = data.rowTemplateId;
             this.selectionType = angular.isUndefined(data.selectionType) ? STCore.Constants.SELECTION_SINGLE : data.selectionType;
             this.listeners = data.listeners;
             this.methods = data.methods;

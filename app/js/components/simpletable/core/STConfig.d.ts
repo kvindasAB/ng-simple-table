@@ -11,6 +11,7 @@ declare module STCore {
         virtualScroll: boolean;
         columns: any;
         rowTemplate: any;
+        rowTemplateId: any;
         selectionType: any;
         resizeType: any;
         listeners: any;

@@ -1,5 +1,6 @@
 /// <reference path="../table/SimpleTable.d.ts" />
 /// <reference path="../core/BaseComponentUI.d.ts" />
+/// <reference path="../core/STConfig.d.ts" />
 /// <reference path="../tpl/STTemplates.d.ts" />
 declare module STBodyUI {
     class Body extends STCore.BaseComponentUI {

@@ -1,5 +1,6 @@
 /// <reference path="../table/SimpleTable.ts" />
 /// <reference path="../core/BaseComponentUI.ts" />
+/// <reference path="../core/STConfig.ts" />
 /// <reference path="../tpl/STTemplates.ts" />
 module STBodyUI {
     export class Body extends STCore.BaseComponentUI {
@@ -10,8 +11,8 @@ module STBodyUI {
 
 
         shouldUseCustomTemplate():boolean{
-            var tableConfig:any = (<any>this.scope).tableConfig;
-            return tableConfig && tableConfig.rowTemplate;
+            var tableConfig:STCore.Config = (<any>this.scope).tableConfig;
+            return tableConfig && (tableConfig.rowTemplate || tableConfig.rowTemplateId);
         }
 
         validateCustomTemplate(){
@@ -37,7 +38,11 @@ module STBodyUI {
         }
 
         getCustomTemplate(scope:angular.IScope):any{
-            return (<any>scope).tableConfig.rowTemplate;
+            var tableConfig:STCore.Config = (<any>this.scope).tableConfig;
+            if(tableConfig.rowTemplateId){
+                return this.getTemplateByCacheId(tableConfig.rowTemplateId);
+            }
+            return tableConfig.rowTemplate;
         }
 
         isVirtualScrollEnabled():boolean {

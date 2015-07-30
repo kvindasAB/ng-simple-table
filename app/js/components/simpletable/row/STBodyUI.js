@@ -6,6 +6,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 /// <reference path="../table/SimpleTable.ts" />
 /// <reference path="../core/BaseComponentUI.ts" />
+/// <reference path="../core/STConfig.ts" />
 /// <reference path="../tpl/STTemplates.ts" />
 var STBodyUI;
 (function (STBodyUI) {
@@ -19,7 +20,7 @@ var STBodyUI;
         };
         Body.prototype.shouldUseCustomTemplate = function () {
             var tableConfig = this.scope.tableConfig;
-            return tableConfig && tableConfig.rowTemplate;
+            return tableConfig && (tableConfig.rowTemplate || tableConfig.rowTemplateId);
         };
         Body.prototype.validateCustomTemplate = function () {
             if (!this.shouldUseCustomTemplate()) {
@@ -41,7 +42,11 @@ var STBodyUI;
             link(scope);
         };
         Body.prototype.getCustomTemplate = function (scope) {
-            return scope.tableConfig.rowTemplate;
+            var tableConfig = this.scope.tableConfig;
+            if (tableConfig.rowTemplateId) {
+                return this.getTemplateByCacheId(tableConfig.rowTemplateId);
+            }
+            return tableConfig.rowTemplate;
         };
         Body.prototype.isVirtualScrollEnabled = function () {
             return !(this.attrs.virtualScroll === 'false');

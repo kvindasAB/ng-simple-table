@@ -13,7 +13,7 @@ declare module STColumn {
         cellTemplateId: string;
         cellIdFunction: Function;
         optimizeTemplate: boolean;
-        valueFunction: Function;
+        cellValueFunction: Function;
         _data: any;
         constructor(data?: any);
         syncFromData(data?: any): void;

@@ -21,9 +21,10 @@ var STColumn;
             this.cellTemplate = data.cellTemplate;
             this.cellTemplateId = data.cellTemplateId;
             this.optimizeTemplate = data.optimizeTemplate;
+            this.cellValueFunction = data.cellValueFunction;
         };
         Column.prototype.getCellValue = function (row) {
-            return this.valueFunction ? this.valueFunction(this, row) : row[this.field];
+            return this.cellValueFunction ? this.cellValueFunction(row, this) : row[this.field];
         };
         return Column;
     })();

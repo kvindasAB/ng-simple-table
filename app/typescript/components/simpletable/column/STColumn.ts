@@ -17,7 +17,7 @@ module STColumn {
         cellTemplateId:string;
         cellIdFunction:Function;
         optimizeTemplate:boolean = true;
-        valueFunction:Function;
+        cellValueFunction:Function;
         // TODO: Integrate mutable property to do one time binding
 
         //json base object
@@ -40,10 +40,11 @@ module STColumn {
             this.cellTemplate       = data.cellTemplate;
             this.cellTemplateId     = data.cellTemplateId;
             this.optimizeTemplate   = data.optimizeTemplate;
+            this.cellValueFunction  = data.cellValueFunction;
         }
 
         getCellValue(row:any){
-            return this.valueFunction ? this.valueFunction(this, row) : row[this.field];
+            return this.cellValueFunction ? this.cellValueFunction(row, this) : row[this.field];
         }
 
     }

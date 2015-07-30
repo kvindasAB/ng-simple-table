@@ -26,7 +26,7 @@ angular.module('stable.examples.columncustom', ['ui.router'])
                         {field: 'name', cellClasses: ['cellClass1', 'cellClass2']},
                         {field: 'phone' },
                         {field: 'age', cellClasses: {adult: 'age > 20'}},
-                        {field: 'address'}
+                        {field: 'address', cellValueFunction: function(data, col){ return 'My Adress is:' + data.address; } }
                      ],
         };
 

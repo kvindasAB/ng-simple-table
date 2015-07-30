@@ -10,8 +10,7 @@ angular.module('simpletable',
         'simpletable.factory',
         'simpletable.reorder',
         'simpletable.resizable',
-        'simpletable.uuid.util',
-        'vs-repeat'
+        'simpletable.uuid.util'
 
     ])
     .value('version', '0.2');

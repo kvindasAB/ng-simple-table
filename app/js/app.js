@@ -4,6 +4,7 @@
 angular.module('myApp', [
   'ui.bootstrap',
   'ui.router',
+  'sf.virtualScroll',
   'simpletable',
   'stable.examples.core',
   'stable.examples.main',
@@ -11,6 +12,7 @@ angular.module('myApp', [
   'stable.examples.heavyrows',
   'stable.examples.heavytpl',
   'stable.examples.rowtpl',
+  'stable.examples.virtualscroll',
   'myApp.view1',
   'myApp.view2',
   'myApp.version'

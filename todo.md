@@ -6,6 +6,10 @@ V1.0
 
 Virtualization.
 Improve listening to resize via code listener instead of additional directive.
+Drag and Drop - Enable/Disable the feature
+Resizable Columns - Enable/Disable the feature
+Sortable columns / Enable disable sorting
+
 Save state feature.
 
 -- Issues

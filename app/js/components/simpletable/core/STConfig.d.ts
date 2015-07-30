@@ -8,6 +8,7 @@ declare module STCore {
         tableClasses: any;
         tableWidth: any;
         headerHeight: any;
+        virtualScroll: boolean;
         columns: any;
         rowTemplate: any;
         selectionType: any;

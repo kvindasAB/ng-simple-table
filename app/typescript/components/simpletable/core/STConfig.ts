@@ -9,6 +9,7 @@ module STCore {
         tableClasses:any;
         tableWidth:any;
         headerHeight:any;
+        virtualScroll:boolean;
 
         columns:any;
         rowTemplate:any;
@@ -36,6 +37,7 @@ module STCore {
             this.selectionType  = angular.isUndefined(data.selectionType) ? STCore.Constants.SELECTION_SINGLE : data.selectionType;
             this.listeners      = data.listeners;
             this.methods        = data.methods;
+            this.virtualScroll  = angular.isUndefined(data.virtualScroll) ? false : data.virtualScroll;
         }
 
 

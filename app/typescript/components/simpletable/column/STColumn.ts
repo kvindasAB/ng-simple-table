@@ -12,9 +12,12 @@ module STColumn {
         active:boolean = true;
         style:any;
         headerClass:any;
-        cellClass:any;
+        cellClasses:any;
         cellTemplate:string;
         cellTemplateId:string;
+        cellIdFunction:Function;
+        optimizeTemplate:boolean = true;
+        valueFunction:Function;
         // TODO: Integrate mutable property to do one time binding
 
         //json base object
@@ -25,16 +28,22 @@ module STColumn {
         }
 
         syncFromData(data?:any):void {
-            data                = data ? data : this._data;
-            this.id             = data.id ? data.id : STUtil.Util.generateToken();
-            this.field          = data.field;
-            this.title          = data.title ? data.title : data.field;
-            this.active         = angular.isUndefined(data.active) ? true : data.active;
-            this.style          = data.style;
-            this.headerClass    = data.headerClass;
-            this.cellClass      = data.cellClass;
-            this.cellTemplate   = data.cellTemplate;
-            this.cellTemplateId = data.cellTemplateId;
+            data                    = data ? data : this._data;
+            this.id                 = data.id ? data.id : STUtil.Util.generateToken();
+            this.field              = data.field;
+            this.title              = data.title ? data.title : data.field;
+            this.active             = angular.isUndefined(data.active) ? true : data.active;
+            this.style              = data.style;
+            this.headerClass        = data.headerClass;
+            this.cellClasses        = data.cellClasses;
+            this.cellIdFunction     = data.cellIdFunction ? data.cellIdFunction : angular.noop;
+            this.cellTemplate       = data.cellTemplate;
+            this.cellTemplateId     = data.cellTemplateId;
+            this.optimizeTemplate   = data.optimizeTemplate;
+        }
+
+        getCellValue(row:any){
+            return this.valueFunction ? this.valueFunction(this, row) : row[this.field];
         }
 
     }

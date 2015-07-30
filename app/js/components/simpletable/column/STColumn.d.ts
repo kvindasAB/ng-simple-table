@@ -8,11 +8,15 @@ declare module STColumn {
         active: boolean;
         style: any;
         headerClass: any;
-        cellClass: any;
+        cellClasses: any;
         cellTemplate: string;
         cellTemplateId: string;
+        cellIdFunction: Function;
+        optimizeTemplate: boolean;
+        valueFunction: Function;
         _data: any;
         constructor(data?: any);
         syncFromData(data?: any): void;
+        getCellValue(row: any): any;
     }
 }

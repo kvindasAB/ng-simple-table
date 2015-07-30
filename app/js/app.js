@@ -13,6 +13,7 @@ angular.module('myApp', [
   'stable.examples.heavytpl',
   'stable.examples.rowtpl',
   'stable.examples.virtualscroll',
+  'stable.examples.columncustom',
   'myApp.view1',
   'myApp.view2',
   'myApp.version'

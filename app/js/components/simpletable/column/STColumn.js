@@ -5,6 +5,7 @@ var STColumn;
     var Column = (function () {
         function Column(data) {
             this.active = true;
+            this.optimizeTemplate = true;
             this._data = data;
         }
         Column.prototype.syncFromData = function (data) {
@@ -15,9 +16,14 @@ var STColumn;
             this.active = angular.isUndefined(data.active) ? true : data.active;
             this.style = data.style;
             this.headerClass = data.headerClass;
-            this.cellClass = data.cellClass;
+            this.cellClasses = data.cellClasses;
+            this.cellIdFunction = data.cellIdFunction ? data.cellIdFunction : angular.noop;
             this.cellTemplate = data.cellTemplate;
             this.cellTemplateId = data.cellTemplateId;
+            this.optimizeTemplate = data.optimizeTemplate;
+        };
+        Column.prototype.getCellValue = function (row) {
+            return this.valueFunction ? this.valueFunction(this, row) : row[this.field];
         };
         return Column;
     })();

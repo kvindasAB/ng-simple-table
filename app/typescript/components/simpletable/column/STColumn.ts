@@ -16,9 +16,35 @@ module STColumn {
         cellTemplate:string;
         cellTemplateId:string;
         cellIdFunction:Function;
-        optimizeTemplate:boolean = true;
         cellValueFunction:Function;
-        // TODO: Integrate mutable property to do one time binding
+
+        // Optimization
+        /**
+         * Indicates that the column attributes are mutable, and therefore attributes should be bind/watched on template.
+         * If mutable=false most attributes are considered 'static' and therefore bind-once, with no further watching.
+         */
+        mutable:boolean = true;
+        /**
+         * Used in pair with 'mutable' attribute.
+         * Indicates the mutable properties of the column. Mutable properties will be watched for changes.
+         * If the column is mutable, everything is considered mutable with exception of whats in staticProperties.
+         */
+        mutableProperties:string[];
+        /**
+         * Used in pair with 'mutable' attribute.
+         * Indicates the static properties of the column. Static properties will be bind-once with no further watching.
+         * If the column is static (mutable=false), everything is considered static with exception of whats in mutableProperties.
+         */
+        staticProperties:string[];
+        /**
+         * Remove from template unused features or attributes avoid watcher generation
+         * @type {boolean}
+         */
+        optimizeTemplate:boolean    = true;
+        /**
+         * A property is considered optimized when is static and with no value from the user.
+         */
+        optimizeProperties:string[];
 
         //json base object
         _data:any;
@@ -39,12 +65,47 @@ module STColumn {
             this.cellIdFunction     = data.cellIdFunction ? data.cellIdFunction : angular.noop;
             this.cellTemplate       = data.cellTemplate;
             this.cellTemplateId     = data.cellTemplateId;
-            this.optimizeTemplate   = data.optimizeTemplate;
             this.cellValueFunction  = data.cellValueFunction;
+            this.getCellValue       = this.cellValueFunction ? this.getCustomCellValue : this.getDefaultCellValue;
+        }
+
+        validateOptimizationProperties(data){
+            this.optimizeProperties = [];
+            this.validateOptimizationProperty('cellIdFunction', data, this.optimizeProperties);
+            this.validateOptimizationProperty('cellClasses', data, this.optimizeProperties);
+            this.validateOptimizationProperty('headerClasses', data, this.optimizeProperties);
+            this.validateOptimizationProperty('style', data, this.optimizeProperties);
+        }
+
+        validateOptimizationProperty(prop:string, data:any, optimizedProps:string[]):void{
+            if(!this.isStaticProperty(prop) || data[prop]){
+                return;
+            }
+            optimizedProps.push(prop);
+        }
+
+        getCustomCellValue(row:any){
+            return this.cellValueFunction(row, this)
+        }
+
+        getDefaultCellValue(row:any){
+            return row[this.field];
         }
 
         getCellValue(row:any){
-            return this.cellValueFunction ? this.cellValueFunction(row, this) : row[this.field];
+            return '';
+        }
+
+        isMutableProperty(prop:string):boolean{
+            return this.mutable || (this.mutableProperties && this.mutableProperties.indexOf(prop) > -1 );
+        }
+
+        isStaticProperty(prop:string):boolean {
+            return !this.mutable || (this.staticProperties && this.staticProperties.indexOf(prop) > -1 );
+        }
+
+        isOptimizedProperty(prop:string):boolean {
+            return true;
         }
 
     }

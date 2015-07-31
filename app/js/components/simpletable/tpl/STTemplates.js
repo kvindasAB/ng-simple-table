@@ -8,7 +8,7 @@ var STTemplates;
         };
         STTpls.CELL_TPL = "{{col.getCellValue(row)}}";
         STTpls.ROW_TPL = "<td id='{{col.cellIdFunction(row, col, tableConfig)}}' ng-class='col.cellClasses' ng-repeat='col in tableConfig.columns' st-table-cell ng-if='col.active' ></td>";
-        STTpls.BODY_TPL = "<tr ng-class='{selected: simpleTable.selection.isRowSelected(row)}' style='height: 38px' " +
+        STTpls.BODY_TPL = "<tr ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
             "  ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' " +
             "  st-table-row >" +
             "</tr>";

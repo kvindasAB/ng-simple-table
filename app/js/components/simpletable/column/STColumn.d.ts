@@ -12,11 +12,22 @@ declare module STColumn {
         cellTemplate: string;
         cellTemplateId: string;
         cellIdFunction: Function;
-        optimizeTemplate: boolean;
         cellValueFunction: Function;
+        mutable: boolean;
+        mutableProperties: string[];
+        staticProperties: string[];
+        optimizeTemplate: boolean;
+        optimizeProperties: string[];
         _data: any;
         constructor(data?: any);
         syncFromData(data?: any): void;
-        getCellValue(row: any): any;
+        validateOptimizationProperties(data: any): void;
+        validateOptimizationProperty(prop: string, data: any, optimizedProps: string[]): void;
+        getCustomCellValue(row: any): any;
+        getDefaultCellValue(row: any): any;
+        getCellValue(row: any): string;
+        isMutableProperty(prop: string): boolean;
+        isStaticProperty(prop: string): boolean;
+        isOptimizedProperty(prop: string): boolean;
     }
 }

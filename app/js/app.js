@@ -5,6 +5,7 @@ angular.module('myApp', [
   'ui.bootstrap',
   'ui.router',
   'sf.virtualScroll',
+  'pasvaz.bindonce',
   'simpletable',
   'stable.examples.core',
   'stable.examples.main',

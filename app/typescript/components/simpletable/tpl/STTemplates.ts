@@ -7,7 +7,7 @@ module STTemplates {
 
         static CELL_TPL:string      = "{{col.getCellValue(row)}}";
         static ROW_TPL:string       = "<td id='{{col.cellIdFunction(row, col, tableConfig)}}' ng-class='col.cellClasses' ng-repeat='col in tableConfig.columns' st-table-cell ng-if='col.active' ></td>";
-        static BODY_TPL:string      = "<tr ng-class='{selected: simpleTable.selection.isRowSelected(row)}' style='height: 38px' " +
+        static BODY_TPL:string      = "<tr ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
                                       "  ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' " +
                                       "  st-table-row >" +
                                       "</tr>";

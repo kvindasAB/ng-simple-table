@@ -5,6 +5,7 @@ var STColumn;
     var Column = (function () {
         function Column(data) {
             this.active = true;
+            this.mutable = true;
             this.optimizeTemplate = true;
             this._data = data;
         }
@@ -20,11 +21,39 @@ var STColumn;
             this.cellIdFunction = data.cellIdFunction ? data.cellIdFunction : angular.noop;
             this.cellTemplate = data.cellTemplate;
             this.cellTemplateId = data.cellTemplateId;
-            this.optimizeTemplate = data.optimizeTemplate;
             this.cellValueFunction = data.cellValueFunction;
+            this.getCellValue = this.cellValueFunction ? this.getCustomCellValue : this.getDefaultCellValue;
+        };
+        Column.prototype.validateOptimizationProperties = function (data) {
+            this.optimizeProperties = [];
+            this.validateOptimizationProperty('cellIdFunction', data, this.optimizeProperties);
+            this.validateOptimizationProperty('cellClasses', data, this.optimizeProperties);
+            this.validateOptimizationProperty('headerClasses', data, this.optimizeProperties);
+            this.validateOptimizationProperty('style', data, this.optimizeProperties);
+        };
+        Column.prototype.validateOptimizationProperty = function (prop, data, optimizedProps) {
+            if (!this.isStaticProperty(prop) || data[prop]) {
+                return;
+            }
+            optimizedProps.push(prop);
+        };
+        Column.prototype.getCustomCellValue = function (row) {
+            return this.cellValueFunction(row, this);
+        };
+        Column.prototype.getDefaultCellValue = function (row) {
+            return row[this.field];
         };
         Column.prototype.getCellValue = function (row) {
-            return this.cellValueFunction ? this.cellValueFunction(row, this) : row[this.field];
+            return '';
+        };
+        Column.prototype.isMutableProperty = function (prop) {
+            return this.mutable || (this.mutableProperties && this.mutableProperties.indexOf(prop) > -1);
+        };
+        Column.prototype.isStaticProperty = function (prop) {
+            return !this.mutable || (this.staticProperties && this.staticProperties.indexOf(prop) > -1);
+        };
+        Column.prototype.isOptimizedProperty = function (prop) {
+            return true;
         };
         return Column;
     })();

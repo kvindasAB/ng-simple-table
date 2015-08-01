@@ -14,6 +14,50 @@ declare module SimpleTable {
         removeEventListeners(): any;
     }
 }
+declare module STUtil {
+    class Util {
+        static generateToken(len?: number): string;
+    }
+}
+declare module STColumn {
+    class Column {
+        id: string;
+        title: string;
+        field: string;
+        active: boolean;
+        style: any;
+        headerClass: any;
+        cellClasses: any;
+        cellTemplate: string;
+        cellTemplateId: string;
+        cellIdFunction: Function;
+        cellValueFunction: Function;
+        mutable: boolean;
+        mutableProperties: string[];
+        staticProperties: string[];
+        optimizeTemplate: boolean;
+        optimizeProperties: string[];
+        _data: any;
+        constructor(data?: any);
+        syncFromData(data?: any): void;
+        validateOptimizationProperties(data: any): void;
+        validateOptimizationProperty(prop: string, data: any, optimizedProps: string[]): void;
+        getCustomCellValue(row: any): any;
+        getDefaultCellValue(row: any): any;
+        getCellValue(row: any): string;
+        isMutableProperty(prop: string): boolean;
+        isStaticProperty(prop: string): boolean;
+        isOptimizedProperty(prop: string): boolean;
+        hasStaticProperties(): boolean;
+    }
+}
+declare module STColumn {
+    class ColumnManager {
+        columns: STColumn.Column[];
+        processConfig(tableConfig: any): void;
+        createColumns(tableConfig: any): void;
+    }
+}
 declare module SimpleTablePlugin {
     interface ISimpleTablePlugin {
         isInitializationComplete: boolean;
@@ -23,6 +67,53 @@ declare module SimpleTablePlugin {
         isInitialized(): boolean;
         doRegister(parent?: any): void;
         onRegistered(simpleTable: any): void;
+    }
+}
+declare module STCore {
+    interface IDisposable {
+        dispose(): void;
+    }
+}
+declare module STCore {
+    class Constants {
+        static SELECTION_NONE: string;
+        static SELECTION_SINGLE: string;
+        static SELECTION_MULTIPLE: string;
+        static RESIZE_RELATIVE: string;
+        static RESIZE_FIXED: string;
+        static UNIT_PIXELS: string;
+        static UNIT_PERCENTAGE: string;
+    }
+}
+declare module STCore {
+    class Config {
+        tableClasses: any;
+        tableWidth: any;
+        headerHeight: any;
+        virtualScroll: boolean;
+        columns: any;
+        rowTemplate: any;
+        rowTemplateId: any;
+        selectionType: any;
+        resizeType: any;
+        listeners: any;
+        methods: any;
+        _data: any;
+        constructor(data?: any);
+        syncFromData(data?: any): void;
+    }
+}
+declare module STCore {
+    class ResizeManager {
+        config: STCore.Config;
+        constructor(config?: STCore.Config);
+        resizeTable(): void;
+        resizeTablePercentage(): void;
+        resizeTableFixed(): void;
+        getWidthInNumber(width: any): number;
+        getWidthType(width: any): string;
+        isResizePercentage(): boolean;
+        isResizeFixed(): boolean;
     }
 }
 declare module SimpleTablePlugin {
@@ -60,6 +151,8 @@ declare module SimpleTableSelection {
         isRowValid(row: any): boolean;
         revalidateSelection(): void;
         onDataChanged(newValue: any, oldValue: any): void;
+        isSingleSelection(): boolean;
+        isMultipleSelection(): boolean;
     }
 }
 declare module SimpleTableSort {
@@ -92,13 +185,10 @@ declare module SimpleTablePluginFactory {
 }
 declare module SimpleTable {
     class SimpleTable implements ISimpleTable {
-        RESIZE_TYPE_FIXED: string;
-        RESIZE_TYPE_ADJUSTABLE: string;
-        WIDTH_PIXELS_TYPE: string;
-        WIDTH_PERCENTAGE_TYPE: string;
         scope: any;
         element: any;
         attrs: any;
+        managers: any;
         plugins: Array<SimpleTablePlugin.ISimpleTablePlugin>;
         initPluginTimeout: Number;
         initializationComplete: boolean;
@@ -110,11 +200,10 @@ declare module SimpleTable {
         initPlugins(): void;
         addEventListeners(): void;
         removeEventListeners(): void;
-        validateConfig(): void;
+        processConfig(): void;
+        initManagers(): void;
         initDefaultPlugins(): void;
-        initFixedTable(): void;
-        getWidthInNumber(width: any): number;
-        getWidthType(width: any): string;
+        resizeTable(): void;
         doInitPlugins(): void;
         onDataChanged(newValue: any, oldValue: any): void;
         onRowClicked($event: any, row: any): void;
@@ -126,11 +215,6 @@ declare module SimpleTable {
         notifyInitializationComplete(): void;
         notifyListener(eventName: string, params: any): void;
         notifyPluginsDataChanged(newValue: any, oldValue: any): void;
-    }
-}
-declare module STCore {
-    interface IDisposable {
-        dispose(): void;
     }
 }
 declare module STCore {
@@ -149,27 +233,38 @@ declare module STCore {
         getCustomTemplate(scope: angular.IScope): any;
         getTemplateByCacheId(tplId: any): string;
         getTemplateByUrl(tplUrl: any): any;
+        optimizeAndApplyTemplate(tpl: string, scope: angular.IScope): void;
         applyTemplate(tpl: string, scope: angular.IScope): void;
+        optimizeTemplate(tpl: string, scope: angular.IScope): string;
+        optimizeTemplateParts(tpl: string, parts: any[]): string;
+        optimizeTemplatePart(tpl: string, part: any): string;
+        shouldOptimizeTemplate(tpl: string, scope: angular.IScope): boolean;
         dispose(): void;
     }
 }
 declare module STTemplates {
     class STTpls {
         static CELL_TPL: string;
+        static CELL_BO_TPL: string;
         static ROW_TPL: string;
         static BODY_TPL: string;
+        static BODY_VS_TPL: string;
         static COLUMN_TPL: string;
         static HEADER_TPL: string;
         static TABLE_TPL: string;
         static CELL_TPL_ID: string;
+        static CELL_BO_TPL_ID: string;
         static ROW_TPL_ID: string;
         static BODY_TPL_ID: string;
+        static BODY_VS_TPL_ID: string;
         static COLUMN_TPL_ID: string;
         static HEADER_TPL_ID: string;
         static TABLE_TPL_ID: string;
         static CELL_TPL_PAIR: any;
+        static CELL_BO_TPL_PAIR: any;
         static ROW_TPL_PAIR: any;
         static BODY_TPL_PAIR: any;
+        static BODY_VS_TPL_PAIR: any;
         static COLUMN_TPL_PAIR: any;
         static HEADER_TPL_PAIR: any;
         static TABLE_TPL_PAIR: any;
@@ -178,9 +273,22 @@ declare module STTemplates {
 }
 declare module STCellUI {
     class Cell extends STCore.BaseComponentUI {
+        cellIdWatcher: Function;
+        cellClassesWatcher: Function;
+        cellClassesFirstRun: boolean;
         init(): void;
+        addWatchers(): void;
+        addCellIdWatcher(): void;
+        addCellClassesWatcher(): void;
+        arrayClasses(classVal: any): any;
+        updateClasses(oldClasses: any, newClasses: any): void;
+        arrayDifference(tokens1: any, tokens2: any): any[];
+        addClasses(classes: any[]): void;
+        removeClasses(classes: any): void;
         shouldUseCustomTemplate(): boolean;
         getCustomTemplate(scope: angular.IScope): any;
+        applyDefaultTemplate(): void;
+        optimizeTemplate(tpl: string, scope: angular.IScope): string;
     }
 }
 declare module STColumnUI {
@@ -349,8 +457,10 @@ declare module STBodyUI {
         init(): void;
         shouldUseCustomTemplate(): boolean;
         validateCustomTemplate(): void;
+        getDefaultTemplate(virtualScroll: boolean): string;
         applyTemplate(tpl: string, scope: any): void;
         getCustomTemplate(scope: angular.IScope): any;
+        isVirtualScrollEnabled(): boolean;
     }
 }
 declare module STRowUI {

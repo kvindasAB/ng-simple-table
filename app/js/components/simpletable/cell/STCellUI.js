@@ -51,7 +51,6 @@ var STCellUI;
                 var col = self.scope.col;
                 if (!newValue) {
                     if (col.isStaticProperty('cellClasses')) {
-                        console.log('Removing cell classes1');
                         self.cellClassesWatcher();
                     }
                     return;
@@ -66,7 +65,6 @@ var STCellUI;
                 }
                 self.cellClassesFirstRun = false;
                 if (col.isStaticProperty('cellClasses')) {
-                    console.log('Removing cell classes');
                     self.cellClassesWatcher();
                 }
             });

@@ -9,10 +9,225 @@ angular.module('simpletable', [
     'simpletable.factory',
     'simpletable.reorder',
     'simpletable.resizable',
-    'simpletable.uuid.util',
-    'vs-repeat'
+    'simpletable.uuid.util'
 ])
     .value('version', '0.2');
+/// <reference path="../table/SimpleTable.ts" />
+var STUtil;
+(function (STUtil) {
+    var Util = (function () {
+        function Util() {
+        }
+        Util.generateToken = function (len) {
+            if (len === void 0) { len = 8; }
+            var id = (Math.random() + 1).toString(36).substring(2, 2 + len);
+            return id;
+        };
+        return Util;
+    })();
+    STUtil.Util = Util;
+})(STUtil || (STUtil = {}));
+/// <reference path="../table/SimpleTable.ts" />
+/// <reference path="../util/STUtil.ts" />
+var STColumn;
+(function (STColumn) {
+    var Column = (function () {
+        function Column(data) {
+            this.active = true;
+            this.mutable = true;
+            this.optimizeTemplate = true;
+            this._data = data;
+        }
+        Column.prototype.syncFromData = function (data) {
+            data = data ? data : this._data;
+            this.id = data.id ? data.id : STUtil.Util.generateToken();
+            this.field = data.field;
+            this.title = data.title ? data.title : data.field;
+            this.active = angular.isUndefined(data.active) ? true : data.active;
+            this.style = data.style;
+            this.headerClass = data.headerClass;
+            this.cellClasses = data.cellClasses;
+            this.cellIdFunction = data.cellIdFunction ? data.cellIdFunction : angular.noop;
+            this.cellTemplate = data.cellTemplate;
+            this.cellTemplateId = data.cellTemplateId;
+            this.cellValueFunction = data.cellValueFunction;
+            this.getCellValue = this.cellValueFunction ? this.getCustomCellValue : this.getDefaultCellValue;
+            this.mutable = angular.isUndefined(data.mutable) ? true : data.mutable;
+            this.mutableProperties = data.mutableProperties;
+            this.staticProperties = data.staticProperties;
+            this.optimizeTemplate = angular.isUndefined(data.optimizeTemplate) ? true : data.optimizeTemplate;
+        };
+        Column.prototype.validateOptimizationProperties = function (data) {
+            this.optimizeProperties = [];
+            this.validateOptimizationProperty('cellIdFunction', data, this.optimizeProperties);
+            this.validateOptimizationProperty('cellClasses', data, this.optimizeProperties);
+            this.validateOptimizationProperty('headerClasses', data, this.optimizeProperties);
+            this.validateOptimizationProperty('style', data, this.optimizeProperties);
+        };
+        Column.prototype.validateOptimizationProperty = function (prop, data, optimizedProps) {
+            if (!this.isStaticProperty(prop) || data[prop]) {
+                return;
+            }
+            optimizedProps.push(prop);
+        };
+        Column.prototype.getCustomCellValue = function (row) {
+            return this.cellValueFunction(row, this);
+        };
+        Column.prototype.getDefaultCellValue = function (row) {
+            return row[this.field];
+        };
+        Column.prototype.getCellValue = function (row) {
+            return '';
+        };
+        Column.prototype.isMutableProperty = function (prop) {
+            return this.mutable || (this.mutableProperties && this.mutableProperties.indexOf(prop) > -1);
+        };
+        Column.prototype.isStaticProperty = function (prop) {
+            return !this.mutable || (this.staticProperties && this.staticProperties.indexOf(prop) > -1);
+        };
+        Column.prototype.isOptimizedProperty = function (prop) {
+            return true;
+        };
+        Column.prototype.hasStaticProperties = function () {
+            return !this.mutable || (this.staticProperties && this.staticProperties.length > 0);
+        };
+        return Column;
+    })();
+    STColumn.Column = Column;
+})(STColumn || (STColumn = {}));
+/// <reference path="../table/SimpleTable.ts" />
+/// <reference path="./STColumn.ts" />
+var STColumn;
+(function (STColumn) {
+    var ColumnManager = (function () {
+        function ColumnManager() {
+        }
+        ColumnManager.prototype.processConfig = function (tableConfig) {
+            if (!tableConfig && !tableConfig.columns) {
+                return;
+            }
+            this.createColumns(tableConfig);
+            tableConfig.columns = this.columns;
+        };
+        ColumnManager.prototype.createColumns = function (tableConfig) {
+            var len = tableConfig && tableConfig.columns ? tableConfig.columns.length : 0;
+            var columns = [];
+            for (var i = 0; i < len; i++) {
+                var col = new STColumn.Column(tableConfig.columns[i]);
+                col.syncFromData();
+                columns.push(col);
+            }
+            this.columns = columns;
+        };
+        return ColumnManager;
+    })();
+    STColumn.ColumnManager = ColumnManager;
+})(STColumn || (STColumn = {}));
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
+var STCore;
+(function (STCore) {
+    var Constants = (function () {
+        function Constants() {
+        }
+        Constants.SELECTION_NONE = 'none';
+        Constants.SELECTION_SINGLE = 'single';
+        Constants.SELECTION_MULTIPLE = 'multiple';
+        Constants.RESIZE_RELATIVE = 'relative';
+        Constants.RESIZE_FIXED = 'fixed';
+        Constants.UNIT_PIXELS = 'px';
+        Constants.UNIT_PERCENTAGE = '%';
+        return Constants;
+    })();
+    STCore.Constants = Constants;
+})(STCore || (STCore = {}));
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
+/// <reference path="../table/SimpleTable.ts" />
+/// <reference path="ISimpleTablePlugin.ts" />
+/// <reference path="IDisposable.ts" />
+/// <reference path="STConstants.ts" />
+var STCore;
+(function (STCore) {
+    var Config = (function () {
+        function Config(data) {
+            this._data = data;
+        }
+        Config.prototype.syncFromData = function (data) {
+            data = data ? data : this._data;
+            this.tableClasses = data.tableClasses;
+            this.tableWidth = data.tableWidth;
+            this.headerHeight = angular.isUndefined(data.headerHeight) ? '30px' : data.headerHeight;
+            this.columns = data.columns;
+            this.rowTemplate = data.rowTemplate;
+            this.rowTemplateId = data.rowTemplateId;
+            this.selectionType = angular.isUndefined(data.selectionType) ? STCore.Constants.SELECTION_SINGLE : data.selectionType;
+            this.listeners = data.listeners;
+            this.methods = data.methods;
+            this.virtualScroll = angular.isUndefined(data.virtualScroll) ? false : data.virtualScroll;
+        };
+        return Config;
+    })();
+    STCore.Config = Config;
+})(STCore || (STCore = {}));
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
+/// <reference path="../table/SimpleTable.ts" />
+/// <reference path="STConfig.ts" />
+/// <reference path="STConstants.ts" />
+var STCore;
+(function (STCore) {
+    var ResizeManager = (function () {
+        function ResizeManager(config) {
+            this.config = config;
+        }
+        ResizeManager.prototype.resizeTable = function () {
+            if (this.isResizeFixed()) {
+                this.resizeTableFixed();
+                return;
+            }
+            this.resizeTablePercentage();
+        };
+        ResizeManager.prototype.resizeTablePercentage = function () {
+        };
+        ResizeManager.prototype.resizeTableFixed = function () {
+            var columns = this.config.columns;
+            var totalWidth = 0;
+            for (var i = 0; i < columns.length; i++) {
+                var column = columns[i];
+                if (!column.active) {
+                    continue;
+                }
+                totalWidth += this.getWidthInNumber(column.style.width);
+            }
+            this.config.tableWidth = totalWidth + 'px';
+        };
+        ResizeManager.prototype.getWidthInNumber = function (width) {
+            var stringWidth = '';
+            var widthType = this.getWidthType(width);
+            if (widthType === STCore.Constants.UNIT_PIXELS) {
+                stringWidth = width.substring(0, width.length - 2);
+            }
+            else {
+                stringWidth = width.substring(0, width.length - 1);
+            }
+            var columnWidth = parseFloat(stringWidth);
+            return columnWidth;
+        };
+        ResizeManager.prototype.getWidthType = function (width) {
+            var widthType = width.substring(width.length - 2, width.length);
+            if (widthType === STCore.Constants.UNIT_PIXELS) {
+                return STCore.Constants.UNIT_PIXELS;
+            }
+            return STCore.Constants.UNIT_PERCENTAGE;
+        };
+        ResizeManager.prototype.isResizePercentage = function () {
+            return !this.isResizeFixed();
+        };
+        ResizeManager.prototype.isResizeFixed = function () {
+            return this.config.resizeType === STCore.Constants.RESIZE_FIXED;
+        };
+        return ResizeManager;
+    })();
+    STCore.ResizeManager = ResizeManager;
+})(STCore || (STCore = {}));
 /// <reference path="ISimpleTablePlugin.ts" />
 var SimpleTablePlugin;
 (function (SimpleTablePlugin) {
@@ -57,6 +272,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 /// <reference path="../core/BaseSimpleTablePlugin.ts" />
 /// <reference path="../core/ISimpleTablePluginDataAware.ts" />
+/// <reference path="../core/STConstants.ts" />
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 var SimpleTableSelection;
@@ -95,7 +311,7 @@ var SimpleTableSelection;
             if (!this.isRowValid(row)) {
                 return;
             }
-            if (this.scope.tableConfig.selectionMultiple) {
+            if (this.isMultipleSelection()) {
                 return this.doMultipleSelection(row);
             }
             return this.doSingleSelection(row);
@@ -123,6 +339,12 @@ var SimpleTableSelection;
         };
         SimpleTablePluginSelection.prototype.onDataChanged = function (newValue, oldValue) {
             this.revalidateSelection();
+        };
+        SimpleTablePluginSelection.prototype.isSingleSelection = function () {
+            return this.scope.tableConfig.selectionType === STCore.Constants.SELECTION_SINGLE;
+        };
+        SimpleTablePluginSelection.prototype.isMultipleSelection = function () {
+            return !this.isSingleSelection();
         };
         return SimpleTablePluginSelection;
     })(SimpleTablePlugin.BaseSimpleTablePlugin);
@@ -262,17 +484,17 @@ angular.module('simpletable.factory', [])
         return new SimpleTablePluginFactory.SimpleTablePluginFactory();
     }]);
 /// <reference path="ISimpleTable.ts" />
+/// <reference path="../column/STColumnManager.ts" />
 /// <reference path="../core/ISimpleTablePlugin.ts" />
+/// <reference path="../core/STConfig.ts" />
+/// <reference path="../core/STResizeManager.ts" />
 /// <reference path="../factory/SimpleTablePluginFactory.ts" />
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 var SimpleTable;
 (function (SimpleTable_1) {
     var SimpleTable = (function () {
         function SimpleTable(scope, element, attrs, $timeout, pluginFactory) {
-            this.RESIZE_TYPE_FIXED = 'fixed';
-            this.RESIZE_TYPE_ADJUSTABLE = 'adjustable';
-            this.WIDTH_PIXELS_TYPE = 'px';
-            this.WIDTH_PERCENTAGE_TYPE = '%';
+            this.managers = {};
             this.plugins = [];
             this.initializationComplete = false;
             this.scope = scope;
@@ -287,9 +509,10 @@ var SimpleTable;
         SimpleTable.prototype.init = function () {
             this.notifyPreInitialization();
             this.addEventListeners();
-            this.validateConfig();
+            this.processConfig();
+            this.initManagers();
             this.initDefaultPlugins();
-            this.initFixedTable();
+            this.resizeTable();
         };
         SimpleTable.prototype.registerPlugin = function (plugin) {
             console.log("initializing plugins...", plugin);
@@ -310,46 +533,22 @@ var SimpleTable;
         SimpleTable.prototype.removeEventListeners = function () {
             console.log("removing listeners...", this);
         };
-        SimpleTable.prototype.validateConfig = function () {
+        SimpleTable.prototype.processConfig = function () {
+            var config = new STCore.Config(this.scope.tableConfig);
+            config.syncFromData();
+            this.scope.tableConfig = config;
+        };
+        SimpleTable.prototype.initManagers = function () {
+            this.managers.columnManager = new STColumn.ColumnManager();
+            this.managers.columnManager.processConfig(this.scope.tableConfig);
+            this.managers.resizeManager = new STCore.ResizeManager(this.scope.tableConfig);
         };
         SimpleTable.prototype.initDefaultPlugins = function () {
             this.pluginFactory.newPluginSelection().doRegister(this);
             this.pluginFactory.newPluginSort().doRegister(this);
         };
-        SimpleTable.prototype.initFixedTable = function () {
-            var tableConfig = this.scope.tableConfig;
-            if (tableConfig.resizeType === this.RESIZE_TYPE_ADJUSTABLE) {
-                return;
-            }
-            var columns = tableConfig.columns;
-            var totalWidth = 0;
-            for (var i = 0; i < columns.length; i++) {
-                var column = columns[i];
-                if (!column.active) {
-                    continue;
-                }
-                totalWidth += this.getWidthInNumber(column.style.width);
-            }
-            tableConfig.tableWidth = totalWidth + 'px';
-        };
-        SimpleTable.prototype.getWidthInNumber = function (width) {
-            var stringWidth = '';
-            var widthType = this.getWidthType(width);
-            if (widthType === this.WIDTH_PIXELS_TYPE) {
-                stringWidth = width.substring(0, width.length - 2);
-            }
-            else {
-                stringWidth = width.substring(0, width.length - 1);
-            }
-            var columnWidth = parseFloat(stringWidth);
-            return columnWidth;
-        };
-        SimpleTable.prototype.getWidthType = function (width) {
-            var widthType = width.substring(width.length - 2, width.length);
-            if (widthType === this.WIDTH_PIXELS_TYPE) {
-                return this.WIDTH_PIXELS_TYPE;
-            }
-            return this.WIDTH_PERCENTAGE_TYPE;
+        SimpleTable.prototype.resizeTable = function () {
+            this.managers.resizeManager.resizeTable();
         };
         SimpleTable.prototype.doInitPlugins = function () {
             var self = this;
@@ -445,7 +644,8 @@ var STCore;
             if (!this.shouldUseCustomTemplate()) {
                 return;
             }
-            this.applyTemplate(this.getCustomTemplate(this.scope), this.scope);
+            var tpl = this.getCustomTemplate(this.scope);
+            this.optimizeAndApplyTemplate(tpl, this.scope);
         };
         BaseComponentUI.prototype.shouldUseCustomTemplate = function () {
             return false;
@@ -463,13 +663,32 @@ var STCore;
             }
             return this.$templateRequest(tplUrl);
         };
+        BaseComponentUI.prototype.optimizeAndApplyTemplate = function (tpl, scope) {
+            var otpl = this.shouldOptimizeTemplate(tpl, scope) ? this.optimizeTemplate(tpl, scope) : tpl;
+            this.applyTemplate(otpl, scope);
+        };
         BaseComponentUI.prototype.applyTemplate = function (tpl, scope) {
             if (!tpl) {
                 return;
             }
-            var tpl = this.getCustomTemplate(this.scope);
             this.element.html(tpl);
             this.$compile(this.element.contents())(this.scope);
+        };
+        BaseComponentUI.prototype.optimizeTemplate = function (tpl, scope) {
+            return tpl;
+        };
+        BaseComponentUI.prototype.optimizeTemplateParts = function (tpl, parts) {
+            for (var i = 0; i < parts.length; i++) {
+                var part = parts[i];
+                tpl = this.optimizeTemplatePart(tpl, part);
+            }
+            return tpl;
+        };
+        BaseComponentUI.prototype.optimizeTemplatePart = function (tpl, part) {
+            return tpl.replace(part.src, part.repl);
+        };
+        BaseComponentUI.prototype.shouldOptimizeTemplate = function (tpl, scope) {
+            return true;
         };
         BaseComponentUI.prototype.dispose = function () {
             delete this.scope;
@@ -490,40 +709,49 @@ var STTemplates;
         function STTpls() {
         }
         STTpls.prototype.getTemplates = function () {
-            return [STTpls.TABLE_TPL_PAIR, STTpls.HEADER_TPL_PAIR, STTpls.COLUMN_TPL_PAIR, STTpls.BODY_TPL_PAIR, STTpls.ROW_TPL_PAIR, STTpls.CELL_TPL_PAIR];
+            return [STTpls.TABLE_TPL_PAIR, STTpls.HEADER_TPL_PAIR, STTpls.COLUMN_TPL_PAIR, STTpls.BODY_TPL_PAIR, STTpls.BODY_VS_TPL_PAIR, STTpls.ROW_TPL_PAIR, STTpls.CELL_TPL_PAIR, STTpls.CELL_BO_TPL_PAIR];
         };
-        STTpls.CELL_TPL = "{{row[col.field]}}";
-        STTpls.ROW_TPL = "<td ng-repeat='col in tableConfig.columns' st-table-cell ng-class='col.cellClass' ng-if='col.active' ></td>";
-        STTpls.BODY_TPL = "<tr ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
-            "  ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse track by $index ' " +
+        STTpls.CELL_TPL = "{{col.getCellValue(row)}}";
+        STTpls.CELL_BO_TPL = "<span bo-text='col.getCellValue(row)'></span>";
+        STTpls.ROW_TPL = "<td ng-repeat='col in tableConfig.columns' st-table-cell ng-if='col.active' ></td>";
+        STTpls.BODY_TPL = "<tr bindonce ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
+            "  ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' " +
+            "  st-table-row >" +
+            "</tr>";
+        STTpls.BODY_VS_TPL = "<tr bindonce ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
+            "  sf-virtual-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' " +
             "  st-table-row >" +
             "</tr>";
         STTpls.COLUMN_TPL = "{{hcol.title}}<div st-table-resizable-handler11 class='table-header-cursor-container'></div>";
         STTpls.HEADER_TPL = "<tr>" +
             "  <th id='{{hcol.id}}' class='table-header' " +
-            "   ng-repeat='hcol in tableConfig.columns' " +
+            "   ng-repeat='hcol in tableConfig.columns track by hcol.id' " +
             "   ng-class='hcol.headerClass' ng-if='hcol.active' " +
             "   ng-style='{\"height\":tableConfig.headerHeight, \"min-width\":hcol.style.minWidth, \"width\":hcol.style.width}' " +
             "   st-table-drop-target='true' st-table-draggable='true' st-table-column>" +
             "  </th>" +
             "</tr>";
         STTpls.TABLE_TPL = "<div ng-style='{width:tableConfig.tableWidth}'>" +
-            "  <table ng-class='tableConfig.classes' ng-style='{width:tableConfig.tableWidth}'>" +
+            "  <table ng-class='tableConfig.tableClasses' ng-style='{width:tableConfig.tableWidth}'>" +
             "    <thead st-table-header>" +
             "    </thead>" +
-            "    <tbody vs-repeat st-table-body style='height: 400px'>" +
+            "    <tbody st-table-body virtual-scroll='{{tableConfig.virtualScroll}}' >" +
             "    </tbody>" +
             "  </table>" +
             "</div>";
         STTpls.CELL_TPL_ID = 'stTableCellTpl.html';
+        STTpls.CELL_BO_TPL_ID = 'stTableCellBOTpl.html';
         STTpls.ROW_TPL_ID = 'stTableRowTpl.html';
         STTpls.BODY_TPL_ID = 'stTableBodyTpl.html';
+        STTpls.BODY_VS_TPL_ID = 'stTableBodyVSTpl.html';
         STTpls.COLUMN_TPL_ID = 'stTableColumnTpl.html';
         STTpls.HEADER_TPL_ID = 'stTableHeaderTpl.html';
         STTpls.TABLE_TPL_ID = 'stTableTpl.html';
         STTpls.CELL_TPL_PAIR = { id: STTpls.CELL_TPL_ID, tpl: STTpls.CELL_TPL };
+        STTpls.CELL_BO_TPL_PAIR = { id: STTpls.CELL_BO_TPL_ID, tpl: STTpls.CELL_BO_TPL };
         STTpls.ROW_TPL_PAIR = { id: STTpls.ROW_TPL_ID, tpl: STTpls.ROW_TPL };
         STTpls.BODY_TPL_PAIR = { id: STTpls.BODY_TPL_ID, tpl: STTpls.BODY_TPL };
+        STTpls.BODY_VS_TPL_PAIR = { id: STTpls.BODY_VS_TPL_ID, tpl: STTpls.BODY_VS_TPL };
         STTpls.COLUMN_TPL_PAIR = { id: STTpls.COLUMN_TPL_ID, tpl: STTpls.COLUMN_TPL };
         STTpls.HEADER_TPL_PAIR = { id: STTpls.HEADER_TPL_ID, tpl: STTpls.HEADER_TPL };
         STTpls.TABLE_TPL_PAIR = { id: STTpls.TABLE_TPL_ID, tpl: STTpls.TABLE_TPL };
@@ -533,29 +761,155 @@ var STTemplates;
 })(STTemplates || (STTemplates = {}));
 /// <reference path="../core/BaseComponentUI.ts" />
 /// <reference path="../tpl/STTemplates.ts" />
+/// <reference path="../column/STColumn.ts" />
 var STCellUI;
 (function (STCellUI) {
     var Cell = (function (_super) {
         __extends(Cell, _super);
         function Cell() {
             _super.apply(this, arguments);
+            this.cellClassesFirstRun = true;
         }
         Cell.prototype.init = function () {
-            this.validateCustomTemplate();
+            if (this.shouldUseCustomTemplate()) {
+                this.validateCustomTemplate();
+                return;
+            }
+            this.applyDefaultTemplate();
+            this.addWatchers();
+        };
+        Cell.prototype.addWatchers = function () {
+            this.addCellIdWatcher();
+            this.addCellClassesWatcher();
+        };
+        Cell.prototype.addCellIdWatcher = function () {
+            var self = this;
+            this.cellIdWatcher = this.scope.$watch('col.cellIdFunction', function (oldValue, newValue) {
+                var col = self.scope.col;
+                if (!newValue) {
+                    if (col.isStaticProperty('cellId')) {
+                        self.cellIdWatcher();
+                    }
+                    return;
+                }
+                var value = newValue(self.scope.row, self.scope.col, self.scope.tableConfig);
+                self.element.attr('id', value);
+                if (col.isStaticProperty('cellId')) {
+                    self.cellIdWatcher();
+                }
+            });
+        };
+        Cell.prototype.addCellClassesWatcher = function () {
+            var self = this;
+            this.cellClassesWatcher = this.scope.$watch('col.cellClasses', function (oldValue, newValue) {
+                debugger;
+                var col = self.scope.col;
+                if (!newValue) {
+                    if (col.isStaticProperty('cellClasses')) {
+                        self.cellClassesWatcher();
+                    }
+                    return;
+                }
+                var newClasses = self.arrayClasses(newValue || []);
+                if (!oldValue || self.cellClassesFirstRun) {
+                    self.addClasses(newClasses);
+                }
+                else if (!angular.equals(newValue, oldValue)) {
+                    var oldClasses = self.arrayClasses(oldValue);
+                    self.updateClasses(oldClasses, newClasses);
+                }
+                self.cellClassesFirstRun = false;
+                if (col.isStaticProperty('cellClasses')) {
+                    self.cellClassesWatcher();
+                }
+            });
+        };
+        Cell.prototype.arrayClasses = function (classVal) {
+            var classes = [], self = this;
+            if (angular.isArray(classVal)) {
+                angular.forEach(classVal, function (v) {
+                    classes = classes.concat(self.arrayClasses(v));
+                });
+                return classes;
+            }
+            else if (angular.isString(classVal)) {
+                return classVal.split(' ');
+            }
+            else if (angular.isObject(classVal)) {
+                angular.forEach(classVal, function (v, k) {
+                    if (!v) {
+                        return;
+                    }
+                    if (angular.isFunction(v)) {
+                        var res = classVal(this.scope.row, this.scope.col, this.scope.tableConfig);
+                        if (!res) {
+                            return;
+                        }
+                    }
+                    classes = classes.concat(k.split(' '));
+                });
+                return classes;
+            }
+            else if (angular.isFunction(classVal)) {
+                var res = classVal(this.scope.row, this.scope.col, this.scope.tableConfig);
+                if (res) {
+                    classes.push(res);
+                }
+                return classes;
+            }
+            return classVal;
+        };
+        Cell.prototype.updateClasses = function (oldClasses, newClasses) {
+            var toAdd = this.arrayDifference(newClasses, oldClasses);
+            var toRemove = this.arrayDifference(oldClasses, newClasses);
+            this.addClasses(toAdd);
+            this.removeClasses(toRemove);
+        };
+        Cell.prototype.arrayDifference = function (tokens1, tokens2) {
+            var values = [];
+            outer: for (var i = 0; i < tokens1.length; i++) {
+                var token = tokens1[i];
+                for (var j = 0; j < tokens2.length; j++) {
+                    if (token == tokens2[j])
+                        continue outer;
+                }
+                values.push(token);
+            }
+            return values;
+        };
+        Cell.prototype.addClasses = function (classes) {
+            for (var i = 0; i < classes.length; i++) {
+                var cssClass = classes[i];
+                this.element.addClass(cssClass);
+            }
+        };
+        Cell.prototype.removeClasses = function (classes) {
+            for (var i = 0; i < classes.length; i++) {
+                var cssClass = classes[i];
+                this.element.removeClass(cssClass);
+            }
         };
         Cell.prototype.shouldUseCustomTemplate = function () {
             var col = this.scope.col;
-            return col && (col.template || col.templateId);
+            return col && (col.cellTemplate || col.cellTemplateId);
         };
         Cell.prototype.getCustomTemplate = function (scope) {
             var col = scope.col;
-            if (col.templateId) {
-                return this.getTemplateByCacheId(col.templateId);
+            if (col.cellTemplateId) {
+                return this.getTemplateByCacheId(col.cellTemplateId);
             }
-            if (col.templateUrl) {
-                return this.getTemplateByUrl(col.templateUrl);
+            return col.cellTemplate;
+        };
+        Cell.prototype.applyDefaultTemplate = function () {
+            var tpl = this.$templateCache.get(STTemplates.STTpls.CELL_TPL_ID);
+            this.optimizeAndApplyTemplate(tpl, this.scope);
+        };
+        Cell.prototype.optimizeTemplate = function (tpl, scope) {
+            var col = scope.col;
+            if (col.isStaticProperty('cellValue')) {
+                return this.$templateCache.get(STTemplates.STTpls.CELL_BO_TPL_ID);
             }
-            return scope.col.template;
+            return tpl;
         };
         return Cell;
     })(STCore.BaseComponentUI);
@@ -582,7 +936,6 @@ angular.module('simpletable.table.cell', [])
                 };
             },
             template: function (tElem, tAttrs) {
-                return $templateCache.get(STTemplates.STTpls.CELL_TPL_ID);
             }
         };
     }]);
@@ -1174,6 +1527,7 @@ angular.module('simpletable.resizable', [])
     }]);
 /// <reference path="../table/SimpleTable.ts" />
 /// <reference path="../core/BaseComponentUI.ts" />
+/// <reference path="../core/STConfig.ts" />
 /// <reference path="../tpl/STTemplates.ts" />
 var STBodyUI;
 (function (STBodyUI) {
@@ -1187,14 +1541,20 @@ var STBodyUI;
         };
         Body.prototype.shouldUseCustomTemplate = function () {
             var tableConfig = this.scope.tableConfig;
-            return tableConfig && tableConfig.rowTemplate;
+            return tableConfig && (tableConfig.rowTemplate || tableConfig.rowTemplateId);
         };
         Body.prototype.validateCustomTemplate = function () {
             if (!this.shouldUseCustomTemplate()) {
-                this.applyTemplate(this.getTemplateByCacheId(STTemplates.STTpls.BODY_TPL_ID), this.scope);
+                this.applyTemplate(this.getDefaultTemplate(this.isVirtualScrollEnabled()), this.scope);
                 return;
             }
             this.applyTemplate(this.getCustomTemplate(this.scope), this.scope);
+        };
+        Body.prototype.getDefaultTemplate = function (virtualScroll) {
+            if (virtualScroll) {
+                return this.getTemplateByCacheId(STTemplates.STTpls.BODY_VS_TPL_ID);
+            }
+            return this.getTemplateByCacheId(STTemplates.STTpls.BODY_TPL_ID);
         };
         Body.prototype.applyTemplate = function (tpl, scope) {
             var dom = angular.element(tpl);
@@ -1203,7 +1563,14 @@ var STBodyUI;
             link(scope);
         };
         Body.prototype.getCustomTemplate = function (scope) {
-            return scope.tableConfig.rowTemplate;
+            var tableConfig = this.scope.tableConfig;
+            if (tableConfig.rowTemplateId) {
+                return this.getTemplateByCacheId(tableConfig.rowTemplateId);
+            }
+            return tableConfig.rowTemplate;
+        };
+        Body.prototype.isVirtualScrollEnabled = function () {
+            return !(this.attrs.virtualScroll === 'false');
         };
         return Body;
     })(STCore.BaseComponentUI);
@@ -1279,7 +1646,6 @@ angular.module('simpletable.table.row', [])
     .directive('stTableRow', ['$log', '$compile', '$templateCache', '$templateRequest', function ($log, $compile, $templateCache, $templateRequest) {
         return {
             restrict: 'AE',
-            require: '^stTable',
             compile: function (tElem, tAttrs) {
                 return {
                     pre: function (scope, iElem, iAttrs) {
@@ -1287,7 +1653,7 @@ angular.module('simpletable.table.row', [])
                     post: function (scope, iElem, iAttrs, parent) {
                         var row = new STRowUI.Row();
                         row.setServices($compile, $templateCache, $templateRequest);
-                        row.link(scope, iElem, iAttrs, parent.getSimpleTable());
+                        row.link(scope, iElem, iAttrs, scope.simpleTable);
                         row.init();
                         return row;
                     }

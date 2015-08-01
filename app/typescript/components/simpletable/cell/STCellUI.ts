@@ -44,7 +44,6 @@ module STCellUI {
                 var col:STColumn.Column = (<any>self.scope).col;
                 if(!newValue){
                     if(col.isStaticProperty('cellClasses')){
-                        console.log('Removing cell classes1');
                         self.cellClassesWatcher();
                     }
                     return;
@@ -59,7 +58,6 @@ module STCellUI {
                 self.cellClassesFirstRun = false;
                 // Remove watcher is static
                 if(col.isStaticProperty('cellClasses')){
-                    console.log('Removing cell classes');
                     self.cellClassesWatcher();
                 }
             });

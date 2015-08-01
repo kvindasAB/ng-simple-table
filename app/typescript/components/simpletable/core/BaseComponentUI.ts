@@ -90,6 +90,18 @@ module STCore {
             return tpl;
         }
 
+        optimizeTemplateParts(tpl:string, parts:any[]):string {
+            for(var i:number = 0; i < parts.length; i++){
+                var part = parts[i];
+                tpl = this.optimizeTemplatePart(tpl, part);
+            }
+            return tpl;
+        }
+
+        optimizeTemplatePart(tpl:string, part):string {
+            return tpl.replace(part.src, part.repl);
+        }
+
         shouldOptimizeTemplate(tpl:string, scope:angular.IScope):boolean {
             return true;
         }

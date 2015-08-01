@@ -56,6 +56,16 @@ var STCore;
         BaseComponentUI.prototype.optimizeTemplate = function (tpl, scope) {
             return tpl;
         };
+        BaseComponentUI.prototype.optimizeTemplateParts = function (tpl, parts) {
+            for (var i = 0; i < parts.length; i++) {
+                var part = parts[i];
+                tpl = this.optimizeTemplatePart(tpl, part);
+            }
+            return tpl;
+        };
+        BaseComponentUI.prototype.optimizeTemplatePart = function (tpl, part) {
+            return tpl.replace(part.src, part.repl);
+        };
         BaseComponentUI.prototype.shouldOptimizeTemplate = function (tpl, scope) {
             return true;
         };

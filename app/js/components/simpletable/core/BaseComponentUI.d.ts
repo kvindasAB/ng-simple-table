@@ -21,6 +21,8 @@ declare module STCore {
         optimizeAndApplyTemplate(tpl: string, scope: angular.IScope): void;
         applyTemplate(tpl: string, scope: angular.IScope): void;
         optimizeTemplate(tpl: string, scope: angular.IScope): string;
+        optimizeTemplateParts(tpl: string, parts: any[]): string;
+        optimizeTemplatePart(tpl: string, part: any): string;
         shouldOptimizeTemplate(tpl: string, scope: angular.IScope): boolean;
         dispose(): void;
     }

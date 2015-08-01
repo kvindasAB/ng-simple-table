@@ -13,6 +13,7 @@ var STCellUI;
         __extends(Cell, _super);
         function Cell() {
             _super.apply(this, arguments);
+            this.cellClassesFirstRun = true;
         }
         Cell.prototype.init = function () {
             if (this.shouldUseCustomTemplate()) {
@@ -20,6 +21,120 @@ var STCellUI;
                 return;
             }
             this.applyDefaultTemplate();
+            this.addWatchers();
+        };
+        Cell.prototype.addWatchers = function () {
+            this.addCellIdWatcher();
+            this.addCellClassesWatcher();
+        };
+        Cell.prototype.addCellIdWatcher = function () {
+            var self = this;
+            this.cellIdWatcher = this.scope.$watch('col.cellIdFunction', function (oldValue, newValue) {
+                var col = self.scope.col;
+                if (!newValue) {
+                    if (col.isStaticProperty('cellId')) {
+                        self.cellIdWatcher();
+                    }
+                    return;
+                }
+                var value = newValue(self.scope.row, self.scope.col, self.scope.tableConfig);
+                self.element.attr('id', value);
+                if (col.isStaticProperty('cellId')) {
+                    self.cellIdWatcher();
+                }
+            });
+        };
+        Cell.prototype.addCellClassesWatcher = function () {
+            var self = this;
+            this.cellClassesWatcher = this.scope.$watch('col.cellClasses', function (oldValue, newValue) {
+                debugger;
+                var col = self.scope.col;
+                if (!newValue) {
+                    if (col.isStaticProperty('cellClasses')) {
+                        console.log('Removing cell classes1');
+                        self.cellClassesWatcher();
+                    }
+                    return;
+                }
+                var newClasses = self.arrayClasses(newValue || []);
+                if (!oldValue || self.cellClassesFirstRun) {
+                    self.addClasses(newClasses);
+                }
+                else if (!angular.equals(newValue, oldValue)) {
+                    var oldClasses = self.arrayClasses(oldValue);
+                    self.updateClasses(oldClasses, newClasses);
+                }
+                self.cellClassesFirstRun = false;
+                if (col.isStaticProperty('cellClasses')) {
+                    console.log('Removing cell classes');
+                    self.cellClassesWatcher();
+                }
+            });
+        };
+        Cell.prototype.arrayClasses = function (classVal) {
+            var classes = [], self = this;
+            if (angular.isArray(classVal)) {
+                angular.forEach(classVal, function (v) {
+                    classes = classes.concat(self.arrayClasses(v));
+                });
+                return classes;
+            }
+            else if (angular.isString(classVal)) {
+                return classVal.split(' ');
+            }
+            else if (angular.isObject(classVal)) {
+                angular.forEach(classVal, function (v, k) {
+                    if (!v) {
+                        return;
+                    }
+                    if (angular.isFunction(v)) {
+                        var res = classVal(this.scope.row, this.scope.col, this.scope.tableConfig);
+                        if (!res) {
+                            return;
+                        }
+                    }
+                    classes = classes.concat(k.split(' '));
+                });
+                return classes;
+            }
+            else if (angular.isFunction(classVal)) {
+                var res = classVal(this.scope.row, this.scope.col, this.scope.tableConfig);
+                if (res) {
+                    classes.push(res);
+                }
+                return classes;
+            }
+            return classVal;
+        };
+        Cell.prototype.updateClasses = function (oldClasses, newClasses) {
+            var toAdd = this.arrayDifference(newClasses, oldClasses);
+            var toRemove = this.arrayDifference(oldClasses, newClasses);
+            this.addClasses(toAdd);
+            this.removeClasses(toRemove);
+        };
+        Cell.prototype.arrayDifference = function (tokens1, tokens2) {
+            var values = [];
+            outer: for (var i = 0; i < tokens1.length; i++) {
+                var token = tokens1[i];
+                for (var j = 0; j < tokens2.length; j++) {
+                    if (token == tokens2[j])
+                        continue outer;
+                }
+                values.push(token);
+            }
+            return values;
+        };
+        Cell.prototype.addClasses = function (classes) {
+            for (var i = 0; i < classes.length; i++) {
+                var cssClass = classes[i];
+                this.element.addClass(cssClass);
+            }
+        };
+        Cell.prototype.removeClasses = function (classes) {
+            for (var i = 0; i < classes.length; i++) {
+                var cssClass = classes[i];
+                this.element.removeClass(cssClass);
+            }
         };
         Cell.prototype.shouldUseCustomTemplate = function () {
             var col = this.scope.col;
@@ -33,7 +148,6 @@ var STCellUI;
             return col.cellTemplate;
         };
         Cell.prototype.applyDefaultTemplate = function () {
-            debugger;
             var tpl = this.$templateCache.get(STTemplates.STTpls.CELL_TPL_ID);
             this.optimizeAndApplyTemplate(tpl, this.scope);
         };

@@ -25,7 +25,7 @@ angular.module('simpletable.table.cell', [])
             },
             template: function(tElem, tAttrs){
                 //$log.log('CellUIDir.template: ', tElem, tAttrs);
-                return $templateCache.get(STTemplates.STTpls.CELL_TPL_ID);
+                //return $templateCache.get(STTemplates.STTpls.CELL_TPL_ID);
             }
         };
 

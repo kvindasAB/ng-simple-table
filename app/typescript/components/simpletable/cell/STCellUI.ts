@@ -5,7 +5,11 @@ module STCellUI {
     export class Cell extends STCore.BaseComponentUI {
 
         init(){
-            this.validateCustomTemplate();
+            if(this.shouldUseCustomTemplate()){
+                this.validateCustomTemplate();
+                return;
+            }
+            this.applyDefaultTemplate();
         }
 
         shouldUseCustomTemplate():boolean{
@@ -24,6 +28,20 @@ module STCellUI {
             }
             */
             return col.cellTemplate;
+        }
+
+        applyDefaultTemplate():void {
+            debugger;
+            var tpl = this.$templateCache.get(STTemplates.STTpls.CELL_TPL_ID);
+            this.optimizeAndApplyTemplate(tpl, this.scope);
+        }
+
+        optimizeTemplate(tpl:string, scope:angular.IScope):string {
+            var col:STColumn.Column = (<any>scope).col;
+            if(col.isStaticProperty('cellValue')){
+                return this.$templateCache.get(STTemplates.STTpls.CELL_BO_TPL_ID);
+            }
+            return tpl;
         }
 
     }

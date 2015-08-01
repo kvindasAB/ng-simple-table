@@ -35,7 +35,8 @@ module STCore {
             if(!this.shouldUseCustomTemplate() ){
                 return;
             }
-            this.applyTemplate(this.getCustomTemplate(this.scope), this.scope);
+            var tpl = this.getCustomTemplate(this.scope);
+            this.optimizeAndApplyTemplate(tpl, this.scope);
         }
 
         /* To be implemented by subclasses */
@@ -65,6 +66,11 @@ module STCore {
             */
         }
 
+        optimizeAndApplyTemplate(tpl:string, scope:angular.IScope):void {
+            var otpl = this.shouldOptimizeTemplate(tpl, scope) ? this.optimizeTemplate(tpl, scope) : tpl;
+            this.applyTemplate(otpl, scope);
+        }
+
         applyTemplate(tpl:string, scope:angular.IScope):void{
             if(!tpl){return;}
             //console.log('BaseComponent.applyTpl:', tpl);
@@ -74,9 +80,18 @@ module STCore {
             this.element.append(dom);
             link(scope);
             */
-            var tpl:string = this.getCustomTemplate(this.scope);
+            //var tpl:string = this.getCustomTemplate(this.scope);
             this.element.html(tpl);
             this.$compile(this.element.contents())(this.scope);
+        }
+
+        // To be implemented on subclasses
+        optimizeTemplate(tpl:string, scope:angular.IScope):string {
+            return tpl;
+        }
+
+        shouldOptimizeTemplate(tpl:string, scope:angular.IScope):boolean {
+            return true;
         }
 
         dispose():void {

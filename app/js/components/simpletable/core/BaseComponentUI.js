@@ -23,7 +23,8 @@ var STCore;
             if (!this.shouldUseCustomTemplate()) {
                 return;
             }
-            this.applyTemplate(this.getCustomTemplate(this.scope), this.scope);
+            var tpl = this.getCustomTemplate(this.scope);
+            this.optimizeAndApplyTemplate(tpl, this.scope);
         };
         BaseComponentUI.prototype.shouldUseCustomTemplate = function () {
             return false;
@@ -41,13 +42,22 @@ var STCore;
             }
             return this.$templateRequest(tplUrl);
         };
+        BaseComponentUI.prototype.optimizeAndApplyTemplate = function (tpl, scope) {
+            var otpl = this.shouldOptimizeTemplate(tpl, scope) ? this.optimizeTemplate(tpl, scope) : tpl;
+            this.applyTemplate(otpl, scope);
+        };
         BaseComponentUI.prototype.applyTemplate = function (tpl, scope) {
             if (!tpl) {
                 return;
             }
-            var tpl = this.getCustomTemplate(this.scope);
             this.element.html(tpl);
             this.$compile(this.element.contents())(this.scope);
+        };
+        BaseComponentUI.prototype.optimizeTemplate = function (tpl, scope) {
+            return tpl;
+        };
+        BaseComponentUI.prototype.shouldOptimizeTemplate = function (tpl, scope) {
+            return true;
         };
         BaseComponentUI.prototype.dispose = function () {
             delete this.scope;

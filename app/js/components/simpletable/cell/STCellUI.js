@@ -15,7 +15,11 @@ var STCellUI;
             _super.apply(this, arguments);
         }
         Cell.prototype.init = function () {
-            this.validateCustomTemplate();
+            if (this.shouldUseCustomTemplate()) {
+                this.validateCustomTemplate();
+                return;
+            }
+            this.applyDefaultTemplate();
         };
         Cell.prototype.shouldUseCustomTemplate = function () {
             var col = this.scope.col;
@@ -27,6 +31,18 @@ var STCellUI;
                 return this.getTemplateByCacheId(col.cellTemplateId);
             }
             return col.cellTemplate;
+        };
+        Cell.prototype.applyDefaultTemplate = function () {
+            debugger;
+            var tpl = this.$templateCache.get(STTemplates.STTpls.CELL_TPL_ID);
+            this.optimizeAndApplyTemplate(tpl, this.scope);
+        };
+        Cell.prototype.optimizeTemplate = function (tpl, scope) {
+            var col = scope.col;
+            if (col.isStaticProperty('cellValue')) {
+                return this.$templateCache.get(STTemplates.STTpls.CELL_BO_TPL_ID);
+            }
+            return tpl;
         };
         return Cell;
     })(STCore.BaseComponentUI);

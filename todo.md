@@ -4,7 +4,15 @@ TODO List
 
 V1.0
 
-Virtualization.
+Optimization and rendering improvements - Phase1:
+
+    - cellId
+    - cellValue
+    - cellClasses
+    - active
+    - headerClasses
+    
+Virtualization. Phase2 - keeping header.
 Improve listening to resize via code listener instead of additional directive.
 Drag and Drop - Enable/Disable the feature
 Resizable Columns - Enable/Disable the feature
@@ -44,6 +52,7 @@ V3.0
 
 ## Completed
 
+Virtualization. Phase1 - DONE
 - Column refactoring - DONE
 - Columns should be active by default, and inactive only if specified. - DONE
 - Dispose ComponentUI objects on scope destroy. - DONE

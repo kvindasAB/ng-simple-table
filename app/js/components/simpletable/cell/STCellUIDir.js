@@ -19,7 +19,6 @@ angular.module('simpletable.table.cell', [])
                 };
             },
             template: function (tElem, tAttrs) {
-                return $templateCache.get(STTemplates.STTpls.CELL_TPL_ID);
             }
         };
     }]);

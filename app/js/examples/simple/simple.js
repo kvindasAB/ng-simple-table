@@ -22,11 +22,11 @@ angular.module('stable.examples.simple', ['ui.router'])
             tableClasses: ["table", "table-bordered", 'table-padding'],
             headerHeight: '30px',
             columns: [
-                        {field: 'id'},
-                        {field: 'name'},
-                        {field: 'phone'},
-                        {field: 'age'},
-                        {field: 'address'}
+                        {field: 'id', mutable: false},
+                        {field: 'name', mutable: false},
+                        {field: 'phone', mutable: false},
+                        {field: 'age', mutable: false},
+                        {field: 'address', mutable: false}
                      ],
         };
 

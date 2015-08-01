@@ -26,11 +26,11 @@ angular.module('stable.examples.heavyrows', ['ui.router'])
             tableWidth: '100%',
             headerHeight: '30px',
             columns: [
-                          {id:"id", title: "Id", field: 'id', active: true, style: {width: "20%"}},
-                          {id:"name", title: "Name", field: 'name', active: true, style: {width: "20%"}},
-                          {id:"phone", title: "Phone", field: 'phone', active: true, style: {width: "20%"}},
-                          {id:"age", title: "Age", field: 'age', active: true, style: {width: "20%"}},
-                          {id:"address", title: "Address", field: 'address', active: true, style: {width: "20%"}}
+                          {id:"id", title: "Id", field: 'id', mutable:false, style: {width: "20%"}},
+                          {id:"name", title: "Name", field: 'name', mutable:false, style: {width: "20%"}},
+                          {id:"phone", title: "Phone", field: 'phone', mutable:false, style: {width: "20%"}},
+                          {id:"age", title: "Age", field: 'age', mutable:false, style: {width: "20%"}},
+                          {id:"address", title: "Address", mutable:false, field: 'address', style: {width: "20%"}}
                      ]
         };
 

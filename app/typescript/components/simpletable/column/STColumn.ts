@@ -67,6 +67,12 @@ module STColumn {
             this.cellTemplateId     = data.cellTemplateId;
             this.cellValueFunction  = data.cellValueFunction;
             this.getCellValue       = this.cellValueFunction ? this.getCustomCellValue : this.getDefaultCellValue;
+
+            // Optimization
+            this.mutable            = angular.isUndefined(data.mutable) ? true : data.mutable;
+            this.mutableProperties  = data.mutableProperties;
+            this.staticProperties   = data.staticProperties;
+            this.optimizeTemplate   = angular.isUndefined(data.optimizeTemplate) ? true : data.optimizeTemplate;
         }
 
         validateOptimizationProperties(data){
@@ -106,6 +112,10 @@ module STColumn {
 
         isOptimizedProperty(prop:string):boolean {
             return true;
+        }
+
+        hasStaticProperties():boolean {
+            return !this.mutable || (this.staticProperties && this.staticProperties.length > 0);
         }
 
     }

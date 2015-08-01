@@ -29,5 +29,6 @@ declare module STColumn {
         isMutableProperty(prop: string): boolean;
         isStaticProperty(prop: string): boolean;
         isOptimizedProperty(prop: string): boolean;
+        hasStaticProperties(): boolean;
     }
 }

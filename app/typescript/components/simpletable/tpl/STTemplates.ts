@@ -6,12 +6,13 @@ module STTemplates {
     export class STTpls {
 
         static CELL_TPL:string      = "{{col.getCellValue(row)}}";
+        static CELL_BO_TPL:string   = "<span bo-text='col.getCellValue(row)'></span>";
         static ROW_TPL:string       = "<td id='{{col.cellIdFunction(row, col, tableConfig)}}' ng-class='col.cellClasses' ng-repeat='col in tableConfig.columns' st-table-cell ng-if='col.active' ></td>";
-        static BODY_TPL:string      = "<tr ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
+        static BODY_TPL:string      = "<tr bindonce ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
                                       "  ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' " +
                                       "  st-table-row >" +
                                       "</tr>";
-        static BODY_VS_TPL:string   = "<tr ng-class='{selected: simpleTable.selection.isRowSelected(row)}' style='height: 38px' " +
+        static BODY_VS_TPL:string   = "<tr bindonce ng-class='{selected: simpleTable.selection.isRowSelected(row)}' style='height: 38px' " +
                                       "  sf-virtual-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' " +
                                       "  st-table-row >" +
                                       "</tr>";
@@ -34,6 +35,7 @@ module STTemplates {
                                       "</div>";
 
         static CELL_TPL_ID:string   = 'stTableCellTpl.html';
+        static CELL_BO_TPL_ID:string   = 'stTableCellBOTpl.html';
         static ROW_TPL_ID:string    = 'stTableRowTpl.html';
         static BODY_TPL_ID:string   = 'stTableBodyTpl.html';
         static BODY_VS_TPL_ID:string= 'stTableBodyVSTpl.html';
@@ -42,6 +44,7 @@ module STTemplates {
         static TABLE_TPL_ID:string  = 'stTableTpl.html';
 
         static CELL_TPL_PAIR:any     = {id: STTpls.CELL_TPL_ID,     tpl: STTpls.CELL_TPL};
+        static CELL_BO_TPL_PAIR:any  = {id: STTpls.CELL_BO_TPL_ID,  tpl: STTpls.CELL_BO_TPL};
         static ROW_TPL_PAIR:any      = {id: STTpls.ROW_TPL_ID,      tpl: STTpls.ROW_TPL};
         static BODY_TPL_PAIR:any     = {id: STTpls.BODY_TPL_ID,     tpl: STTpls.BODY_TPL};
         static BODY_VS_TPL_PAIR:any  = {id: STTpls.BODY_VS_TPL_ID,  tpl: STTpls.BODY_VS_TPL};
@@ -50,7 +53,7 @@ module STTemplates {
         static TABLE_TPL_PAIR:any    = {id: STTpls.TABLE_TPL_ID,    tpl: STTpls.TABLE_TPL};
 
         getTemplates() {
-            return [STTpls.TABLE_TPL_PAIR, STTpls.HEADER_TPL_PAIR, STTpls.COLUMN_TPL_PAIR, STTpls.BODY_TPL_PAIR, STTpls.BODY_VS_TPL_PAIR, STTpls.ROW_TPL_PAIR, STTpls.CELL_TPL_PAIR];
+            return [STTpls.TABLE_TPL_PAIR, STTpls.HEADER_TPL_PAIR, STTpls.COLUMN_TPL_PAIR, STTpls.BODY_TPL_PAIR, STTpls.BODY_VS_TPL_PAIR, STTpls.ROW_TPL_PAIR, STTpls.CELL_TPL_PAIR, STTpls.CELL_BO_TPL_PAIR];
         }
 
     }

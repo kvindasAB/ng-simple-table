@@ -18,7 +18,10 @@ declare module STCore {
         getCustomTemplate(scope: angular.IScope): any;
         getTemplateByCacheId(tplId: any): string;
         getTemplateByUrl(tplUrl: any): any;
+        optimizeAndApplyTemplate(tpl: string, scope: angular.IScope): void;
         applyTemplate(tpl: string, scope: angular.IScope): void;
+        optimizeTemplate(tpl: string, scope: angular.IScope): string;
+        shouldOptimizeTemplate(tpl: string, scope: angular.IScope): boolean;
         dispose(): void;
     }
 }

@@ -4,15 +4,16 @@ var STTemplates;
         function STTpls() {
         }
         STTpls.prototype.getTemplates = function () {
-            return [STTpls.TABLE_TPL_PAIR, STTpls.HEADER_TPL_PAIR, STTpls.COLUMN_TPL_PAIR, STTpls.BODY_TPL_PAIR, STTpls.BODY_VS_TPL_PAIR, STTpls.ROW_TPL_PAIR, STTpls.CELL_TPL_PAIR];
+            return [STTpls.TABLE_TPL_PAIR, STTpls.HEADER_TPL_PAIR, STTpls.COLUMN_TPL_PAIR, STTpls.BODY_TPL_PAIR, STTpls.BODY_VS_TPL_PAIR, STTpls.ROW_TPL_PAIR, STTpls.CELL_TPL_PAIR, STTpls.CELL_BO_TPL_PAIR];
         };
         STTpls.CELL_TPL = "{{col.getCellValue(row)}}";
+        STTpls.CELL_BO_TPL = "<span bo-text='col.getCellValue(row)'></span>";
         STTpls.ROW_TPL = "<td id='{{col.cellIdFunction(row, col, tableConfig)}}' ng-class='col.cellClasses' ng-repeat='col in tableConfig.columns' st-table-cell ng-if='col.active' ></td>";
-        STTpls.BODY_TPL = "<tr ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
+        STTpls.BODY_TPL = "<tr bindonce ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
             "  ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' " +
             "  st-table-row >" +
             "</tr>";
-        STTpls.BODY_VS_TPL = "<tr ng-class='{selected: simpleTable.selection.isRowSelected(row)}' style='height: 38px' " +
+        STTpls.BODY_VS_TPL = "<tr bindonce ng-class='{selected: simpleTable.selection.isRowSelected(row)}' style='height: 38px' " +
             "  sf-virtual-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' " +
             "  st-table-row >" +
             "</tr>";
@@ -34,6 +35,7 @@ var STTemplates;
             "  </table>" +
             "</div>";
         STTpls.CELL_TPL_ID = 'stTableCellTpl.html';
+        STTpls.CELL_BO_TPL_ID = 'stTableCellBOTpl.html';
         STTpls.ROW_TPL_ID = 'stTableRowTpl.html';
         STTpls.BODY_TPL_ID = 'stTableBodyTpl.html';
         STTpls.BODY_VS_TPL_ID = 'stTableBodyVSTpl.html';
@@ -41,6 +43,7 @@ var STTemplates;
         STTpls.HEADER_TPL_ID = 'stTableHeaderTpl.html';
         STTpls.TABLE_TPL_ID = 'stTableTpl.html';
         STTpls.CELL_TPL_PAIR = { id: STTpls.CELL_TPL_ID, tpl: STTpls.CELL_TPL };
+        STTpls.CELL_BO_TPL_PAIR = { id: STTpls.CELL_BO_TPL_ID, tpl: STTpls.CELL_BO_TPL };
         STTpls.ROW_TPL_PAIR = { id: STTpls.ROW_TPL_ID, tpl: STTpls.ROW_TPL };
         STTpls.BODY_TPL_PAIR = { id: STTpls.BODY_TPL_ID, tpl: STTpls.BODY_TPL };
         STTpls.BODY_VS_TPL_PAIR = { id: STTpls.BODY_VS_TPL_ID, tpl: STTpls.BODY_VS_TPL };

@@ -23,6 +23,10 @@ var STColumn;
             this.cellTemplateId = data.cellTemplateId;
             this.cellValueFunction = data.cellValueFunction;
             this.getCellValue = this.cellValueFunction ? this.getCustomCellValue : this.getDefaultCellValue;
+            this.mutable = angular.isUndefined(data.mutable) ? true : data.mutable;
+            this.mutableProperties = data.mutableProperties;
+            this.staticProperties = data.staticProperties;
+            this.optimizeTemplate = angular.isUndefined(data.optimizeTemplate) ? true : data.optimizeTemplate;
         };
         Column.prototype.validateOptimizationProperties = function (data) {
             this.optimizeProperties = [];
@@ -54,6 +58,9 @@ var STColumn;
         };
         Column.prototype.isOptimizedProperty = function (prop) {
             return true;
+        };
+        Column.prototype.hasStaticProperties = function () {
+            return !this.mutable || (this.staticProperties && this.staticProperties.length > 0);
         };
         return Column;
     })();

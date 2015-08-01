@@ -6,5 +6,7 @@ declare module STCellUI {
         init(): void;
         shouldUseCustomTemplate(): boolean;
         getCustomTemplate(scope: angular.IScope): any;
+        applyDefaultTemplate(): void;
+        optimizeTemplate(tpl: string, scope: angular.IScope): string;
     }
 }

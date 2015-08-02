@@ -22,7 +22,9 @@ angular.module('stable.examples.columncustom', ['ui.router'])
             tableClasses: ["table", "table-bordered", 'table-padding'],
             headerHeight: '30px',
             columns: [
-                        {field: 'id', label:'Identifier' , cellIdFunction: function(data, col, config){ return data.id + '-' + col.field }},
+                        {field: 'id', label:'Identifier' ,
+                            cellIdFunction: function(data, col, config){ return data.id + '-' + col.field }
+                        },
                         {field: 'name', cellClasses: ['cellClass1', 'cellClass2']},
                         {field: 'phone' },
                         {field: 'age', cellClasses: {adult: 'age > 20'}},

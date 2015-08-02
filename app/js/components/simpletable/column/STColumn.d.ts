@@ -22,10 +22,10 @@ declare module STColumn {
         constructor(data?: any);
         syncFromData(data?: any): void;
         validateOptimizationProperties(data: any): void;
-        validateOptimizationProperty(prop: string, data: any, optimizedProps: string[]): void;
+        validateOptimizationProperty(prop: string, alias: string, data: any, optimizedProps: string[]): void;
         getCustomCellValue(row: any): any;
         getDefaultCellValue(row: any): any;
-        getCellValue(row: any): string;
+        getCellValue(row: any): any;
         isMutableProperty(prop: string): boolean;
         isStaticProperty(prop: string): boolean;
         isOptimizedProperty(prop: string): boolean;

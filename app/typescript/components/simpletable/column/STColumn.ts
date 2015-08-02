@@ -73,18 +73,19 @@ module STColumn {
             this.mutableProperties  = data.mutableProperties;
             this.staticProperties   = data.staticProperties;
             this.optimizeTemplate   = angular.isUndefined(data.optimizeTemplate) ? true : data.optimizeTemplate;
+            this.validateOptimizationProperties(data);
         }
 
         validateOptimizationProperties(data){
             this.optimizeProperties = [];
-            this.validateOptimizationProperty('cellIdFunction', data, this.optimizeProperties);
-            this.validateOptimizationProperty('cellClasses', data, this.optimizeProperties);
-            this.validateOptimizationProperty('headerClasses', data, this.optimizeProperties);
-            this.validateOptimizationProperty('style', data, this.optimizeProperties);
+            this.validateOptimizationProperty('cellId', 'cellIdFunction', data, this.optimizeProperties);
+            this.validateOptimizationProperty('cellClasses', 'cellClasses', data, this.optimizeProperties);
+            this.validateOptimizationProperty('headerClasses', 'headerClasses', data, this.optimizeProperties);
+            this.validateOptimizationProperty('style', 'style', data, this.optimizeProperties);
         }
 
-        validateOptimizationProperty(prop:string, data:any, optimizedProps:string[]):void{
-            if(!this.isStaticProperty(prop) || data[prop]){
+        validateOptimizationProperty(prop:string, alias:string, data:any, optimizedProps:string[]):void{
+            if(data[alias]){
                 return;
             }
             optimizedProps.push(prop);
@@ -99,7 +100,7 @@ module STColumn {
         }
 
         getCellValue(row:any){
-            return '';
+            return this.getDefaultCellValue(row);
         }
 
         isMutableProperty(prop:string):boolean{
@@ -111,7 +112,7 @@ module STColumn {
         }
 
         isOptimizedProperty(prop:string):boolean {
-            return true;
+            return this.optimizeProperties.indexOf(prop) > -1;
         }
 
         hasStaticProperties():boolean {

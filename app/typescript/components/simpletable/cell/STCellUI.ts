@@ -26,8 +26,8 @@ module STCellUI {
             var self = this;
             this.cellIdWatcher = this.scope.$watch('col.cellIdFunction', function(oldValue, newValue){
                 var col:STColumn.Column = (<any>self.scope).col;
-                if(!newValue){
-                    if(col.isStaticProperty('cellId')){ self.cellIdWatcher(); }
+                if(!newValue || newValue === angular.noop){
+                    if(col.isOptimizedProperty('cellId')){ self.cellIdWatcher(); }
                     return;
                 }
                 var value = newValue((<any>self.scope).row, (<any>self.scope).col, (<any>self.scope).tableConfig);
@@ -40,10 +40,9 @@ module STCellUI {
         addCellClassesWatcher():void {
             var self = this;
             this.cellClassesWatcher = this.scope.$watch('col.cellClasses', function(oldValue, newValue){
-                debugger;
                 var col:STColumn.Column = (<any>self.scope).col;
                 if(!newValue){
-                    if(col.isStaticProperty('cellClasses')){
+                    if(col.isOptimizedProperty('cellClasses')){
                         self.cellClassesWatcher();
                     }
                     return;

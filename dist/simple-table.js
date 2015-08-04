@@ -56,16 +56,17 @@ var STColumn;
             this.mutableProperties = data.mutableProperties;
             this.staticProperties = data.staticProperties;
             this.optimizeTemplate = angular.isUndefined(data.optimizeTemplate) ? true : data.optimizeTemplate;
+            this.validateOptimizationProperties(data);
         };
         Column.prototype.validateOptimizationProperties = function (data) {
             this.optimizeProperties = [];
-            this.validateOptimizationProperty('cellIdFunction', data, this.optimizeProperties);
-            this.validateOptimizationProperty('cellClasses', data, this.optimizeProperties);
-            this.validateOptimizationProperty('headerClasses', data, this.optimizeProperties);
-            this.validateOptimizationProperty('style', data, this.optimizeProperties);
+            this.validateOptimizationProperty('cellId', 'cellIdFunction', data, this.optimizeProperties);
+            this.validateOptimizationProperty('cellClasses', 'cellClasses', data, this.optimizeProperties);
+            this.validateOptimizationProperty('headerClasses', 'headerClasses', data, this.optimizeProperties);
+            this.validateOptimizationProperty('style', 'style', data, this.optimizeProperties);
         };
-        Column.prototype.validateOptimizationProperty = function (prop, data, optimizedProps) {
-            if (!this.isStaticProperty(prop) || data[prop]) {
+        Column.prototype.validateOptimizationProperty = function (prop, alias, data, optimizedProps) {
+            if (data[alias]) {
                 return;
             }
             optimizedProps.push(prop);
@@ -77,7 +78,7 @@ var STColumn;
             return row[this.field];
         };
         Column.prototype.getCellValue = function (row) {
-            return '';
+            return this.getDefaultCellValue(row);
         };
         Column.prototype.isMutableProperty = function (prop) {
             return this.mutable || (this.mutableProperties && this.mutableProperties.indexOf(prop) > -1);
@@ -86,7 +87,7 @@ var STColumn;
             return !this.mutable || (this.staticProperties && this.staticProperties.indexOf(prop) > -1);
         };
         Column.prototype.isOptimizedProperty = function (prop) {
-            return true;
+            return this.optimizeProperties.indexOf(prop) > -1;
         };
         Column.prototype.hasStaticProperties = function () {
             return !this.mutable || (this.staticProperties && this.staticProperties.length > 0);
@@ -786,8 +787,8 @@ var STCellUI;
             var self = this;
             this.cellIdWatcher = this.scope.$watch('col.cellIdFunction', function (oldValue, newValue) {
                 var col = self.scope.col;
-                if (!newValue) {
-                    if (col.isStaticProperty('cellId')) {
+                if (!newValue || newValue === angular.noop) {
+                    if (col.isOptimizedProperty('cellId')) {
                         self.cellIdWatcher();
                     }
                     return;
@@ -802,10 +803,9 @@ var STCellUI;
         Cell.prototype.addCellClassesWatcher = function () {
             var self = this;
             this.cellClassesWatcher = this.scope.$watch('col.cellClasses', function (oldValue, newValue) {
-                debugger;
                 var col = self.scope.col;
                 if (!newValue) {
-                    if (col.isStaticProperty('cellClasses')) {
+                    if (col.isOptimizedProperty('cellClasses')) {
                         self.cellClassesWatcher();
                     }
                     return;

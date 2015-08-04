@@ -29,7 +29,7 @@ var STCellUI;
         };
         Cell.prototype.addCellIdWatcher = function () {
             var self = this;
-            this.cellIdWatcher = this.scope.$watch('col.cellIdFunction', function (oldValue, newValue) {
+            this.cellIdWatcher = this.scope.$watch('col.cellIdFunction', function (newValue, oldValue) {
                 var col = self.scope.col;
                 if (!newValue || newValue === angular.noop) {
                     if (col.isOptimizedProperty('cellId')) {
@@ -46,8 +46,9 @@ var STCellUI;
         };
         Cell.prototype.addCellClassesWatcher = function () {
             var self = this;
-            this.cellClassesWatcher = this.scope.$watch('col.cellClasses', function (oldValue, newValue) {
+            this.cellClassesWatcher = this.scope.$watchCollection('col.cellClasses', function (newValue, oldValue) {
                 var col = self.scope.col;
+                console.log('cellClasses.watcher: ', col.id, oldValue, newValue);
                 if (!newValue) {
                     if (col.isOptimizedProperty('cellClasses')) {
                         self.cellClassesWatcher();
@@ -64,6 +65,7 @@ var STCellUI;
                 }
                 self.cellClassesFirstRun = false;
                 if (col.isStaticProperty('cellClasses')) {
+                    console.log('cellClasses is static: ', col.field);
                     self.cellClassesWatcher();
                 }
             });
@@ -96,9 +98,7 @@ var STCellUI;
             }
             else if (angular.isFunction(classVal)) {
                 var res = classVal(this.scope.row, this.scope.col, this.scope.tableConfig);
-                if (res) {
-                    classes.push(res);
-                }
+                classes = classes.concat(self.arrayClasses(res));
                 return classes;
             }
             return classVal;

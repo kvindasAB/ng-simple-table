@@ -24,7 +24,7 @@ module STCellUI {
 
         addCellIdWatcher():void {
             var self = this;
-            this.cellIdWatcher = this.scope.$watch('col.cellIdFunction', function(oldValue, newValue){
+            this.cellIdWatcher = this.scope.$watch('col.cellIdFunction', function(newValue, oldValue){
                 var col:STColumn.Column = (<any>self.scope).col;
                 if(!newValue || newValue === angular.noop){
                     if(col.isOptimizedProperty('cellId')){ self.cellIdWatcher(); }
@@ -39,8 +39,9 @@ module STCellUI {
 
         addCellClassesWatcher():void {
             var self = this;
-            this.cellClassesWatcher = this.scope.$watch('col.cellClasses', function(oldValue, newValue){
+            this.cellClassesWatcher = this.scope.$watchCollection('col.cellClasses', function(newValue, oldValue){
                 var col:STColumn.Column = (<any>self.scope).col;
+                console.log('cellClasses.watcher: ', col.id, oldValue, newValue);
                 if(!newValue){
                     if(col.isOptimizedProperty('cellClasses')){
                         self.cellClassesWatcher();
@@ -57,6 +58,7 @@ module STCellUI {
                 self.cellClassesFirstRun = false;
                 // Remove watcher is static
                 if(col.isStaticProperty('cellClasses')){
+                    console.log('cellClasses is static: ', col.field);
                     self.cellClassesWatcher();
                 }
             });
@@ -84,7 +86,7 @@ module STCellUI {
                 return classes;
             }else if (angular.isFunction(classVal)) {
                 var res = classVal( (<any>this.scope).row, (<any>this.scope).col, (<any>this.scope).tableConfig);
-                if(res){ classes.push(res); }
+                classes = classes.concat(self.arrayClasses(res));
                 return classes;
             }
             return classVal;

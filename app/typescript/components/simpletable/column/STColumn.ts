@@ -104,19 +104,19 @@ module STColumn {
         }
 
         isMutableProperty(prop:string):boolean{
-            return this.mutable || (this.mutableProperties && this.mutableProperties.indexOf(prop) > -1 );
+            return !!(this.mutable || (this.mutableProperties && this.mutableProperties.indexOf(prop) > -1 ));
         }
 
         isStaticProperty(prop:string):boolean {
-            return !this.mutable || (this.staticProperties && this.staticProperties.indexOf(prop) > -1 );
+            return !!(!this.mutable || (this.staticProperties && this.staticProperties.indexOf(prop) > -1 ));
         }
 
         isOptimizedProperty(prop:string):boolean {
-            return this.optimizeProperties.indexOf(prop) > -1;
+            return !!(this.optimizeProperties.indexOf(prop) > -1);
         }
 
         hasStaticProperties():boolean {
-            return !this.mutable || (this.staticProperties && this.staticProperties.length > 0);
+            return !!(!this.mutable || (this.staticProperties && this.staticProperties.length > 0));
         }
 
     }

@@ -52,16 +52,16 @@ var STColumn;
             return this.getDefaultCellValue(row);
         };
         Column.prototype.isMutableProperty = function (prop) {
-            return this.mutable || (this.mutableProperties && this.mutableProperties.indexOf(prop) > -1);
+            return !!(this.mutable || (this.mutableProperties && this.mutableProperties.indexOf(prop) > -1));
         };
         Column.prototype.isStaticProperty = function (prop) {
-            return !this.mutable || (this.staticProperties && this.staticProperties.indexOf(prop) > -1);
+            return !!(!this.mutable || (this.staticProperties && this.staticProperties.indexOf(prop) > -1));
         };
         Column.prototype.isOptimizedProperty = function (prop) {
-            return this.optimizeProperties.indexOf(prop) > -1;
+            return !!(this.optimizeProperties.indexOf(prop) > -1);
         };
         Column.prototype.hasStaticProperties = function () {
-            return !this.mutable || (this.staticProperties && this.staticProperties.length > 0);
+            return !!(!this.mutable || (this.staticProperties && this.staticProperties.length > 0));
         };
         return Column;
     })();

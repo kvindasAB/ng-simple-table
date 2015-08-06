@@ -28,9 +28,10 @@ angular.module('simpletable.resizable', [])
     }])
     .directive('stTableResizableHandler', ['$timeout', function($timeout){
         return {
-            require: '^stTableResizable',
+            require: '?^stTableResizable',
             restrict: 'A',
             link: function (scope, element, attrs, parentCtrl) {
+                if(!parentCtrl){return;}
                 element.on('mousedown', function(event){parentCtrl.getParent().onMouseDownHandler(event, scope, element);});
             }
         };

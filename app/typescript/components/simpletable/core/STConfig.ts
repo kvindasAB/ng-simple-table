@@ -40,6 +40,7 @@ module STCore {
             this.listeners      = data.listeners;
             this.methods        = data.methods;
             this.virtualScroll  = angular.isUndefined(data.virtualScroll) ? false : data.virtualScroll;
+            this.resizeType     = angular.isUndefined(data.resizeType) ? STCore.Constants.RESIZE_NONE : data.resizeType;
         }
 
     }

@@ -6,6 +6,7 @@ module STCore {
         static SELECTION_SINGLE:string      = 'single';
         static SELECTION_MULTIPLE:string    = 'multiple';
 
+        static RESIZE_NONE:string           = 'none';
         static RESIZE_RELATIVE:string       = 'relative';
         static RESIZE_FIXED:string          = 'fixed';
 

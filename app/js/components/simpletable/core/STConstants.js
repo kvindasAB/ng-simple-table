@@ -7,6 +7,7 @@ var STCore;
         Constants.SELECTION_NONE = 'none';
         Constants.SELECTION_SINGLE = 'single';
         Constants.SELECTION_MULTIPLE = 'multiple';
+        Constants.RESIZE_NONE = 'none';
         Constants.RESIZE_RELATIVE = 'relative';
         Constants.RESIZE_FIXED = 'fixed';
         Constants.UNIT_PIXELS = 'px';

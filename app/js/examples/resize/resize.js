@@ -21,24 +21,26 @@ angular.module('stable.examples.resize', ['ui.router'])
         $scope.tableConfig = {
             tableClasses: ["table", "table-bordered", 'table-padding'],
             headerHeight: '30px',
+            resizeType: 'relative',
             columns: [
-                        {field: 'id', mutable: false},
-                        {field: 'name', mutable: false},
-                        {field: 'phone', mutable: false},
-                        {field: 'age', mutable: false},
-                        {field: 'address', mutable: false}
+                        {field: 'id', mutable: false, style:{width: '20%'}},
+                        {field: 'name', mutable: false, style:{width: '20%'}},
+                        {field: 'phone', mutable: false, style:{width: '20%'}},
+                        {field: 'age', mutable: false, style:{width: '20%'}},
+                        {field: 'address', mutable: false, style:{width: '20%'}}
                      ],
         };
 
         $scope.tableConfigFixed = {
             tableClasses: ["table", "table-bordered", 'table-padding'],
             headerHeight: '30px',
+            resizeType: 'fixed',
             columns: [
-                {field: 'id', mutable: false},
-                {field: 'name', mutable: false},
-                {field: 'phone', mutable: false},
-                {field: 'age', mutable: false},
-                {field: 'address', mutable: false}
+                {field: 'id', mutable: false, style:{width: '50px'}},
+                {field: 'name', mutable: false, style:{width: '100px'}},
+                {field: 'phone', mutable: false, style:{width: '100px'}},
+                {field: 'age', mutable: false, style:{width: '100px'}},
+                {field: 'address', mutable: false, style:{width: '100px'}}
             ],
         };
 

@@ -13,11 +13,11 @@ var STCellUI;
         __extends(Cell, _super);
         function Cell() {
             _super.apply(this, arguments);
-            this.cellClassesFirstRun = true;
         }
         Cell.prototype.init = function () {
             if (this.shouldUseCustomTemplate()) {
                 this.validateCustomTemplate();
+                this.addWatchers();
                 return;
             }
             this.applyDefaultTemplate();
@@ -26,6 +26,23 @@ var STCellUI;
         Cell.prototype.addWatchers = function () {
             this.addCellIdWatcher();
             this.addCellClassesWatcher();
+            this.addCellClassesFunctionWatcher();
+            if (!this.shouldUseCustomTemplate()) {
+                this.addCellValueWatcher();
+            }
+        };
+        Cell.prototype.addCellValueWatcher = function () {
+            var self = this;
+            this.cellValueWatcher = this.scope.$watch('col.getCellValue(row, col, tableConfig)', function (newValue, oldValue) {
+                var col = self.scope.col;
+                self.element.text(newValue);
+                if (angular.isUndefined(newValue)) {
+                    return;
+                }
+                if (col.isStaticProperty('cellValue')) {
+                    self.cellValueWatcher();
+                }
+            });
         };
         Cell.prototype.addCellIdWatcher = function () {
             var self = this;
@@ -48,7 +65,6 @@ var STCellUI;
             var self = this;
             this.cellClassesWatcher = this.scope.$watchCollection('col.cellClasses', function (newValue, oldValue) {
                 var col = self.scope.col;
-                console.log('cellClasses.watcher: ', col.id, oldValue, newValue);
                 if (!newValue) {
                     if (col.isOptimizedProperty('cellClasses')) {
                         self.cellClassesWatcher();
@@ -56,17 +72,40 @@ var STCellUI;
                     return;
                 }
                 var newClasses = self.arrayClasses(newValue || []);
-                if (!oldValue || self.cellClassesFirstRun) {
+                if (!oldValue || (oldValue === newValue)) {
                     self.addClasses(newClasses);
                 }
                 else if (!angular.equals(newValue, oldValue)) {
                     var oldClasses = self.arrayClasses(oldValue);
                     self.updateClasses(oldClasses, newClasses);
                 }
-                self.cellClassesFirstRun = false;
                 if (col.isStaticProperty('cellClasses')) {
-                    console.log('cellClasses is static: ', col.field);
                     self.cellClassesWatcher();
+                }
+            });
+        };
+        Cell.prototype.addCellClassesFunctionWatcher = function () {
+            var self = this;
+            this.cellClassesFunctionWatcher = this.scope.$watch(function (scope) {
+                return scope.col.cellClassesFunction ? scope.col.cellClassesFunction(scope.row, scope.col, scope.tableConfig) : null;
+            }, function (newValue, oldValue) {
+                var col = self.scope.col;
+                if (!newValue) {
+                    if (col.isOptimizedProperty('cellClassesFunction')) {
+                        self.cellClassesFunctionWatcher();
+                    }
+                    return;
+                }
+                var newClasses = self.arrayClasses(newValue || []);
+                if (!oldValue || (newValue === oldValue)) {
+                    self.addClasses(newClasses);
+                }
+                else if (!angular.equals(newValue, oldValue)) {
+                    var oldClasses = self.arrayClasses(oldValue);
+                    self.updateClasses(oldClasses, newClasses);
+                }
+                if (col.isStaticProperty('cellClassesFunction')) {
+                    self.cellClassesFunctionWatcher();
                 }
             });
         };
@@ -86,19 +125,8 @@ var STCellUI;
                     if (!v) {
                         return;
                     }
-                    if (angular.isFunction(v)) {
-                        var res = classVal(this.scope.row, this.scope.col, this.scope.tableConfig);
-                        if (!res) {
-                            return;
-                        }
-                    }
                     classes = classes.concat(k.split(' '));
                 });
-                return classes;
-            }
-            else if (angular.isFunction(classVal)) {
-                var res = classVal(this.scope.row, this.scope.col, this.scope.tableConfig);
-                classes = classes.concat(self.arrayClasses(res));
                 return classes;
             }
             return classVal;

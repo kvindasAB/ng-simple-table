@@ -9,6 +9,7 @@ declare module STColumn {
         style: any;
         headerClass: any;
         cellClasses: any;
+        cellClassesFunction: Function;
         cellTemplate: string;
         cellTemplateId: string;
         cellIdFunction: Function;
@@ -30,5 +31,6 @@ declare module STColumn {
         isStaticProperty(prop: string): boolean;
         isOptimizedProperty(prop: string): boolean;
         hasStaticProperties(): boolean;
+        hasCustomTemplate(): boolean;
     }
 }

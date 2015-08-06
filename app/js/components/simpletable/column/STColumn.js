@@ -18,6 +18,7 @@ var STColumn;
             this.style = data.style;
             this.headerClass = data.headerClass;
             this.cellClasses = data.cellClasses;
+            this.cellClassesFunction = data.cellClassesFunction;
             this.cellIdFunction = data.cellIdFunction ? data.cellIdFunction : angular.noop;
             this.cellTemplate = data.cellTemplate;
             this.cellTemplateId = data.cellTemplateId;
@@ -33,6 +34,7 @@ var STColumn;
             this.optimizeProperties = [];
             this.validateOptimizationProperty('cellId', 'cellIdFunction', data, this.optimizeProperties);
             this.validateOptimizationProperty('cellClasses', 'cellClasses', data, this.optimizeProperties);
+            this.validateOptimizationProperty('cellClassesFunction', 'cellClassesFunction', data, this.optimizeProperties);
             this.validateOptimizationProperty('headerClasses', 'headerClasses', data, this.optimizeProperties);
             this.validateOptimizationProperty('style', 'style', data, this.optimizeProperties);
         };
@@ -62,6 +64,9 @@ var STColumn;
         };
         Column.prototype.hasStaticProperties = function () {
             return !!(!this.mutable || (this.staticProperties && this.staticProperties.length > 0));
+        };
+        Column.prototype.hasCustomTemplate = function () {
+            return !!(this.cellTemplate || this.cellTemplateId);
         };
         return Column;
     })();

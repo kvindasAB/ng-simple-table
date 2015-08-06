@@ -5,11 +5,14 @@ declare module STCellUI {
     class Cell extends STCore.BaseComponentUI {
         cellIdWatcher: Function;
         cellClassesWatcher: Function;
-        cellClassesFirstRun: boolean;
+        cellClassesFunctionWatcher: Function;
+        cellValueWatcher: Function;
         init(): void;
         addWatchers(): void;
+        addCellValueWatcher(): void;
         addCellIdWatcher(): void;
         addCellClassesWatcher(): void;
+        addCellClassesFunctionWatcher(): void;
         arrayClasses(classVal: any): any;
         updateClasses(oldClasses: any, newClasses: any): void;
         arrayDifference(tokens1: any, tokens2: any): any[];

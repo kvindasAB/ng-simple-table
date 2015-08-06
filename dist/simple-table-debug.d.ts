@@ -28,6 +28,7 @@ declare module STColumn {
         style: any;
         headerClass: any;
         cellClasses: any;
+        cellClassesFunction: Function;
         cellTemplate: string;
         cellTemplateId: string;
         cellIdFunction: Function;
@@ -49,6 +50,7 @@ declare module STColumn {
         isStaticProperty(prop: string): boolean;
         isOptimizedProperty(prop: string): boolean;
         hasStaticProperties(): boolean;
+        hasCustomTemplate(): boolean;
     }
 }
 declare module STColumn {
@@ -275,11 +277,14 @@ declare module STCellUI {
     class Cell extends STCore.BaseComponentUI {
         cellIdWatcher: Function;
         cellClassesWatcher: Function;
-        cellClassesFirstRun: boolean;
+        cellClassesFunctionWatcher: Function;
+        cellValueWatcher: Function;
         init(): void;
         addWatchers(): void;
+        addCellValueWatcher(): void;
         addCellIdWatcher(): void;
         addCellClassesWatcher(): void;
+        addCellClassesFunctionWatcher(): void;
         arrayClasses(classVal: any): any;
         updateClasses(oldClasses: any, newClasses: any): void;
         arrayDifference(tokens1: any, tokens2: any): any[];

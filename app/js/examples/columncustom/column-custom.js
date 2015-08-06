@@ -23,16 +23,22 @@ angular.module('stable.examples.columncustom', ['ui.router'])
             tableClasses: ["table", "table-bordered", 'table-padding'],
             headerHeight: '30px',
             columns: [
-                        {field: 'id', label:'Identifier' ,
+                        {   field: 'id', label:'Identifier' ,
                             cellIdFunction: function(data, col, config){ return data.id + '-' + col.field },
+                            cellValueFunction: function(data, col){ return 'Id:' + data.id; },
+                            staticProperties: ['cellValue']
                         },
-                        {field: 'name', cellClasses: ['cellClass1', 'cellClass2']},
+                        {   field: 'name',
+                            cellClasses: ['cellClass1', 'cellClass2'],
+                            staticProperties: ['cellValue']
+                        },
                         {field: 'phone',
-                            cellClasses: function(row, col, config ){
+                            cellClassesFunction: function(row, col, config ){
                                 var arr = ['innerF1', 'innerF2', 'innerF3'];
                                 if($scope.cellClassesPlus){ arr.push($scope.cellClassesPlus); }
-                                return arr;
-                            }
+                                return arr.join();
+                            },
+                            staticProperties: ['cellValue']
                         },
                         {field: 'age', cellClasses: {adult: 'age > 40'}},
                         {field: 'address', cellValueFunction: function(data, col){ return 'My Adress is:' + data.address; } }

@@ -5,8 +5,8 @@ module STTemplates {
      */
     export class STTpls {
 
-        static CELL_TPL:string      = "{{col.getCellValue(row)}}";
-        static CELL_BO_TPL:string   = "<span bo-text='col.getCellValue(row)'></span>";
+        static CELL_TPL:string      = "";
+        static CELL_BO_TPL:string   = "";
         static ROW_TPL:string       = "<td ng-repeat='col in tableConfig.columns' st-table-cell ng-if='col.active' ></td>";
         static BODY_TPL:string      = "<tr bindonce ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
                                       "  ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' " +

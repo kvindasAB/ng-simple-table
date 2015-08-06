@@ -22,6 +22,24 @@ var STColumn;
             }
             this.columns = columns;
         };
+        ColumnManager.prototype.getColumnById = function (id) {
+            for (var i = 0; i < this.columns.length; i++) {
+                var column = this.columns[i];
+                if (column.id === id) {
+                    return column;
+                }
+            }
+            return null;
+        };
+        ColumnManager.prototype.getColumnByField = function (field) {
+            for (var i = 0; i < this.columns.length; i++) {
+                var column = this.columns[i];
+                if (column.field === field) {
+                    return column;
+                }
+            }
+            return null;
+        };
         return ColumnManager;
     })();
     STColumn.ColumnManager = ColumnManager;

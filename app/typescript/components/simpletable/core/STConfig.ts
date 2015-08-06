@@ -42,6 +42,5 @@ module STCore {
             this.virtualScroll  = angular.isUndefined(data.virtualScroll) ? false : data.virtualScroll;
         }
 
-
     }
 }

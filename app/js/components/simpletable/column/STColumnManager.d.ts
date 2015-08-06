@@ -5,5 +5,7 @@ declare module STColumn {
         columns: STColumn.Column[];
         processConfig(tableConfig: any): void;
         createColumns(tableConfig: any): void;
+        getColumnById(id: any): Column;
+        getColumnByField(field: any): Column;
     }
 }

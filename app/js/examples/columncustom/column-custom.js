@@ -14,7 +14,7 @@ angular.module('stable.examples.columncustom', ['ui.router'])
     });
 }])
 
-.controller('ExColumnCustomCtrl', ['$scope','DataGenerator', function($scope, DataGenerator){
+.controller('ExColumnCustomCtrl', ['$scope','DataGenerator', '$log', function($scope, DataGenerator, $log){
 
         $scope.cellClassesPlus = 'funcclass';
         $scope.data = DataGenerator.generateRows(50);
@@ -36,17 +36,26 @@ angular.module('stable.examples.columncustom', ['ui.router'])
                             cellClassesFunction: function(row, col, config ){
                                 var arr = ['innerF1', 'innerF2', 'innerF3'];
                                 if($scope.cellClassesPlus){ arr.push($scope.cellClassesPlus); }
-                                return arr.join();
+                                return arr.join(' ');
                             },
                             staticProperties: ['cellValue']
                         },
                         {field: 'age', cellClasses: {adult: 'age > 40'}},
                         {field: 'address', cellValueFunction: function(data, col){ return 'My Adress is:' + data.address; } }
                      ],
+            listeners: {
+                onInitializationComplete: function(tableApi){
+                    $scope.tableApi = tableApi;
+                },
+            }
         };
 
         $scope.updateNameClasses = function(){
             $scope.tableConfig.columns[1].cellClasses.push('cellClass3Click');
+        }
+
+        $scope.getColumnById = function(id){
+            $log.log('ColumnById: ', id,  $scope.tableApi.managers.columnManager.getColumnByField(id));
         }
 
     }]);

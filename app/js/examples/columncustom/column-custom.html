@@ -7,5 +7,12 @@
 <div class="form-group">
     <button class="btn btn-default" ng-click="updateNameClasses()">Submit</button>
 </div>
+<form class="form-inline">
+    <div class="form-group">
+        <label for="columnIdTxt">Column By Id</label>
+        <input type="text" class="form-control" id="columnIdTxt" placeholder="ColumnId" ng-model="columnIdTxt">
+        <button class="btn btn-default" ng-click="getColumnById(columnIdTxt)">Get</button>
+    </div>
+</form>
 <div class="stTable" st-table table-config="tableConfig" table-data="data" style="overflow-x: auto; width: 700px; ">
 </div>

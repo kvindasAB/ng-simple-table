@@ -23,5 +23,21 @@ module STColumn {
             this.columns = columns;
         }
 
+        getColumnById(id:any){
+            for(var i:number = 0; i < this.columns.length; i++){
+                var column = this.columns[i];
+                if(column.id === id){ return column; }
+            }
+            return null;
+        }
+
+        getColumnByField(field:any){
+            for(var i:number = 0; i < this.columns.length; i++){
+                var column = this.columns[i];
+                if(column.field === field){ return column; }
+            }
+            return null;
+        }
+
     }
 }

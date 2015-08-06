@@ -1,5 +1,6 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../core/ISimpleTablePlugin.ts" />
+/// <reference path="../core/STConstants.ts" />
 /// <reference path="../factory/SimpleTablePluginFactory.ts" />
 /// <reference path="ISimpleTableResize.ts" />
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
@@ -7,10 +8,6 @@ var SimpleTableResize;
 (function (SimpleTableResize_1) {
     var SimpleTableResize = (function () {
         function SimpleTableResize(scope, element, attrs, $window) {
-            this.RESIZE_TYPE_FIXED = 'fixed';
-            this.RESIZE_TYPE_ADJUSTABLE = 'adjustable';
-            this.WIDTH_PIXELS_TYPE = 'px';
-            this.WIDTH_PERCENTAGE_TYPE = '%';
             this.initializationComplete = false;
             this.minColumnWidth = 25;
             this.isMouseDown = false;
@@ -74,10 +71,10 @@ var SimpleTableResize;
                 return;
             }
             var tableConfig = scope.tableConfig;
-            if (tableConfig.resizeType === this.RESIZE_TYPE_FIXED) {
+            if (tableConfig.resizeType === STCore.Constants.RESIZE_FIXED) {
                 this.updateFixedTableColumns(event, tableConfig, scope);
             }
-            if (tableConfig.resizeType === this.RESIZE_TYPE_ADJUSTABLE) {
+            if (tableConfig.resizeType === STCore.Constants.RESIZE_RELATIVE) {
                 this.updateAdjustableTableColumns(event, tableConfig, scope);
             }
         };
@@ -92,7 +89,7 @@ var SimpleTableResize;
         };
         SimpleTableResize.prototype.calculateNewTableWidth = function (extraWidth) {
             var newWidth = this.originalTableWidth + extraWidth;
-            return newWidth + this.WIDTH_PIXELS_TYPE;
+            return newWidth + STCore.Constants.UNIT_PIXELS;
         };
         SimpleTableResize.prototype.updateAdjustableTableColumns = function (event, tableConfig, scope) {
             var width = 0;
@@ -102,10 +99,10 @@ var SimpleTableResize;
         };
         SimpleTableResize.prototype.calculateNewColumnWidth = function (tableConfig, actualWidth, moveWidth) {
             var widthType = this.getWidthType(actualWidth);
-            if (widthType === this.WIDTH_PIXELS_TYPE) {
+            if (widthType === STCore.Constants.UNIT_PIXELS) {
                 return this.calculatePixels(actualWidth, moveWidth);
             }
-            if (widthType === this.WIDTH_PERCENTAGE_TYPE) {
+            if (widthType === STCore.Constants.UNIT_PERCENTAGE) {
                 return this.calculatePercentage(tableConfig, actualWidth, moveWidth);
             }
             return actualWidth;
@@ -116,12 +113,12 @@ var SimpleTableResize;
             if (this.minColumnWidth > columnWidth) {
                 columnWidth = this.minColumnWidth;
             }
-            return columnWidth + this.WIDTH_PIXELS_TYPE;
+            return columnWidth + STCore.Constants.UNIT_PIXELS;
         };
         SimpleTableResize.prototype.calculatePercentage = function (tableConfig, actualWidth, moveWidth) {
             var columnWidthPercent = this.getWidthInNumber(actualWidth);
             var columnWidth = 0;
-            if (tableConfig.resizeType === this.RESIZE_TYPE_FIXED) {
+            if (tableConfig.resizeType === STCore.Constants.RESIZE_FIXED) {
                 columnWidth = ((this.originalTableWidth + moveWidth) * columnWidthPercent) / 100;
             }
             else {
@@ -132,18 +129,18 @@ var SimpleTableResize;
                 columnWidth = this.minColumnWidth;
             }
             var newPercentage = 0;
-            if (tableConfig.resizeType === this.RESIZE_TYPE_FIXED) {
+            if (tableConfig.resizeType === STCore.Constants.RESIZE_FIXED) {
                 newPercentage = (columnWidth / (this.originalTableWidth + moveWidth)) * 100;
             }
             else {
                 newPercentage = (columnWidth / this.originalTableWidth) * 100;
             }
-            return newPercentage + this.WIDTH_PERCENTAGE_TYPE;
+            return newPercentage + STCore.Constants.UNIT_PERCENTAGE;
         };
         SimpleTableResize.prototype.isMinColumnWidth = function (actualWidth, moveWidth) {
             var widthType = this.getWidthType(actualWidth);
             var columnWidth = this.getWidthInNumber(actualWidth);
-            if (widthType === this.WIDTH_PERCENTAGE_TYPE) {
+            if (widthType === STCore.Constants.UNIT_PERCENTAGE) {
                 columnWidth = (this.originalTableWidth * columnWidth) / 100;
             }
             columnWidth = columnWidth + moveWidth;
@@ -160,7 +157,7 @@ var SimpleTableResize;
             this.isMouseDown = false;
             var columnData = scope.hcol;
             var tableConfig = scope.$parent.tableConfig;
-            if (tableConfig.resizeType === this.RESIZE_TYPE_ADJUSTABLE) {
+            if (tableConfig.resizeType === STCore.Constants.RESIZE_RELATIVE) {
                 this.updateOtherColumns(columnData, tableConfig);
             }
         };
@@ -201,11 +198,11 @@ var SimpleTableResize;
             }
         };
         SimpleTableResize.prototype.convertToPixelsOrPercentage = function (originalWidth, widthType) {
-            if (widthType === this.WIDTH_PIXELS_TYPE) {
-                return originalWidth + this.WIDTH_PIXELS_TYPE;
+            if (widthType === STCore.Constants.UNIT_PIXELS) {
+                return originalWidth + STCore.Constants.UNIT_PIXELS;
             }
             var newWidth = (originalWidth / this.originalTableWidth) * 100;
-            return newWidth + this.WIDTH_PERCENTAGE_TYPE;
+            return newWidth + STCore.Constants.UNIT_PERCENTAGE;
         };
         SimpleTableResize.prototype.getColumnDataById = function (id, tableConfig) {
             for (var i = 0; i < tableConfig.columns.length; i++) {
@@ -219,7 +216,7 @@ var SimpleTableResize;
         SimpleTableResize.prototype.getWidthInNumber = function (width) {
             var stringWidth = '';
             var widthType = this.getWidthType(width);
-            if (widthType === this.WIDTH_PIXELS_TYPE) {
+            if (widthType === STCore.Constants.UNIT_PIXELS) {
                 stringWidth = width.substring(0, width.length - 2);
             }
             else {
@@ -230,10 +227,10 @@ var SimpleTableResize;
         };
         SimpleTableResize.prototype.getWidthType = function (width) {
             var widthType = width.substring(width.length - 2, width.length);
-            if (widthType === this.WIDTH_PIXELS_TYPE) {
-                return this.WIDTH_PIXELS_TYPE;
+            if (widthType === STCore.Constants.UNIT_PIXELS) {
+                return STCore.Constants.UNIT_PIXELS;
             }
-            return this.WIDTH_PERCENTAGE_TYPE;
+            return STCore.Constants.UNIT_PERCENTAGE;
         };
         return SimpleTableResize;
     })();

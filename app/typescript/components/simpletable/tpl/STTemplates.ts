@@ -16,7 +16,7 @@ module STTemplates {
                                       "  sf-virtual-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' " +
                                       "  st-table-row >" +
                                       "</tr>";
-        static COLUMN_TPL:string    = "{{hcol.title}}<div st-table-resizable-handler11 class='table-header-cursor-container'></div>";
+        static COLUMN_TPL:string    = "{{hcol.title}}<div st-table-resizable-handler class='table-header-cursor-container'></div>";
         static HEADER_TPL:string    = "<tr>" +
                                       "  <th id='{{hcol.id}}' class='table-header' " +
                                       "   ng-repeat='hcol in tableConfig.columns track by hcol.id' " +

@@ -15,6 +15,7 @@ angular.module('myApp', [
   'stable.examples.rowtpl',
   'stable.examples.virtualscroll',
   'stable.examples.columncustom',
+  'stable.examples.resize',
   'myApp.view1',
   'myApp.view2',
   'myApp.version'

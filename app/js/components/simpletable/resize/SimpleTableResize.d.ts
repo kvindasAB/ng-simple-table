@@ -1,14 +1,11 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../core/ISimpleTablePlugin.d.ts" />
+/// <reference path="../core/STConstants.d.ts" />
 /// <reference path="../factory/SimpleTablePluginFactory.d.ts" />
 /// <reference path="ISimpleTableResize.d.ts" />
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 declare module SimpleTableResize {
     class SimpleTableResize implements ISimpleTableResize {
-        RESIZE_TYPE_FIXED: string;
-        RESIZE_TYPE_ADJUSTABLE: string;
-        WIDTH_PIXELS_TYPE: string;
-        WIDTH_PERCENTAGE_TYPE: string;
         scope: any;
         element: any;
         attrs: any;

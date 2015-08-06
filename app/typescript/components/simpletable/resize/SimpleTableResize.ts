@@ -1,5 +1,6 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../core/ISimpleTablePlugin.ts" />
+/// <reference path="../core/STConstants.ts" />
 /// <reference path="../factory/SimpleTablePluginFactory.ts" />
 /// <reference path="ISimpleTableResize.ts" />
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
@@ -9,11 +10,6 @@ module SimpleTableResize{
         //*******************
         // CONSTANTS - START
         //*******************
-
-        RESIZE_TYPE_FIXED:string = 'fixed';
-        RESIZE_TYPE_ADJUSTABLE:string = 'adjustable';
-        WIDTH_PIXELS_TYPE:string = 'px';
-        WIDTH_PERCENTAGE_TYPE:string = '%';
 
         //*****************
         // CONSTANTS - END
@@ -119,10 +115,10 @@ module SimpleTableResize{
                 return;
             }
             var tableConfig:any = scope.tableConfig;
-            if(tableConfig.resizeType === this.RESIZE_TYPE_FIXED){
+            if(tableConfig.resizeType === STCore.Constants.RESIZE_FIXED){
                 this.updateFixedTableColumns(event, tableConfig, scope);
             }
-            if(tableConfig.resizeType === this.RESIZE_TYPE_ADJUSTABLE){
+            if(tableConfig.resizeType === STCore.Constants.RESIZE_RELATIVE){
                 this.updateAdjustableTableColumns(event, tableConfig, scope);
             }
         }
@@ -139,7 +135,7 @@ module SimpleTableResize{
 
         calculateNewTableWidth(extraWidth):string{
             var newWidth =  this.originalTableWidth + extraWidth;
-            return newWidth + this.WIDTH_PIXELS_TYPE;
+            return newWidth + STCore.Constants.UNIT_PIXELS;
         }
 
         updateAdjustableTableColumns(event, tableConfig, scope):void{
@@ -151,10 +147,10 @@ module SimpleTableResize{
 
         calculateNewColumnWidth(tableConfig, actualWidth, moveWidth):string{
             var widthType:string  = this.getWidthType(actualWidth);
-            if(widthType === this.WIDTH_PIXELS_TYPE){
+            if(widthType === STCore.Constants.UNIT_PIXELS){
                 return this.calculatePixels(actualWidth, moveWidth);
             }
-            if(widthType === this.WIDTH_PERCENTAGE_TYPE){
+            if(widthType === STCore.Constants.UNIT_PERCENTAGE){
                 return this.calculatePercentage(tableConfig, actualWidth, moveWidth);
             }
             return actualWidth;
@@ -167,13 +163,13 @@ module SimpleTableResize{
             if(this.minColumnWidth > columnWidth){
                 columnWidth = this.minColumnWidth;
             }
-            return columnWidth + this.WIDTH_PIXELS_TYPE;
+            return columnWidth + STCore.Constants.UNIT_PIXELS;
         }
 
         calculatePercentage(tableConfig, actualWidth, moveWidth):string{
             var columnWidthPercent:number = this.getWidthInNumber(actualWidth);
             var columnWidth:number = 0;
-            if(tableConfig.resizeType === this.RESIZE_TYPE_FIXED){
+            if(tableConfig.resizeType === STCore.Constants.RESIZE_FIXED){
                 columnWidth = ((this.originalTableWidth + moveWidth) * columnWidthPercent) / 100;
             }else{
                 columnWidth = (this.originalTableWidth * columnWidthPercent) / 100;
@@ -183,18 +179,18 @@ module SimpleTableResize{
                 columnWidth = this.minColumnWidth;
             }
             var newPercentage = 0;
-            if(tableConfig.resizeType === this.RESIZE_TYPE_FIXED){
+            if(tableConfig.resizeType === STCore.Constants.RESIZE_FIXED){
                 newPercentage = (columnWidth / (this.originalTableWidth + moveWidth)) * 100;
             }else{
                 newPercentage = (columnWidth / this.originalTableWidth) * 100;
             }
-            return newPercentage + this.WIDTH_PERCENTAGE_TYPE;
+            return newPercentage + STCore.Constants.UNIT_PERCENTAGE;
         }
 
         isMinColumnWidth(actualWidth, moveWidth):boolean{
             var widthType:string = this.getWidthType(actualWidth);
             var columnWidth:number = this.getWidthInNumber(actualWidth);
-            if(widthType === this.WIDTH_PERCENTAGE_TYPE){
+            if(widthType === STCore.Constants.UNIT_PERCENTAGE){
                 columnWidth = (this.originalTableWidth * columnWidth) / 100;
             }
             columnWidth = columnWidth + moveWidth;
@@ -213,7 +209,7 @@ module SimpleTableResize{
             this.isMouseDown = false;
             var columnData = scope.hcol;
             var tableConfig = scope.$parent.tableConfig;
-            if(tableConfig.resizeType === this.RESIZE_TYPE_ADJUSTABLE){
+            if(tableConfig.resizeType === STCore.Constants.RESIZE_RELATIVE){
                 this.updateOtherColumns(columnData, tableConfig);
             }
         }
@@ -258,11 +254,11 @@ module SimpleTableResize{
         }
 
         convertToPixelsOrPercentage(originalWidth:number, widthType:string):string{
-            if(widthType === this.WIDTH_PIXELS_TYPE){
-                return originalWidth + this.WIDTH_PIXELS_TYPE;
+            if(widthType === STCore.Constants.UNIT_PIXELS){
+                return originalWidth + STCore.Constants.UNIT_PIXELS;
             }
             var newWidth:number = (originalWidth / this.originalTableWidth) * 100;
-            return newWidth + this.WIDTH_PERCENTAGE_TYPE;
+            return newWidth + STCore.Constants.UNIT_PERCENTAGE;
         }
 
         getColumnDataById(id:string, tableConfig:any):any{
@@ -278,7 +274,7 @@ module SimpleTableResize{
         getWidthInNumber(width):number{
             var stringWidth:string = '';
             var widthType:string = this.getWidthType(width);
-            if(widthType === this.WIDTH_PIXELS_TYPE){
+            if(widthType === STCore.Constants.UNIT_PIXELS){
                 stringWidth = width.substring(0 , width.length - 2);
             }else{
                 stringWidth = width.substring(0 , width.length - 1);
@@ -289,10 +285,10 @@ module SimpleTableResize{
 
         getWidthType(width):string{
             var widthType:string = width.substring(width.length - 2, width.length);
-            if(widthType === this.WIDTH_PIXELS_TYPE){
-                return this.WIDTH_PIXELS_TYPE;
+            if(widthType === STCore.Constants.UNIT_PIXELS){
+                return STCore.Constants.UNIT_PIXELS;
             }
-            return this.WIDTH_PERCENTAGE_TYPE;
+            return STCore.Constants.UNIT_PERCENTAGE;
         }
 
         //***************

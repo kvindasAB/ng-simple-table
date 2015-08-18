@@ -2,6 +2,7 @@
 /// <reference path="STColumn.d.ts" />
 declare module STColumn {
     class ColumnManager {
+        tableConfig: STCore.Config;
         columns: STColumn.Column[];
         processConfig(tableConfig: any): void;
         createColumns(tableConfig: any): void;

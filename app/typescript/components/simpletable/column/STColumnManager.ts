@@ -3,6 +3,7 @@
 module STColumn {
     export class ColumnManager {
 
+        tableConfig:STCore.Config;
         columns:STColumn.Column[];
 
         processConfig(tableConfig:any):void {

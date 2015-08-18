@@ -11,6 +11,7 @@ declare module SimpleTable {
         element: any;
         attrs: any;
         managers: any;
+        uiParts: any;
         plugins: Array<SimpleTablePlugin.ISimpleTablePlugin>;
         initPluginTimeout: Number;
         initializationComplete: boolean;

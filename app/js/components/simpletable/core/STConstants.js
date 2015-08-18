@@ -4,6 +4,7 @@ var STCore;
     var Constants = (function () {
         function Constants() {
         }
+        Constants.DEFAULT_ROW_HEIGHT = '30px';
         Constants.SELECTION_NONE = 'none';
         Constants.SELECTION_SINGLE = 'single';
         Constants.SELECTION_MULTIPLE = 'multiple';

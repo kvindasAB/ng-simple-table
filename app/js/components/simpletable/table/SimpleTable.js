@@ -10,6 +10,7 @@ var SimpleTable;
     var SimpleTable = (function () {
         function SimpleTable(scope, element, attrs, $timeout, pluginFactory) {
             this.managers = {};
+            this.uiParts = {};
             this.plugins = [];
             this.initializationComplete = false;
             this.scope = scope;

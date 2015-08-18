@@ -1,6 +1,7 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 declare module STCore {
     class Constants {
+        static DEFAULT_ROW_HEIGHT: string;
         static SELECTION_NONE: string;
         static SELECTION_SINGLE: string;
         static SELECTION_MULTIPLE: string;

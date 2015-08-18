@@ -32,7 +32,7 @@ module STCore {
             data                = data ? data : this._data;
             this.tableClasses   = data.tableClasses;
             this.tableWidth     = data.tableWidth;
-            this.headerHeight   = angular.isUndefined(data.headerHeight) ? '30px' : data.headerHeight;
+            this.headerHeight   = angular.isUndefined(data.headerHeight) ? STCore.Constants.DEFAULT_ROW_HEIGHT : data.headerHeight;
             this.columns        = data.columns;
             this.rowTemplate    = data.rowTemplate;
             this.rowTemplateId  = data.rowTemplateId;
@@ -41,6 +41,10 @@ module STCore {
             this.methods        = data.methods;
             this.virtualScroll  = angular.isUndefined(data.virtualScroll) ? false : data.virtualScroll;
             this.resizeType     = angular.isUndefined(data.resizeType) ? STCore.Constants.RESIZE_NONE : data.resizeType;
+        }
+
+        isResizeActive():boolean {
+            return this.resizeType !== STCore.Constants.RESIZE_NONE;
         }
 
     }

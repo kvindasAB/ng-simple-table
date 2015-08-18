@@ -19,5 +19,6 @@ declare module STCore {
         _data: any;
         constructor(data?: any);
         syncFromData(data?: any): void;
+        isResizeActive(): boolean;
     }
 }

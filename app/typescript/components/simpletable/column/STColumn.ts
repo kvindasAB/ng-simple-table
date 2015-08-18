@@ -19,6 +19,9 @@ module STColumn {
         cellIdFunction:Function;
         cellValueFunction:Function;
 
+        // Required for resizing purposes
+        _widthInPx:number;
+
         // Optimization
         /**
          * Indicates that the column attributes are mutable, and therefore attributes should be bind/watched on template.

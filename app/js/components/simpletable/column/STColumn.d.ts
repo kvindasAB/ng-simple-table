@@ -14,6 +14,7 @@ declare module STColumn {
         cellTemplateId: string;
         cellIdFunction: Function;
         cellValueFunction: Function;
+        _widthInPx: number;
         mutable: boolean;
         mutableProperties: string[];
         staticProperties: string[];

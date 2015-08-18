@@ -2,6 +2,8 @@
 module STCore {
     export class Constants {
 
+        static DEFAULT_ROW_HEIGHT:string    = '30px';
+
         static SELECTION_NONE:string        = 'none'; // TODO Pending to implement
         static SELECTION_SINGLE:string      = 'single';
         static SELECTION_MULTIPLE:string    = 'multiple';

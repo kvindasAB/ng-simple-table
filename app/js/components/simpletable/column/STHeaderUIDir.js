@@ -11,8 +11,9 @@ angular.module('simpletable.table.header', [])
                     pre: function (scope, iElem, iAttrs) {
                         $log.log('Header pre: ', iElem, scope);
                     },
-                    post: function (scope, iElem, iAttrs) {
-                        $log.log('Header post: ', iElem, scope);
+                    post: function (scope, iElem, iAttrs, parent) {
+                        $log.log('Header post: ', iElem, scope, parent);
+                        parent.getSimpleTable().uiParts.thead = iElem;
                     }
                 };
             },

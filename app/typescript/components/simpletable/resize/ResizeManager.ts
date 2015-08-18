@@ -2,11 +2,16 @@
 /// <reference path="../core/STConfig.ts" />
 /// <reference path="../core/STConstants.ts" />
 module STResize {
-    export class STResizeManager {
+    export class ResizeManager {
 
         // Attributes
         table:SimpleTable.SimpleTable;
         tableConfig:STCore.Config;
+
+        constructor(table:SimpleTable.SimpleTable, config:STCore.Config){
+            this.table = table;
+            this.tableConfig = config;
+        }
 
         // Methods
         resizeTable():void{
@@ -18,7 +23,7 @@ module STResize {
         }
 
         resizeTableFixed():void {
-            var tableWidth = this.calculateTotalColumnsWidthInPx(this.getColumns() );
+            var tableWidth = this.calculateTableWidthByColumnsInPx(this.getColumns() );
             this.tableConfig.tableWidth = tableWidth + STCore.Constants.UNIT_PIXELS;
         }
 
@@ -35,26 +40,29 @@ module STResize {
         }
 
         isResizeActive():boolean {
-            return this.tableConfig.resizeType !== STCore.Constants.RESIZE_NONE;
+            return this.tableConfig.isResizeActive();
         }
 
         getColumns():STColumn.Column[]{
             return this.tableConfig.columns;
         }
 
-        getColumnWidthInPx(col:STColumn.Column):number {
-            return col.style.width;
-        }
-
-        calculateTotalColumnsWidthInPx(cols:STColumn.Column[]):number{
+        calculateTableWidthByColumnsInPx(cols:STColumn.Column[]):number{
             this.measureColumnListHeaderUIInPx(cols);
             var cols:STColumn.Column[] = this.getColumns();
             var tableWidth = 0;
             for(var i:number = 0; i < cols.length; i++){
                 var col:STColumn.Column = cols[i];
-                tableWidth += col._widthInPx;
+                tableWidth += this.getColumnRealWidthInPx(col);
             }
             return tableWidth;
+        }
+
+        getColumnRealWidthInPx(col:STColumn.Column):number {
+            if(angular.isUndefined(col._widthInPx) ){
+                this.measureColumnHeaderUIInPx(col);
+            }
+            return col._widthInPx;
         }
 
         measureColumnListHeaderUIInPx(cols:STColumn.Column[]):void {

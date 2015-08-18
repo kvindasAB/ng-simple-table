@@ -2,7 +2,7 @@
 /// <reference path="../column/STColumnManager.ts" />
 /// <reference path="../core/ISimpleTablePlugin.ts" />
 /// <reference path="../core/STConfig.ts" />
-/// <reference path="../core/STResizeManager.ts" />
+/// <reference path="../resize/ResizeManager.ts" />
 /// <reference path="../factory/SimpleTablePluginFactory.ts" />
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 module SimpleTable {
@@ -47,7 +47,6 @@ module SimpleTable {
             this.processConfig();
             this.initManagers();
             this.initDefaultPlugins();
-            this.resizeTable();
         }
 
         registerPlugin(plugin:SimpleTablePlugin.ISimpleTablePlugin):void{
@@ -85,7 +84,7 @@ module SimpleTable {
             this.managers.columnManager.processConfig(this.scope.tableConfig);
 
             // Resize Manager
-            this.managers.resizeManager = new STCore.ResizeManager(this.scope.tableConfig);
+            this.managers.resizeManager = new STResize.ResizeManager(this, this.scope.tableConfig);
         }
 
         initDefaultPlugins():void{

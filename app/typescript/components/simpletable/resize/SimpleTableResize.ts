@@ -23,7 +23,7 @@ module SimpleTableResize{
         scope:any;
         element:any;
         attrs: any;
-        parent:any;
+        simpleTable:SimpleTable.SimpleTable;
         initializationComplete:boolean = false;
         $window:any;
 
@@ -78,6 +78,8 @@ module SimpleTableResize{
         }
 
         onMouseDownHandler(event, scope:any, element):void{
+            console.log(this);
+            /*
             if(event.preventDefault){
                 event.preventDefault();
             }
@@ -108,6 +110,8 @@ module SimpleTableResize{
                 var parentScope:any = self.scope;
                 parentScope.simpleTableResize.onMouseUpHandler(event, scope, element);
             });
+            */
+
         }
 
         onMouseMoveHandler(event, scope, element):void{

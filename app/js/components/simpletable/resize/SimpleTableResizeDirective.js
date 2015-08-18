@@ -19,7 +19,7 @@ angular.module('simpletable.resizable', [])
                 if (!$scope.simpleTableResize) {
                     $scope.simpleTableResize = new SimpleTableResize.SimpleTableResize($scope, $element, $attrs, $window);
                 }
-                $scope.simpleTableResize.parent = parent;
+                $scope.simpleTableResize.simpleTable = parent.getSimpleTable();
                 $scope.simpleTableResize.init();
                 return $scope.simpleTableResize;
             }

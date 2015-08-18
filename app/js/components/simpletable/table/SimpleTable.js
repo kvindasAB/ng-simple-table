@@ -2,7 +2,7 @@
 /// <reference path="../column/STColumnManager.ts" />
 /// <reference path="../core/ISimpleTablePlugin.ts" />
 /// <reference path="../core/STConfig.ts" />
-/// <reference path="../core/STResizeManager.ts" />
+/// <reference path="../resize/ResizeManager.ts" />
 /// <reference path="../factory/SimpleTablePluginFactory.ts" />
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 var SimpleTable;
@@ -28,7 +28,6 @@ var SimpleTable;
             this.processConfig();
             this.initManagers();
             this.initDefaultPlugins();
-            this.resizeTable();
         };
         SimpleTable.prototype.registerPlugin = function (plugin) {
             console.log("initializing plugins...", plugin);
@@ -57,7 +56,7 @@ var SimpleTable;
         SimpleTable.prototype.initManagers = function () {
             this.managers.columnManager = new STColumn.ColumnManager();
             this.managers.columnManager.processConfig(this.scope.tableConfig);
-            this.managers.resizeManager = new STCore.ResizeManager(this.scope.tableConfig);
+            this.managers.resizeManager = new STResize.ResizeManager(this, this.scope.tableConfig);
         };
         SimpleTable.prototype.initDefaultPlugins = function () {
             this.pluginFactory.newPluginSelection().doRegister(this);

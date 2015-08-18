@@ -3,7 +3,7 @@ declare module SimpleTableResize {
         scope: any;
         element: any;
         attrs: any;
-        parent: any;
+        simpleTable: SimpleTable.SimpleTable;
         initializationComplete: boolean;
         init(): any;
         isInitialized(): boolean;

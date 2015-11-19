@@ -7,6 +7,7 @@
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 declare module SimpleTable {
     class SimpleTable implements ISimpleTable {
+        id: any;
         scope: any;
         element: any;
         attrs: any;

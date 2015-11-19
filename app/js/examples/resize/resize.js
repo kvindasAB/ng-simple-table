@@ -19,7 +19,7 @@ angular.module('stable.examples.resize', ['ui.router'])
         $scope.data = DataGenerator.generateRows(10);
 
         $scope.tableConfig = {
-            tableClasses: ["table", "table-bordered", 'table-padding'],
+            tableClasses: ["table", "table-bordered", 'table-padding', 'table-relative'],
             headerHeight: '30px',
             resizeType: 'relative',
             columns: [
@@ -32,12 +32,12 @@ angular.module('stable.examples.resize', ['ui.router'])
         };
 
         $scope.tableConfigFixed = {
-            tableClasses: ["table", "table-bordered", 'table-padding'],
+            tableClasses: ["table", "table-bordered", 'table-padding', 'table-fixed'],
             headerHeight: '30px',
             resizeType: 'fixed',
             columns: [
-                {field: 'id', mutable: false, style:{width: '50px'}},
-                {field: 'name', mutable: false, style:{width: '100px'}},
+                {field: 'id', mutable: false, style:{width: '100px'}},
+                {field: 'name', mutable: false, style:{width: '300px'}},
                 {field: 'phone', mutable: false, style:{width: '100px'}},
                 {field: 'age', mutable: false, style:{width: '100px'}},
                 {field: 'address', mutable: false, style:{width: '100px'}}

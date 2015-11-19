@@ -6,10 +6,8 @@ angular.module('simpletable.table.column', [])
             restrict: 'AE',
             require: '^stTable',
             compile: function (tElem, tAttrs) {
-                $log.log('Col compile: ', tElem, tAttrs);
                 return {
                     pre: function (scope, iElem, iAttrs) {
-                        $log.log('Col pre: ', iElem, scope);
                     },
                     post: function (scope, iElem, iAttrs, parent) {
                         var column = new STColumnUI.Column();

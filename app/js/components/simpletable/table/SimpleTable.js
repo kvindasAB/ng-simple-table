@@ -13,6 +13,7 @@ var SimpleTable;
             this.uiParts = {};
             this.plugins = [];
             this.initializationComplete = false;
+            this.id = STUtil.Util.generateToken();
             this.scope = scope;
             this.element = element;
             this.attrs = attrs;
@@ -20,7 +21,7 @@ var SimpleTable;
             this.pluginFactory = pluginFactory;
             this.scope.simpleTable = this;
             this.init();
-            console.log("SimpleTable created: ", this.scope);
+            console.log("SimpleTable created: ", this.id, this.scope, this.element);
         }
         SimpleTable.prototype.init = function () {
             this.notifyPreInitialization();

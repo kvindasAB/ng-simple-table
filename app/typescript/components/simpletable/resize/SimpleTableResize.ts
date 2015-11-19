@@ -6,7 +6,7 @@
 /// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 
 module SimpleTableResize{
-    export class SimpleTableResize implements ISimpleTableResize{
+    export class SimpleTableResize{
         //*******************
         // CONSTANTS - START
         //*******************
@@ -77,15 +77,30 @@ module SimpleTableResize{
             this.$window = $window;
         }
 
-        onMouseDownHandler(event, scope:any, element):void{
-            console.log(this);
-            /*
+        onMouseDownHandler(event, scope:any, element:any):void{
+            console.log('onMouseDownHandler: ', this, scope, element);
             if(event.preventDefault){
                 event.preventDefault();
             }
             if(event.stopPropagation){
                 event.stopPropagation();
             }
+            var $windowEl:any           = angular.element(this.$window),
+                originX:number          = event.clientX,
+                moveHandler:Function    = angular.bind(this, function(event){
+                    this.onMouseMoveHandler(event, originX, scope.hcol);
+                }),
+                upHandler:Function      = angular.bind(this, function(event){
+                    $windowEl.off('mousemove', moveHandler);
+                    $windowEl.off('mouseup', upHandler);
+                    this.enableResizeCursor(false);
+                    this.onMouseUpHandler(event);
+                });
+            this.enableResizeCursor(true);
+            $windowEl.on('mousemove', moveHandler);
+            $windowEl.on('mouseup', upHandler);
+
+            /*
             if(!this.table){
                 var th:any = angular.element(element).parent();
                 var tr:any = angular.element(th).parent();
@@ -114,7 +129,25 @@ module SimpleTableResize{
 
         }
 
-        onMouseMoveHandler(event, scope, element):void{
+        onMouseMoveHandler(event:any, originX:number, col:STColumn.Column):void {
+            //console.log('onMouseMoveHandler: ', arguments, this);
+            var wdiff = event.clientX - originX;
+            this.simpleTable.managers.resizeManager.resizeColumn(col, wdiff);
+        }
+
+        onMouseUpHandler(event:any):void {
+            console.log('onMouseUpHandler: ', arguments, this);
+        }
+
+        enableResizeCursor(enable:boolean):void {
+            if(enable){
+                angular.element('body').addClass('resize-cursor');
+                return;
+            }
+            angular.element('body').removeClass('resize-cursor');
+        }
+
+        oldOnMouseMoveHandler(event, scope, element):void{
             if(!this.isMouseDown){
                 return;
             }
@@ -205,7 +238,7 @@ module SimpleTableResize{
             return false;
         }
 
-        onMouseUpHandler(event, scope:any, element):void{
+        oldOnMouseUpHandler(event, scope:any, element):void{
             angular.element('body').removeClass('resize-cursor');
             angular.element(this.table).removeClass('resize-cursor');
             angular.element(this.$window).off('mousemove');

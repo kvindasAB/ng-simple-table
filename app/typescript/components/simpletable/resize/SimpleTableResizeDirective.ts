@@ -1,8 +1,7 @@
 /// <reference path="SimpleTableResize.ts" />
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 angular.module('simpletable.resizable', [])
-    .directive('stTableResizable', ['$timeout', '$window',
-        function($timeout, $window){
+    .directive('stTableResizable', ['$timeout', '$window', function($timeout, $window){
         return {
             require: '^stTable',
             restrict: 'A',
@@ -17,6 +16,7 @@ angular.module('simpletable.resizable', [])
                 return $scope.simpleTableResize;
             },
             link: function($scope, $element, $attrs, parent) {
+                console.log('TableResize:', $element, $scope, parent.getSimpleTable() );
                 if(!$scope.simpleTableResize){
                     $scope.simpleTableResize = new SimpleTableResize.SimpleTableResize($scope, $element, $attrs, $window);
                 }
@@ -26,13 +26,17 @@ angular.module('simpletable.resizable', [])
             }
         };
     }])
-    .directive('stTableResizableHandler', ['$timeout', function($timeout){
+    .directive('stTableResizableHandler', ['$timeout', '$window', function($timeout, $window){
         return {
-            require: '?^stTableResizable',
+            require: '^stTable',
             restrict: 'A',
             link: function (scope, element, attrs, parentCtrl) {
+                console.log('stResizeHandler: ', element, scope, parentCtrl.getSimpleTable(), parentCtrl.getSimpleTable().element );
+                var stable:SimpleTable.SimpleTable = parentCtrl.getSimpleTable();
                 if(!parentCtrl){return;}
-                element.on('mousedown', function(event){parentCtrl.getParent().onMouseDownHandler(event, scope, element);});
+                element.on('mousedown', function(event){
+                    stable.managers.resizeManager.onResizeMouseDownHandler(event, scope, element, $window);
+                });
             }
         };
     }]);

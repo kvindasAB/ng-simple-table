@@ -34,10 +34,10 @@ V2.0
 Fix issue where table rendering do not grab the whole area - DONE
 TableConfig refactoring and modeling on proper object. - DONE
 TableConfig defaults as resize management, headerHeight, etc. - DONE
+Cell getValue and getValue functions. - DONE
 Cell selection.
-Cell getValue and getValue functions.
 One time binding for columns - Review this with virtualization.
-- II - Multi Column sort
+- II - Multi Column sort 
 - II - Inline edition
 - II - Save state feature
 - Auto checkbox column

@@ -9,6 +9,7 @@ module SimpleTable {
     export class SimpleTable implements ISimpleTable {
 
         // Attributes
+        id:any;
         scope:any;
         element:any;
         attrs:any;
@@ -26,6 +27,7 @@ module SimpleTable {
         // Methods
         constructor(scope:any, element:any, attrs:any, $timeout, pluginFactory:SimpleTablePluginFactory.SimpleTablePluginFactory){
             // base
+            this.id = STUtil.Util.generateToken();
             this.scope = scope;
             this.element = element;
             this.attrs = attrs;
@@ -38,7 +40,7 @@ module SimpleTable {
             this.scope.simpleTable = this;
 
             this.init();
-            console.log("SimpleTable created: ", this.scope);
+            console.log("SimpleTable created: ", this.id, this.scope, this.element);
         }
 
         init():void{

@@ -147,7 +147,7 @@ module SimpleTableResize{
             angular.element('body').removeClass('resize-cursor');
         }
 
-        oldOnMouseMoveHandler(event, scope, element):void{
+        /*oldOnMouseMoveHandler(event, scope, element):void{
             if(!this.isMouseDown){
                 return;
             }
@@ -158,7 +158,7 @@ module SimpleTableResize{
             if(tableConfig.resizeType === STCore.Constants.RESIZE_RELATIVE){
                 this.updateAdjustableTableColumns(event, tableConfig, scope);
             }
-        }
+        }*/
 
         updateFixedTableColumns(event, tableConfig, scope):void{
             var width = 0;
@@ -238,7 +238,7 @@ module SimpleTableResize{
             return false;
         }
 
-        oldOnMouseUpHandler(event, scope:any, element):void{
+        /*oldOnMouseUpHandler(event, scope:any, element):void{
             angular.element('body').removeClass('resize-cursor');
             angular.element(this.table).removeClass('resize-cursor');
             angular.element(this.$window).off('mousemove');
@@ -306,7 +306,7 @@ module SimpleTableResize{
                 }
             }
             return null;
-        }
+        }*/
 
         getWidthInNumber(width):number{
             var stringWidth:string = '';

@@ -1,12 +1,9 @@
-var __extends = (this && this.__extends) || function (d, b) {
+var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-/// <reference path="../core/BaseComponentUI.ts" />
-/// <reference path="../tpl/STTemplates.ts" />
-/// <reference path="../column/STColumn.ts" />
 var STCellUI;
 (function (STCellUI) {
     var Cell = (function (_super) {

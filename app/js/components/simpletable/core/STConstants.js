@@ -1,4 +1,3 @@
-/// <reference path="../../../../typings/angularjs/angular.d.ts" />
 var STCore;
 (function (STCore) {
     var Constants = (function () {

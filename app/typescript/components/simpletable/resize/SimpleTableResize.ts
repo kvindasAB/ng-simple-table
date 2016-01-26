@@ -178,7 +178,8 @@ module SimpleTableResize{
         updateAdjustableTableColumns(event, tableConfig, scope):void{
             var width = 0;
             width = event.clientX - this.startX;
-            tableConfig.columns[this.indexColumnResize].style.width = this.calculateNewColumnWidth(tableConfig, this.orginalColumnWidth, width);
+            tableConfig.columns[this.indexColumnResize].style.width = this.calculateNewColumnWidth(tableConfig,
+                this.orginalColumnWidth, width);
             scope.$apply();
         }
 

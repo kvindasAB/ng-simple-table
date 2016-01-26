@@ -1,3 +1,4 @@
+/// <reference path="../table/SimpleTable.ts" />
 var STUtil;
 (function (STUtil) {
     var Util = (function () {

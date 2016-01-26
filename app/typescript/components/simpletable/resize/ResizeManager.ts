@@ -112,11 +112,11 @@ module STResize {
             var tableWidth:number = this.getTableRealWidthInPx();
             var newWidth:number = baseWidth + wdiff;
             this.updateColumnWidthRelative(col, newWidth, tableWidth);
-            for(var i:number=0; i < cols.length; i++){
+            /*for(var i:number=0; i < cols.length; i++){
                 var tmpCol:STColumn.Column = cols[i];
                 if(tmpCol === col){ continue; }
                 this.updateColumnWidthRelative(tmpCol, tmpCol._widthInPx, tableWidth);
-            }
+            }*/
         }
 
         resizeColumnFixed(col:STColumn.Column, baseWidth:number, wdiff:number):void {

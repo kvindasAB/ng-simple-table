@@ -9,11 +9,31 @@ var STTemplates;
         STTpls.CELL_TPL = "";
         STTpls.CELL_BO_TPL = "";
         STTpls.ROW_TPL = "<td ng-repeat='col in tableConfig.columns' st-table-cell ng-if='col.active' ></td>";
-        STTpls.BODY_TPL = "<tr bindonce ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " + "  ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' " + "  st-table-row >" + "</tr>";
-        STTpls.BODY_VS_TPL = "<tr bindonce ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " + "  sf-virtual-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' " + "  st-table-row >" + "</tr>";
+        STTpls.BODY_TPL = "<tr bindonce ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
+            "  ng-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' " +
+            "  st-table-row >" +
+            "</tr>";
+        STTpls.BODY_VS_TPL = "<tr bindonce ng-class='{selected: simpleTable.selection.isRowSelected(row)}' " +
+            "  sf-virtual-repeat='row in tableData | filter:tableConfig.filter | orderBy:simpleTable.sortManager.currentSort:simpleTable.sortManager.currentSortReverse ' " +
+            "  st-table-row >" +
+            "</tr>";
         STTpls.COLUMN_TPL = "{{hcol.title}}<div st-table-resizable-handler class='table-header-cursor-container'></div>";
-        STTpls.HEADER_TPL = "<tr>" + "  <th id='{{hcol.id}}' class='table-header' " + "   ng-repeat='hcol in tableConfig.columns track by hcol.id' " + "   ng-class='hcol.headerClass' ng-if='hcol.active' " + "   ng-style='{\"height\":tableConfig.headerHeight, \"min-width\":hcol.style.minWidth, \"width\":hcol.style.width}' " + "   st-table-drop-target='true' st-table-draggable='true' st-table-column>" + "  </th>" + "</tr>";
-        STTpls.TABLE_TPL = "<div ng-style='{width:tableConfig.tableWidth}'>" + "  <table ng-class='tableConfig.tableClasses' ng-style='{width:tableConfig.tableWidth}'>" + "    <thead st-table-header>" + "    </thead>" + "    <tbody st-table-body virtual-scroll='{{tableConfig.virtualScroll}}' >" + "    </tbody>" + "  </table>" + "</div>";
+        STTpls.HEADER_TPL = "<tr>" +
+            "  <th id='{{hcol.id}}' class='table-header' " +
+            "   ng-repeat='hcol in tableConfig.columns track by hcol.id' " +
+            "   ng-class='hcol.headerClass' ng-if='hcol.active' " +
+            "   ng-style='{\"height\":tableConfig.headerHeight, \"min-width\":hcol.style.minWidth, \"width\":hcol.style.width}' " +
+            "   st-table-drop-target='true' st-table-draggable='true' st-table-column>" +
+            "  </th>" +
+            "</tr>";
+        STTpls.TABLE_TPL = "<div ng-style='{width:tableConfig.tableWidth}'>" +
+            "  <table ng-class='tableConfig.tableClasses' ng-style='{width:tableConfig.tableWidth}'>" +
+            "    <thead st-table-header>" +
+            "    </thead>" +
+            "    <tbody st-table-body virtual-scroll='{{tableConfig.virtualScroll}}' >" +
+            "    </tbody>" +
+            "  </table>" +
+            "</div>";
         STTpls.CELL_TPL_ID = 'stTableCellTpl.html';
         STTpls.CELL_BO_TPL_ID = 'stTableCellBOTpl.html';
         STTpls.ROW_TPL_ID = 'stTableRowTpl.html';

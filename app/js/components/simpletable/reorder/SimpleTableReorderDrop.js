@@ -1,9 +1,13 @@
-var __extends = this.__extends || function (d, b) {
+var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
 };
+/// <reference path="../core/BaseSimpleTablePlugin.ts" />
+/// <reference path="ISimpleTableReorderDrop.ts" />
+/// <reference path="SimpleTableReorderUuidUtil.ts" />
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
 var SimpleTableReorder;
 (function (SimpleTableReorder) {
     var SimpleTableReorderDrop = (function (_super) {

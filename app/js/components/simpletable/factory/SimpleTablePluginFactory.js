@@ -1,5 +1,8 @@
+/// <reference path="../select/SimpleTableSelection.ts" />
+/// <reference path="../sort/SimpleTableSort.ts" />
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
 var SimpleTablePluginFactory;
-(function (_SimpleTablePluginFactory) {
+(function (SimpleTablePluginFactory_1) {
     var SimpleTablePluginFactory = (function () {
         function SimpleTablePluginFactory() {
         }
@@ -13,11 +16,12 @@ var SimpleTablePluginFactory;
         };
         return SimpleTablePluginFactory;
     })();
-    _SimpleTablePluginFactory.SimpleTablePluginFactory = SimpleTablePluginFactory;
+    SimpleTablePluginFactory_1.SimpleTablePluginFactory = SimpleTablePluginFactory;
 })(SimpleTablePluginFactory || (SimpleTablePluginFactory = {}));
 console.log("Creating angular module...: " + "simpletable.factory");
-angular.module('simpletable.factory', []).service('SimpleTablePluginFactory', [function () {
-    console.log("instantiating service...");
-    return new SimpleTablePluginFactory.SimpleTablePluginFactory();
-}]);
+angular.module('simpletable.factory', [])
+    .service('SimpleTablePluginFactory', [function () {
+        console.log("instantiating service...");
+        return new SimpleTablePluginFactory.SimpleTablePluginFactory();
+    }]);
 //# sourceMappingURL=SimpleTablePluginFactory.js.map

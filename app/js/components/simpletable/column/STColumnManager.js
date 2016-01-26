@@ -1,3 +1,5 @@
+/// <reference path="../table/SimpleTable.ts" />
+/// <reference path="./STColumn.ts" />
 var STColumn;
 (function (STColumn) {
     var ColumnManager = (function () {

@@ -1,3 +1,7 @@
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
+/// <reference path="../table/SimpleTable.ts" />
+/// <reference path="ISimpleTablePlugin.ts" />
+/// <reference path="IDisposable.ts" />
 var STCore;
 (function (STCore) {
     var BaseComponentUI = (function () {

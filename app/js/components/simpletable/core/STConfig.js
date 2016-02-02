@@ -1,8 +1,3 @@
-/// <reference path="../../../../typings/angularjs/angular.d.ts" />
-/// <reference path="../table/SimpleTable.ts" />
-/// <reference path="ISimpleTablePlugin.ts" />
-/// <reference path="IDisposable.ts" />
-/// <reference path="STConstants.ts" />
 var STCore;
 (function (STCore) {
     var Config = (function () {

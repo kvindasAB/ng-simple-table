@@ -1,12 +1,5 @@
-/// <reference path="ISimpleTable.ts" />
-/// <reference path="../column/STColumnManager.ts" />
-/// <reference path="../core/ISimpleTablePlugin.ts" />
-/// <reference path="../core/STConfig.ts" />
-/// <reference path="../resize/ResizeManager.ts" />
-/// <reference path="../factory/SimpleTablePluginFactory.ts" />
-/// <reference path="../../../../typings/log4javascript/log4javascript.d.ts" />
 var SimpleTable;
-(function (SimpleTable_1) {
+(function (_SimpleTable) {
     var SimpleTable = (function () {
         function SimpleTable(scope, element, attrs, $timeout, pluginFactory) {
             this.managers = {};
@@ -133,6 +126,6 @@ var SimpleTable;
         };
         return SimpleTable;
     })();
-    SimpleTable_1.SimpleTable = SimpleTable;
+    _SimpleTable.SimpleTable = SimpleTable;
 })(SimpleTable || (SimpleTable = {}));
 //# sourceMappingURL=SimpleTable.js.map

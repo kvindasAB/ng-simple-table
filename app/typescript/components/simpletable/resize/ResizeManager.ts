@@ -66,6 +66,7 @@ module STResize {
             if(angular.isUndefined(col._widthInPx) ){
                 col._widthInPx = this.measureColumnHeaderUIInPx(col);
             }
+            console.log('column width: ', col._widthInPx);
             return col._widthInPx;
         }
 
@@ -124,9 +125,8 @@ module STResize {
             var cols:STColumn.Column[] = this.getColumns();
             this.measureColumnListHeaderUIInPx(cols);
             col._widthInPx = newWidth;
-            this.updateTableWidthByColumnsWidthInPx(this.getColumns() );
-
             this.updateColumnWidthFixed(col, newWidth);
+            this.updateTableWidthByColumnsWidthInPx(this.getColumns());
         }
 
         updateColumnWidthRelative(col:STColumn.Column, newWidth:number, tableWidth:number):void {
@@ -137,6 +137,7 @@ module STResize {
         }
 
         updateColumnWidthFixed(col:STColumn.Column, newWidth:number):void {
+            console.log('New Width: ', newWidth);
             col.style = col.style ? col.style : {};
             col.style.width = newWidth + STCore.Constants.UNIT_PIXELS;
         }

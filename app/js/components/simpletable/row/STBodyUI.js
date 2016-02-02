@@ -1,9 +1,13 @@
-var __extends = this.__extends || function (d, b) {
+var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
 };
+/// <reference path="../table/SimpleTable.ts" />
+/// <reference path="../core/BaseComponentUI.ts" />
+/// <reference path="../core/STConfig.ts" />
+/// <reference path="../tpl/STTemplates.ts" />
 var STBodyUI;
 (function (STBodyUI) {
     var Body = (function (_super) {

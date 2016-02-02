@@ -1,3 +1,5 @@
+/// <reference path="../table/SimpleTable.ts" />
+/// <reference path="../util/STUtil.ts" />
 var STColumn;
 (function (STColumn) {
     var Column = (function () {

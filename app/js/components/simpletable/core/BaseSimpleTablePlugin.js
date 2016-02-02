@@ -1,3 +1,4 @@
+/// <reference path="ISimpleTablePlugin.ts" />
 var SimpleTablePlugin;
 (function (SimpleTablePlugin) {
     var BaseSimpleTablePlugin = (function () {

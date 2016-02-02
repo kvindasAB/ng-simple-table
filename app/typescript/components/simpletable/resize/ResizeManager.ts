@@ -121,12 +121,13 @@ module STResize {
         }
 
         resizeColumnFixed(col:STColumn.Column, baseWidth:number, wdiff:number):void {
-            var newWidth:number = baseWidth + wdiff;
+            var newWidth:number = baseWidth + wdiff, that = this;
             var cols:STColumn.Column[] = this.getColumns();
             this.measureColumnListHeaderUIInPx(cols);
             col._widthInPx = newWidth;
             this.updateColumnWidthFixed(col, newWidth);
-            this.updateTableWidthByColumnsWidthInPx(this.getColumns());
+            this.updateTableWidthByColumnsAndResizeColumnWidthInPx(this.getColumns(), col, newWidth);
+            //this.updateTableWidthByColumnsWidthInPx(this.getColumns());
         }
 
         updateColumnWidthRelative(col:STColumn.Column, newWidth:number, tableWidth:number):void {
@@ -145,6 +146,20 @@ module STResize {
         updateTableWidthByColumnsWidthInPx(cols:STColumn.Column[]):void {
             var tableWidth:number = this.getTableWidthByColumnsInPx(cols);
             console.log('updateTableWidthByColumnsWidthInPx:', tableWidth, _.pluck(cols,'_widthInPx'));
+            this.tableConfig.tableWidth = tableWidth;
+        }
+
+        updateTableWidthByColumnsAndResizeColumnWidthInPx(cols:STColumn.Column[], col:STColumn.Column, newWidth:number):void{
+            var colsWithoutCol:STColumn.Column[], colArray:STColumn.Column[], realColWidth:number, tableWidth:number;
+            colsWithoutCol = _.filter(cols, function(column){
+                return column.id !== col.id;
+            });
+            colArray = _.filter(cols, function(column){
+                return column.id === col.id;
+            });
+            tableWidth = this.getTableWidthByColumnsInPx(colsWithoutCol);
+            realColWidth = this.getTableWidthByColumnsInPx(cols);
+            tableWidth += (newWidth - realColWidth);
             this.tableConfig.tableWidth = tableWidth;
         }
 
